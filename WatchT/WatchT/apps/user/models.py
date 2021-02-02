@@ -2,7 +2,7 @@ from ..abstract.models import BaseModel
 from django.db.models import Manager
 
 
-class Task(BaseModel):
+class User(BaseModel):
     objects = Manager()
 
     class Meta:
