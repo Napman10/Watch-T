@@ -22,6 +22,35 @@ class Project(BaseModel):
 
 
 class Task(BaseModel):
+
+    LOW = 0
+    NORMAL = 1
+    HIGH = 2
+    CRITICAL = 3
+
+    PRIORITY_CHOICES = (
+        (LOW, 'Низкий'),
+        (NORMAL, 'Обычный'),
+        (HIGH, 'Высокий'),
+        (CRITICAL, 'Критический'),
+    )
+
+    NEW = 0
+    CORRECTION = 1
+    ASSIGNED = 2
+    IN_PROGRESS = 3
+    CHECK = 4
+    DONE = 5
+
+    STATUS_CHOICES = (
+        (NEW, 'Новая'),
+        (CORRECTION, 'Требуется уточнение'),
+        (ASSIGNED, 'Назначена'),
+        (IN_PROGRESS, 'В работе'),
+        (CHECK, 'Проверка'),
+        (DONE, 'Готово'),
+    )
+
     objects = Manager()
 
     class Meta:
@@ -36,6 +65,8 @@ class Task(BaseModel):
                                null=True, related_name='author_task')
     executor = models.ForeignKey(User, verbose_name='Выполняет', on_delete=models.SET_NULL,
                                  null=True, related_name='executor_task')
+    priority = models.IntegerField(choices=PRIORITY_CHOICES, default=NORMAL, verbose_name='Приоритет')
+    status = models.IntegerField(choices=STATUS_CHOICES, default=NEW, verbose_name='Статус')
 
     def __str__(self):
         return self.short_name
