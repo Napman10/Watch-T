@@ -1,3 +1,10 @@
-from django.db import models
+from ..abstract.models import BaseModel
+from django.db.models import Manager
 
-# Create your models here.
+
+class Task(BaseModel):
+    objects = Manager()
+
+    class Meta:
+        verbose_name = 'Задача'
+        verbose_name_plural = 'Задачи'
