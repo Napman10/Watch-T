@@ -29,8 +29,8 @@ class CustomUser(BaseModel):
         verbose_name = 'Расширение пользователя'
         verbose_name_plural = 'Расширения пользователей'
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to=user_photo_upload_to, default='default_user_pic.jpg')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    photo = models.ImageField(upload_to=user_photo_upload_to, default='default_user_pic.jpg', verbose_name='Фото')
     role = models.IntegerField(choices=ROLE_CHOICES, verbose_name='Роль', default=GUEST)
 
     def __str__(self):
