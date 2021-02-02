@@ -26,8 +26,8 @@ class CustomUser(BaseModel):
     )
 
     class Meta:
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
+        verbose_name = 'Расширение пользователя'
+        verbose_name_plural = 'Расширения пользователей'
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to=user_photo_upload_to, default='default_user_pic.jpg')
