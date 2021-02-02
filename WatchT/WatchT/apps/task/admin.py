@@ -12,4 +12,6 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display = ['short_name', 'team']
 
 
-admin.register(Comment)
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['author', 'task', 'text', 'edited', 'datetime']
