@@ -25,5 +25,5 @@ apps_urls = [
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(r'apps/', include(apps_urls)),
+    path(r'api/', include(apps_urls)),
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)
