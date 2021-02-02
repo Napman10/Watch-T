@@ -1,4 +1,6 @@
 __pycache__
 .idea/
+.vscode/
+venv/
 db.sqlite3
-/files/media/user/
+user/
