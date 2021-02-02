@@ -39,3 +39,24 @@ class Task(BaseModel):
 
     def __str__(self):
         return self.short_name
+
+
+class Comment(BaseModel):
+    objects = Manager()
+
+    class Meta:
+        verbose_name = 'Комментарий к задаче'
+        verbose_name_plural = 'Комментарии к задачам'
+
+    author = models.ForeignKey(User, verbose_name='Комментатор', on_delete=models.SET_NULL,
+                               null=True)
+    text = models.CharField(max_length=255, verbose_name='Текст комментария')
+    datetime = models.DateTimeField()
+    edited = models.BooleanField(default=False)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+
+    def __str__(self):
+        string = f'{self.author} {self.datetime}'
+        if self.edited:
+            string += ' (ред.)'
+        return string
