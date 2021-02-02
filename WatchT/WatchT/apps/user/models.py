@@ -10,6 +10,20 @@ def user_photo_upload_to(instance, filename):
 class User(BaseModel):
     objects = Manager()
 
+    GUEST = 0
+    DEVELOPER = 1
+    ANALYST = 2
+    LEAD = 3
+    ADMINISTRATOR = 4
+
+    ROLE_CHOICES = (
+        (GUEST, 'Гость'),
+        (DEVELOPER, 'Разработчик'),
+        (ANALYST, 'Аналитик'),
+        (LEAD, 'Тимлид'),
+        (ADMINISTRATOR, 'Администратор сайта'),
+    )
+
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
@@ -19,6 +33,7 @@ class User(BaseModel):
     username = models.CharField(max_length=30, verbose_name='Никнейм', unique=True)
     password = models.CharField(max_length=255, verbose_name='Пароль')
     photo = models.ImageField(upload_to=user_photo_upload_to)
+    role = models.IntegerField(choices=ROLE_CHOICES, verbose_name='Роль', default=GUEST)
 
     def __str__(self):
         return self.username

@@ -4,7 +4,7 @@ from .models import User, User2Team, Team
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['first_name', 'last_name', 'username']
+    list_display = ['username', 'role', 'first_name', 'last_name']
 
 
 @admin.register(User2Team)
