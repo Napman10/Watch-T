@@ -2,6 +2,7 @@ from ..abstract.models import BaseModel
 from ..user.models import User, Team
 from django.db.models import Manager
 from django.db import models
+from ..abstract.validators import is_int_validate, bigger_than_zero_validate
 
 
 class Project(BaseModel):
@@ -67,6 +68,13 @@ class Task(BaseModel):
                                  null=True, related_name='executor_task')
     priority = models.IntegerField(choices=PRIORITY_CHOICES, default=NORMAL, verbose_name='Приоритет')
     status = models.IntegerField(choices=STATUS_CHOICES, default=NEW, verbose_name='Статус')
+    want_minutes = models.IntegerField(validators=[is_int_validate, bigger_than_zero_validate], verbose_name='Оценка')
+    got_minutes = models.IntegerField(validators=[is_int_validate, bigger_than_zero_validate], verbose_name='Затрачено')
+    parent = models.ForeignKey('self', verbose_name='Родительская задача', null=True,
+                               blank=True, on_delete=models.CASCADE)
+    level = models.IntegerField(verbose_name='Уровень вложенности',
+                                validators=[is_int_validate, bigger_than_zero_validate],
+                                default=1)
 
     def __str__(self):
         return self.short_name

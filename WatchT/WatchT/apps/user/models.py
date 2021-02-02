@@ -3,6 +3,10 @@ from django.db.models import Manager
 from django.db import models
 
 
+def user_photo_upload_to(instance, filename):
+    return f'user/{instance.id}/{filename}'
+
+
 class User(BaseModel):
     objects = Manager()
 
@@ -14,6 +18,7 @@ class User(BaseModel):
     last_name = models.CharField(max_length=255, verbose_name='Фамилия', null=True, blank=True)
     username = models.CharField(max_length=30, verbose_name='Никнейм', unique=True)
     password = models.CharField(max_length=255, verbose_name='Пароль')
+    photo = models.ImageField(upload_to=user_photo_upload_to)
 
     def __str__(self):
         return self.username
