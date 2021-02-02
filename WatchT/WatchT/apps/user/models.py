@@ -1,13 +1,14 @@
 from ..abstract.models import BaseModel
 from django.db.models import Manager
 from django.db import models
+from django.contrib.auth.models import User
 
 
 def user_photo_upload_to(instance, filename):
     return f'user/{instance.id}/{filename}'
 
 
-class User(BaseModel):
+class CustomUser(BaseModel):
     objects = Manager()
 
     GUEST = 0
@@ -28,15 +29,12 @@ class User(BaseModel):
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
-    first_name = models.CharField(max_length=255, verbose_name='Имя', null=True, blank=True)
-    last_name = models.CharField(max_length=255, verbose_name='Фамилия', null=True, blank=True)
-    username = models.CharField(max_length=30, verbose_name='Никнейм', unique=True)
-    password = models.CharField(max_length=255, verbose_name='Пароль')
-    photo = models.ImageField(upload_to=user_photo_upload_to)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to=user_photo_upload_to, default='default_user_pic.jpg')
     role = models.IntegerField(choices=ROLE_CHOICES, verbose_name='Роль', default=GUEST)
 
     def __str__(self):
-        return self.username
+        return self.user.username
 
 
 class Team(BaseModel):
@@ -61,4 +59,4 @@ class User2Team(BaseModel):
         verbose_name_plural = 'Связки Пользователь -> Команда'
 
     team = models.ForeignKey(Team, on_delete=models.CASCADE, verbose_name='Команда')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь')

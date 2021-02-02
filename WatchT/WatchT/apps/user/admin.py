@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import User, User2Team, Team
+from .models import CustomUser, User2Team, Team
 
 
-@admin.register(User)
+@admin.register(CustomUser)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'role', 'first_name', 'last_name']
+    list_display = ['role', 'user']
 
 
 @admin.register(User2Team)
