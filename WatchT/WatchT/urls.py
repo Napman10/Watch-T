@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 from .settings import MEDIA_ROOT, MEDIA_URL
 
 apps_urls = [
-    path('task/', include('WatchT.apps.task.urls')),
+    path('issue/', include('WatchT.apps.issue.urls')),
     path('user/', include('WatchT.apps.user.urls')),
 ]
 

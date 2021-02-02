@@ -47,8 +47,8 @@ class Migration(migrations.Migration):
                 ('level', models.IntegerField(default=1, validators=[WatchT.apps.abstract.validators.is_int_validate, WatchT.apps.abstract.validators.bigger_than_zero_validate], verbose_name='Уровень вложенности')),
                 ('author', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='author_task', to='user.CustomUser', verbose_name='Составил')),
                 ('executor', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='executor_task', to='user.CustomUser', verbose_name='Выполняет')),
-                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='task.Task', verbose_name='Родительская задача')),
-                ('project', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='task.Project')),
+                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='issue.Task', verbose_name='Родительская задача')),
+                ('project', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='issue.Project')),
             ],
             options={
                 'verbose_name': 'Задача',
@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
                 ('datetime', models.DateTimeField()),
                 ('edited', models.BooleanField(default=False)),
                 ('author', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='user.CustomUser', verbose_name='Комментатор')),
-                ('task', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='task.Task')),
+                ('issue', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='issue.Task')),
             ],
             options={
                 'verbose_name': 'Комментарий к задаче',

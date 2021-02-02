@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import Task, Project, Comment
+from .models import Issue, Project, Comment
 
 
-@admin.register(Task)
+@admin.register(Issue)
 class TaskAdmin(admin.ModelAdmin):
     list_display = ['short_name', 'project', 'author', 'executor']
 
@@ -14,4 +14,4 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['author', 'task', 'text', 'edited', 'datetime']
+    list_display = ['author', 'issue', 'text', 'edited', 'datetime']

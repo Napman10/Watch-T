@@ -22,7 +22,7 @@ class Project(BaseModel):
         return self.short_name
 
 
-class Task(BaseModel):
+class Issue(BaseModel):
 
     LOW = 0
     NORMAL = 1
@@ -92,7 +92,7 @@ class Comment(BaseModel):
     text = models.CharField(max_length=255, verbose_name='Текст комментария')
     datetime = models.DateTimeField()
     edited = models.BooleanField(default=False)
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
 
     def __str__(self):
         string = f'{self.author} {self.datetime}'

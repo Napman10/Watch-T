@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'WatchT.apps.abstract',
-    'WatchT.apps.task',
+    'WatchT.apps.issue',
     'WatchT.apps.user',
 ]
 
