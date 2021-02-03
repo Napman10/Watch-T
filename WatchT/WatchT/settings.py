@@ -39,6 +39,8 @@ INSTALLED_APPS = [
 
     'WatchT.apps.abstract',
     'WatchT.apps.issue',
+    'WatchT.apps.project',
+    'WatchT.apps.team',
     'WatchT.apps.user',
 
     'rest_framework',
