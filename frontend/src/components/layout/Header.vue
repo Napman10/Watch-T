@@ -1,6 +1,6 @@
 <template>
     <header class="header">
-        <router-link class="logo" to="/api/issue/" exact>WatchT</router-link>
+        <router-link class="logo" to="/api/issue/list" exact>WatchT</router-link>
     </header>
 </template>
 

@@ -2,7 +2,7 @@ import { axios } from '@/utils';
 
 export const getIssues = async (params) => {
     return (
-        await axios.get('api/issue', {
+        await axios.get('api/issue/list', {
             params
         })
     ).data;
@@ -13,7 +13,7 @@ export const getIssues = async (params) => {
 // };
 //
 // export const addIssue = async (payload) => {
-//     return (await axios.post('api/issue', payload)).data;
+//     return (await axios.post('api/issue/new', payload)).data;
 // };
 
 export default {

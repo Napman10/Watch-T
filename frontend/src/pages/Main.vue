@@ -1,16 +1,11 @@
 <template>
-    <div>
-        <page-header></page-header>
-        <main class="main">
-            <router-view></router-view>
-        </main>
-    </div>
+  <div></div>
 </template>
 
 <script>
-import PageHeader from '@/components/layout/Header';
+
 export default {
-  components: { PageHeader }
+  components: { }
 }
 </script>
 
