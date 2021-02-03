@@ -1,6 +1,8 @@
 from django.urls import path, include
-from .views import IssueView
+from .views import IssueListView, IssueOpenView, IssueCreateView
 
 urlpatterns = [
-    path('', IssueView.as_view())
+    path('list', IssueListView.as_view()),
+    path('<uuid:id>', IssueOpenView.as_view()),
+    path('new', IssueCreateView.as_view()),
 ]
