@@ -5,7 +5,7 @@ from django.db import models
 
 
 class Project(BaseModel):
-    object = Manager()
+    objects = Manager()
 
     class Meta:
         verbose_name = 'Проект'
