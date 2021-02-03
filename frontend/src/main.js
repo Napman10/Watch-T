@@ -8,7 +8,9 @@ Vue.config.productionTip = false;
 
 Vue.use(ElementUI);
 
+
 new Vue({
   el: '#app',
+  delimiters: ["[[", "]]"],
   render: h => h(App)
 });
