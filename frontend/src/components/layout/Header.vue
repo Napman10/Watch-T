@@ -1,6 +1,6 @@
 <template>
     <header class="header">
-        <router-link class="logo" to="/api/issues/" exact>WatchT</router-link>
+        <router-link class="logo" to="/api/issue/" exact>WatchT</router-link>
 <!--        <ul class="userInfo">-->
 <!--            <li class="cursor-pointer" @click="changeMo">{{ currentMo.name }}</li>-->
 <!--            <li>{{ userFullName }}</li>-->
