@@ -1,6 +1,6 @@
 <template>
     <div>
-        <headerp></headerp>
+        <page-header></page-header>
 <!--        <main class="main">-->
 <!--            <router-view></router-view>-->
 <!--        </main>-->
@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import Headerp from '@/components/layout/Header';
+import PageHeader from '@/components/layout/Header';
 export default {
-  components: { Headerp }
+  components: { PageHeader }
 }
 </script>
 

@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <headerp></headerp>
+    <page-header></page-header>
   </div>
 </template>
 
 <script>
-import Headerp from './components/layout/Header.vue'
+import PageHeader from "@/components/layout/Header";
 
 export default {
   name: 'App',
   components: {
-    Headerp
+    PageHeader,
   }
 }
 </script>

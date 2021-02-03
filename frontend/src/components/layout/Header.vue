@@ -1,6 +1,6 @@
 <template>
     <header class="header">
-        <router-link class="logo" to="issues/" exact>WatchT</router-link>
+        <router-link class="logo" to="/api/issues/" exact>WatchT</router-link>
 <!--        <ul class="userInfo">-->
 <!--            <li class="cursor-pointer" @click="changeMo">{{ currentMo.name }}</li>-->
 <!--            <li>{{ userFullName }}</li>-->
@@ -11,14 +11,20 @@
 
 <script>
 export default {
-name: "Headerp"
+name: "PageHeader"
 }
 </script>
 
 <style scoped>
 .header {
-    background: #44c8f3;
-    padding: 25px 15px;
-    margin-bottom: 8px;
+    background: #412227;
+    padding: 15px 15px;
+    margin-bottom: 10px;
+}
+.logo {
+    color: white;
+    font-weight: bold;
+    font-size: x-large;
+    text-decoration: none;
 }
 </style>

@@ -145,3 +145,7 @@ REST_FRAMEWORK = {
     ]
 }
 
+CORS_ALLOW_ALL_ORIGINS = True
+
+FRONTEND_URL = "http://0.0.0.0:8080"
+FRONTEND_NEW_URL = "http://0.0.0.0:8080"
