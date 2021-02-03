@@ -18,12 +18,12 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from .settings import MEDIA_ROOT, MEDIA_URL
 
-apps_urls = [
+api_urls = [
     path('issue/', include('WatchT.apps.issue.urls')),
     path('user/', include('WatchT.apps.user.urls')),
 ]
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(r'app/', include(apps_urls)),
+    path(r'api/', include(api_urls)),
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)
