@@ -1,10 +1,7 @@
-from rest_framework.generics import GenericAPIView, ListCreateAPIView, ListAPIView, RetrieveUpdateAPIView, CreateAPIView
-from rest_framework.mixins import ListModelMixin
-from rest_framework.renderers import TemplateHTMLRenderer
-from .serializers import IssueSerializer
-from rest_framework.views import APIView
+from rest_framework.generics import DestroyAPIView, ListAPIView, RetrieveUpdateAPIView, CreateAPIView
+
 from .models import Issue
-from rest_framework.response import Response
+from .serializers import IssueSerializer
 
 
 class IssueListView(ListAPIView):
@@ -27,4 +24,13 @@ class IssueCreateView(CreateAPIView):
     serializer_class = IssueSerializer
     action_map = {
         'post': 'create'
+    }
+
+
+class IssueDestroyView(DestroyAPIView):
+    queryset = Issue.objects.all()
+    serializer_class = IssueSerializer
+    lookup_field = 'id'
+    action_map = {
+        'delete': 'delete'
     }
