@@ -1,7 +1,9 @@
 import issue from '@/api/issue';
+import login from '@/api/login';
 
 const api = {
-    ...issue
+    ...issue,
+    ...login
 };
 
 export default api;

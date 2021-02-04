@@ -9,6 +9,16 @@ export const routes = [
         component: require('../pages/Main.vue').default,
         name: 'main',
         children: [
+            {
+                path: '',
+                component: require('../pages/IssuePage').default,
+                name: 'issues'
+            },
+            {
+                path: 'loginPage',
+                component: require('../pages/LoginPage').default,
+                name: 'login'
+            },
         ]
     }
 ];

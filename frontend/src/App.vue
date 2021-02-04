@@ -1,33 +1,37 @@
 <template>
-  <div id="app">
-    <page-header></page-header>
-        <main class="main">
-            <router-view></router-view>
-        </main>
-    <issue-grid></issue-grid>
-  </div>
+    <div class="login" v-else>
+        <h3 style="text-align: center">Вход в систему</h3>
+        <login-form></login-form>
+    </div>
 </template>
 
 <script>
-import PageHeader from "@/components/layout/Header";
-import IssueGrid from "@/components/issue/IssueGrid";
+import { mapGetters } from 'vuex';
+import LoginForm from '@/components/login/LoginForm';
 
 export default {
   name: 'App',
   components: {
-    PageHeader,
-    IssueGrid
+    LoginForm
+  },
+  computed: {
+    ...mapGetters('auth', ['isAuth'])
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+    margin: 0;
+    padding: 0;
+}
+.login {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 12%;
+    padding: 16px;
+    border: 2px solid #a9a9ff;
+    width: 350px;
+    border-radius: 5%;
 }
 </style>
