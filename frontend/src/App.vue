@@ -4,16 +4,19 @@
         <main class="main">
             <router-view></router-view>
         </main>
+    <issue-grid></issue-grid>
   </div>
 </template>
 
 <script>
 import PageHeader from "@/components/layout/Header";
+import IssueGrid from "@/components/issue/IssueGrid";
 
 export default {
   name: 'App',
   components: {
     PageHeader,
+    IssueGrid
   }
 }
 </script>

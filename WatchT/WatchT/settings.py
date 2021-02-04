@@ -26,7 +26,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,6 +42,7 @@ INSTALLED_APPS = [
     'WatchT.apps.user',
 
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'WatchT.urls'
@@ -77,7 +79,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'WatchT.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -87,7 +88,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -107,7 +107,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -120,7 +119,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -148,3 +146,12 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 FRONTEND_URL = "http://0.0.0.0:8080"
 FRONTEND_NEW_URL = "http://0.0.0.0:8080"
+
+CORS_ORIGIN_ALLOW_ALL = True  # If this is used then `CORS_ORIGIN_WHITELIST` will not have any effect
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3030',
+]  # If this is used, then not need to use `CORS_ORIGIN_ALLOW_ALL = True`
+CORS_ORIGIN_REGEX_WHITELIST = [
+    'http://localhost:3030',
+]

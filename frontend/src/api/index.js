@@ -1,7 +1,7 @@
 import issue from '@/api/issue';
 
 const api = {
-    issue
+    ...issue
 };
 
 export default api;
