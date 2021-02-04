@@ -1,6 +1,7 @@
 import { lodash as _ } from '@/utils';
 
 export function SET_STATE(context, data) {
+    console.log(data)
     if (Array.isArray(data)) {
         data.map(({ state, payload }) => (context[state] = payload));
     } else if (!Object.keys(data).includes('state')) {

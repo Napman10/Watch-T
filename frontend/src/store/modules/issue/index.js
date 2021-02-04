@@ -1,40 +1,29 @@
 import api from '@/api';
 import { SET_STATE, setState } from '@/store/helpers';
-//import { showErrorNotify, showSuccessNotify } from '@/utils';
+import { showErrorNotify, showSuccessNotify } from '@/utils';
 
 export default {
     namespaced: true,
     state: {
         issues: [],
-        loading: false,
-        isCreateModalVisible: false,
-        issue: {},
-        // selectedPatient: {}
+        issue: {}
     },
     getters: {
-        issues: (state) => state.issues,
+        issues: (state) => state.issues
     },
     mutations: {
-        SET_STATE,
-        SELECT_PATIENT(state, patient) {
-            state.selectedPatient = { ...patient };
-        }
+        SET_STATE
     },
     actions: {
         async getIssues({ commit }, filter) {
             try {
                 const result = await api.getIssues(filter);
-                // if (!result.isSuccess) {
-                //     return showErrorNotify(result.errorMessage);
-                // }
-                setState(commit, { issues: result.result });
+                console.log(result)
+                setState(commit, { issues: result });
             } catch (e) {
-                //showErrorNotify(e.message);
-                console.log(e)
-            } finally {
-                setState(commit, { loading: false });
+                showErrorNotify(e.message);
             }
-        },
+        }
         // async addIssue({ commit, dispatch }, payload) {
         //     try {
         //         const result = await api.addIssue(payload);
