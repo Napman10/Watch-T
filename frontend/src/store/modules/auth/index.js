@@ -7,10 +7,12 @@ export default {
     state: {
         user: {},
         isAuth: false,
+        token: null
     },
 
     getters: {
         isAuth: (state) => state.isAuth,
+        token: (state) => state.token,
         username: (state) => state.user.username,
         email: (state) => state.user.email,
         isActive: (state) => state.user.is_active,
@@ -25,6 +27,7 @@ export default {
         LOG_OUT(state) {
             state.isAuth = false;
             state.user = {};
+            state.token = null;
         }
     },
 
@@ -33,7 +36,7 @@ export default {
             try {
                 const result = await api.login(params);
                 console.log(result)
-                setState(commit, { user: result.result.user });
+                setState(commit, { token: result.access });
                 setState(commit, { isAuth: true });
             } catch (e) {
                 showErrorNotify(e.message);
