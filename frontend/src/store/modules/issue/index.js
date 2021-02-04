@@ -18,7 +18,6 @@ export default {
         async getIssues({ commit }, filter) {
             try {
                 const result = await api.getIssues(filter);
-                console.log(result)
                 setState(commit, { issues: result });
             } catch (e) {
                 showErrorNotify(e.message);
