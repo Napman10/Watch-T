@@ -21,7 +21,6 @@ from .settings import MEDIA_ROOT, MEDIA_URL
 api_urls = [
     path('issue/', include('WatchT.apps.issue.urls')),
     path('project/', include('WatchT.apps.project.urls')),
-    path('team/', include('WatchT.apps.team.urls')),
     path('user/', include('WatchT.apps.user.urls')),
 ]
 
