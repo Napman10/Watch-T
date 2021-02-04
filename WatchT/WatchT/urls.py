@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 from .settings import MEDIA_ROOT, MEDIA_URL
 
 api_urls = [
-    path('issue/', include('WatchT.apps.issue.urls')),
+    path('issue/', include('WatchT.apps.issue.api.urls')),
     path('project/', include('WatchT.apps.project.urls')),
     path('user/', include('WatchT.apps.user.urls')),
 ]

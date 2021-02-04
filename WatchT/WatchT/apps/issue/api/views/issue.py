@@ -1,7 +1,7 @@
-from rest_framework.generics import DestroyAPIView, ListAPIView, RetrieveUpdateAPIView, CreateAPIView
+from ...models import Issue
+from ...serializers import IssueSerializer
 
-from .models import Issue
-from .serializers import IssueSerializer
+from rest_framework.generics import DestroyAPIView, ListAPIView, RetrieveUpdateAPIView, CreateAPIView
 
 
 class IssueListView(ListAPIView):
