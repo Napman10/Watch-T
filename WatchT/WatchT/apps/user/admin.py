@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import CustomUser
+from .models import EmployeeUser
 
 
-@admin.register(CustomUser)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ['user', 'role']
+@admin.register(EmployeeUser)
+class EmployeeUserAdmin(admin.ModelAdmin):
+    list_display = ['username', 'email', 'is_active', 'role']

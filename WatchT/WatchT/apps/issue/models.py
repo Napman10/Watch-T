@@ -1,5 +1,5 @@
 from ..abstract.models import BaseModel
-from ..user.models import CustomUser
+from ..user.models import EmployeeUser
 from ..project.models import Project
 from django.db.models import Manager
 from django.db import models
@@ -46,9 +46,9 @@ class Issue(BaseModel):
     header = models.CharField(max_length=65, verbose_name='Заголовок', null=True, blank=True)
     description = models.CharField(max_length=255, verbose_name='Описание', null=True, blank=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
-    author = models.ForeignKey(CustomUser, verbose_name='Составил', on_delete=models.SET_NULL,
+    author = models.ForeignKey(EmployeeUser, verbose_name='Составил', on_delete=models.SET_NULL,
                                null=True, related_name='author_task')
-    executor = models.ForeignKey(CustomUser, verbose_name='Выполняет', on_delete=models.SET_NULL,
+    executor = models.ForeignKey(EmployeeUser, verbose_name='Выполняет', on_delete=models.SET_NULL,
                                  null=True, related_name='executor_task')
     priority = models.IntegerField(choices=PRIORITY_CHOICES, default=NORMAL, verbose_name='Приоритет')
     status = models.IntegerField(choices=STATUS_CHOICES, default=NEW, verbose_name='Статус')
@@ -71,7 +71,7 @@ class Comment(BaseModel):
         verbose_name = 'Комментарий к задаче'
         verbose_name_plural = 'Комментарии к задачам'
 
-    author = models.ForeignKey(CustomUser, verbose_name='Комментатор', on_delete=models.SET_NULL,
+    author = models.ForeignKey(EmployeeUser, verbose_name='Комментатор', on_delete=models.SET_NULL,
                                null=True)
     text = models.CharField(max_length=255, verbose_name='Текст комментария')
     datetime = models.DateTimeField()

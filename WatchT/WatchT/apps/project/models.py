@@ -1,7 +1,7 @@
 from ..abstract.models import BaseModel
 from django.db.models import Manager
 from django.db import models
-from ..user.models import CustomUser
+from ..user.models import EmployeeUser
 
 
 class Project(BaseModel):
@@ -27,4 +27,4 @@ class Project2User(BaseModel):
         verbose_name_plural = 'Связки Проект -> Сотрудник'
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='Проект')
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name='Сотрудник')
+    user = models.ForeignKey(EmployeeUser, on_delete=models.CASCADE, verbose_name='Сотрудник')
