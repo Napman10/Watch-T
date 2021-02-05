@@ -1,13 +1,21 @@
 <template>
     <header class="header">
         <router-link class="logo" to="/api/issue/list" exact>WatchT</router-link>
-        <li class="cursor-pointer" @click="logout">Выйти</li>
+        <ul class="userInfo">
+            <li>{{ username }}</li>
+            <li class="cursor-pointer" @click="logout">Выйти</li>
+        </ul>
     </header>
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   name: "PageHeader",
+  computed: {
+        ...mapGetters('auth', ['username'])
+    },
   methods: {
         logout() {
             this.$store.commit('auth/LOG_OUT');

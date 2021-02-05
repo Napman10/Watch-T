@@ -12,13 +12,13 @@ export default {
 
     getters: {
         isAuth: (state) => state.isAuth,
-        token: (state) => state.token,
-        username: (state) => state.user.username,
-        email: (state) => state.user.email,
-        isActive: (state) => state.user.is_active,
-        isStaff: (state) => state.user.is_staff,
-        photo: (state) => state.user.photo,
-        role: (state) => state.user.role,
+        token: (state) => state.token
+        // username: (state) => state.user.username,
+        // email: (state) => state.user.email,
+        // isActive: (state) => state.user.is_active,
+        // isStaff: (state) => state.user.is_staff,
+        // photo: (state) => state.user.photo,
+        // role: (state) => state.user.role,
     },
 
     mutations: {
@@ -38,7 +38,7 @@ export default {
                 setState(commit, { isAuth: true });
                 localStorage.setItem("token", result.access)
             } catch (e) {
-                showErrorNotify(e.message);
+                showErrorNotify("Неправильные данные входа");
             }
         }
     }
