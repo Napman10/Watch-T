@@ -7,7 +7,7 @@ export default {
     state: {
         user: {},
         isAuth: false,
-        token: null
+        token: localStorage.getItem('token') || null
     },
 
     getters: {
@@ -35,9 +35,8 @@ export default {
         async login({ commit }, params) {
             try {
                 const result = await api.login(params);
-                console.log(result)
-                setState(commit, { token: result.access });
                 setState(commit, { isAuth: true });
+                localStorage.setItem("token", result.access)
             } catch (e) {
                 showErrorNotify(e.message);
             }

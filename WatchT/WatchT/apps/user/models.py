@@ -59,8 +59,8 @@ class EmployeeUser(AbstractBaseUser, PermissionsMixin, BaseModel):
     photo = models.ImageField(upload_to=user_photo_upload_to, default='default_user_pic.jpg', verbose_name='Фото')
     role = models.IntegerField(choices=ROLE_CHOICES, verbose_name='Роль', default=GUEST)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    USERNAME_FIELD = 'username'
+    # REQUIRED_FIELDS = ['username']
 
     objects = UserManager()
 

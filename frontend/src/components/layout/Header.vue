@@ -1,12 +1,18 @@
 <template>
     <header class="header">
         <router-link class="logo" to="/api/issue/list" exact>WatchT</router-link>
+        <li class="cursor-pointer" @click="logout">Выйти</li>
     </header>
 </template>
 
 <script>
 export default {
-name: "PageHeader"
+  name: "PageHeader",
+  methods: {
+        logout() {
+            this.$store.commit('auth/LOG_OUT');
+        }
+    }
 }
 </script>
 

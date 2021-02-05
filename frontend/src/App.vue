@@ -1,4 +1,7 @@
 <template>
+  <div id="app" v-if="isAuth">
+    <router-view></router-view>
+  </div>
     <div class="login" v-else>
         <h3 style="text-align: center">Вход в систему</h3>
         <login-form></login-form>

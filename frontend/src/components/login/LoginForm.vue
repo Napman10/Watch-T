@@ -1,8 +1,8 @@
 <template>
     <div>
         <el-form :model="form" ref="loginForm" label-position="top" :rules="rules" @keyup.native.enter="submit">
-            <el-form-item label="Email" prop="email">
-                <el-input v-model="form.email" clearable></el-input>
+            <el-form-item label="Имя пользователя" prop="username">
+                <el-input v-model="form.username" clearable></el-input>
             </el-form-item>
             <el-form-item label="Пароль" prop="password">
                 <el-input type="password" v-model="form.password" clearable></el-input>
@@ -20,7 +20,7 @@ export default {
         return {
             form: {},
             rules: {
-                email: [
+                username: [
                     {
                         required: true,
                         message: 'Поле обязательно для заполнения'

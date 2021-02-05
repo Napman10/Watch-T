@@ -1,12 +1,11 @@
 import { axios } from '@/utils';
 
 export const getIssues = async (params) => {
-    const items = (
+    return (
         await axios.get('api/issue/list', {
             params
         })
     ).data;
-    return items;
 };
 
 // export const getIssue = async (issueId) => {
