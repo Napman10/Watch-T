@@ -6,12 +6,10 @@ export default {
     namespaced: true,
     state: {
         user: {},
-        isAuth: false,
-        token: localStorage.getItem('token') || null
+        token: localStorage.getItem("token")
     },
 
     getters: {
-        isAuth: (state) => state.isAuth,
         token: (state) => state.token
         // username: (state) => state.user.username,
         // email: (state) => state.user.email,
@@ -25,9 +23,10 @@ export default {
         SET_STATE,
         setState,
         LOG_OUT(state) {
-            state.isAuth = false;
             state.user = {};
             state.token = null;
+            state.isAuth = false;
+            localStorage.removeItem('token');
         }
     },
 
@@ -35,8 +34,8 @@ export default {
         async login({ commit }, params) {
             try {
                 const result = await api.login(params);
-                setState(commit, { isAuth: true });
-                localStorage.setItem("token", result.access)
+                localStorage.setItem("token", result.access);
+                setState(commit, { token: result.access });
             } catch (e) {
                 showErrorNotify("Неправильные данные входа");
             }

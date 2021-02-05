@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-if="isAuth">
+  <div id="app" v-if="token">
     <router-view></router-view>
   </div>
     <div class="login" v-else>
@@ -18,7 +18,7 @@ export default {
     LoginForm
   },
   computed: {
-    ...mapGetters('auth', ['isAuth'])
+    ...mapGetters('auth', ['token'])
   }
 }
 </script>

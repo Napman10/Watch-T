@@ -1,10 +1,10 @@
 <template>
     <header class="header">
-        <router-link class="logo" to="/api/issue/list" exact>WatchT</router-link>
-        <ul class="userInfo">
+        <router-link class="logo" to="" exact>WatchT</router-link>
+        <menu class="userInfo">
             <li>{{ username }}</li>
             <li class="cursor-pointer" @click="logout">Выйти</li>
-        </ul>
+        </menu>
     </header>
 </template>
 
@@ -35,5 +35,9 @@ export default {
     font-weight: bold;
     font-size: x-large;
     text-decoration: none;
+}
+.cursor-pointer {
+    color: white;
+    cursor: pointer;
 }
 </style>
