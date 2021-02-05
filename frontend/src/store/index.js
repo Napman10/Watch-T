@@ -6,11 +6,13 @@ window.Vuex = Vuex;
 
 import auth from './modules/auth';
 import issue from './modules/issue';
+import project from './modules/project';
 
 let store = new Vuex.Store({
     modules: {
         auth,
-        issue
+        issue,
+        project
     }
 });
 

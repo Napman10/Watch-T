@@ -15,10 +15,15 @@ export const routes = [
                 name: 'issues'
             },
             {
-                path: 'loginPage',
+                path: 'login',
                 component: require('../pages/LoginPage').default,
                 name: 'login'
             },
+            {
+                path: 'projects',
+                component: require('../pages/ProjectPage').default,
+                name: 'projects'
+            }
         ]
     }
 ];
