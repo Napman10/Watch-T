@@ -8,7 +8,6 @@ from ..user.models import EmployeeUser
 
 
 class Issue(BaseModel):
-
     LOW = 0
     NORMAL = 1
     HIGH = 2
@@ -75,12 +74,26 @@ class Comment(BaseModel):
     author = models.ForeignKey(EmployeeUser, verbose_name='Комментатор', on_delete=models.SET_NULL,
                                null=True)
     text = models.CharField(max_length=255, verbose_name='Текст комментария')
-    datetime = models.DateTimeField()
-    edited = models.BooleanField(default=False)
-    issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
+    datetime = models.DateTimeField(verbose_name='Дата создания')
+    edited = models.BooleanField(default=False, verbose_name='Редактировано')
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE, verbose_name='Задача')
 
     def __str__(self):
         string = f'{self.author} {self.datetime}'
         if self.edited:
             string += ' (ред.)'
         return string
+
+
+class TrackTime(BaseModel):
+    objects = Manager()
+
+    class Meta:
+        verbose_name = 'Затреканное время'
+        verbose_name_plural = 'Затреканное время'
+
+    minutes = models.IntegerField(validators=[is_int_validate, bigger_than_zero_validate],
+                                  verbose_name='Время в минутах')
+    executor = models.ForeignKey(EmployeeUser, verbose_name='Сотрудник', on_delete=models.SET_NULL,
+                                 null=True)
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE, verbose_name='Задача')
