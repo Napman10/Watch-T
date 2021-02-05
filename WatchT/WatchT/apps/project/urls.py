@@ -1,5 +1,7 @@
-from django.urls import path, include
-from .views import ProjectListView, ProjectOpenView, ProjectCreateView, ProjectDestroyView
+from django.urls import include, path
+
+from .views import (ProjectCreateView, ProjectDestroyView, ProjectListView,
+                    ProjectOpenView)
 
 urlpatterns = [
     path('list', ProjectListView.as_view()),

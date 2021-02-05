@@ -1,6 +1,7 @@
-from ..abstract.models import BaseModel
-from django.db.models import Manager
 from django.db import models
+from django.db.models import Manager
+
+from ..abstract.models import BaseModel
 from ..user.models import EmployeeUser
 
 

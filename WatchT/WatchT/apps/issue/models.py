@@ -1,9 +1,10 @@
-from ..abstract.models import BaseModel
-from ..user.models import EmployeeUser
-from ..project.models import Project
-from django.db.models import Manager
 from django.db import models
-from ..abstract.validators import is_int_validate, bigger_than_zero_validate
+from django.db.models import Manager
+
+from ..abstract.models import BaseModel
+from ..abstract.validators import bigger_than_zero_validate, is_int_validate
+from ..project.models import Project
+from ..user.models import EmployeeUser
 
 
 class Issue(BaseModel):

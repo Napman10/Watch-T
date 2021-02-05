@@ -1,6 +1,6 @@
-from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView, CreateAPIView, DestroyAPIView
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.generics import (CreateAPIView, DestroyAPIView,
+                                     ListAPIView, RetrieveUpdateAPIView)
+
 from .models import Project
 from .serializers import ProjectSerializer
 

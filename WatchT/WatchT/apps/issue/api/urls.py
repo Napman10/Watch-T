@@ -1,5 +1,7 @@
-from django.urls import path, include
-from .views.issue import IssueListView, IssueOpenView, IssueCreateView, IssueDestroyView
+from django.urls import include, path
+
+from .views.issue import (IssueCreateView, IssueDestroyView, IssueListView,
+                          IssueOpenView)
 
 update_issue_patterns = [
     path('', IssueOpenView.as_view()),
