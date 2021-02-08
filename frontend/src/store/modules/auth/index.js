@@ -5,7 +5,6 @@ import { showErrorNotify } from '@/utils';
 export default {
     namespaced: true,
     state: {
-        user: {},
         token: localStorage.getItem("token")
     },
 
@@ -22,12 +21,6 @@ export default {
     mutations: {
         SET_STATE,
         setState,
-        LOG_OUT(state) {
-            state.user = {};
-            state.token = null;
-            state.isAuth = false;
-            localStorage.removeItem('token');
-        }
     },
 
     actions: {
@@ -38,6 +31,15 @@ export default {
                 setState(commit, { token: result.token });
             } catch (e) {
                 showErrorNotify("Неправильные данные входа");
+            }
+        },
+        async logout({commit}, params){
+            try {
+                await api.logout(params);
+                setState(commit, { token: null, isAuth: false });
+                localStorage.removeItem('token');
+            } catch (e) {
+                showErrorNotify("ERR");
             }
         }
     }

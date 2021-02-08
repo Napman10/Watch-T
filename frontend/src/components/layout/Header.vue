@@ -19,7 +19,7 @@ export default {
     },
   methods: {
         logout() {
-            this.$store.commit('auth/LOG_OUT');
+            this.$store.dispatch('auth/logout');
         }
     }
 }
