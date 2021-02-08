@@ -1,4 +1,5 @@
 from ..user.models import EmployeeUser
+from .exceptions import ReAuthRequiredException
 
 
 class UserSingle:
@@ -8,6 +9,8 @@ class UserSingle:
 
     @property
     def user(self):
+        if self.__user is None:
+            raise ReAuthRequiredException
         return self.__user
 
     @user.setter
@@ -19,3 +22,7 @@ class UserSingle:
 
 
 request_user = UserSingle()
+
+
+def sanitize_query_params(dictionary: dict):
+    return {k: v[0] for k, v in dictionary.items() if v[0]}

@@ -61,13 +61,10 @@ class CreateUserAPIView(CreateAPIView):
 
 
 class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
-    # Allow only authenticated users to access this url
     # permission_classes = (IsAuthenticated,)
     serializer_class = EmployeeUserSerializer
 
     def get(self, request, *args, **kwargs):
-        # serializer to handle turning our `User` object into something that
-        # can be JSONified and sent to the client.
         serializer = self.serializer_class(request.user)
 
         return Response(serializer.data, status=status.HTTP_200_OK)

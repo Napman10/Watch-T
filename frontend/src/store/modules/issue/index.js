@@ -21,6 +21,8 @@ export default {
                 setState(commit, { issues: result });
             } catch (e) {
                 showErrorNotify(e.message);
+            } finally {
+                setState(commit, { loading: false });
             }
         }
         // async addIssue({ commit, dispatch }, payload) {
