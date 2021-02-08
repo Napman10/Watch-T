@@ -2,11 +2,12 @@ import jwt
 from django.contrib.auth import user_logged_in
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.generics import RetrieveUpdateAPIView, CreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_jwt.serializers import jwt_payload_handler
+from ..abstract.functional import request_user
 
 from django.conf import settings
 
@@ -20,7 +21,7 @@ def authenticate_user(request):
     try:
         username = request.data['username']
         password = request.data['password']
-        user = EmployeeUser.objects.get(username=username, password=password)
+        user = EmployeeUser.objects.filter(username=username, password=password, is_active=True).first()
         if user:
             try:
                 payload = jwt_payload_handler(user)
@@ -29,6 +30,7 @@ def authenticate_user(request):
                     user.first_name, user.last_name), 'token': token}
                 user_logged_in.send(sender=user.__class__,
                                     request=request, user=user)
+                request_user.user = user
                 return Response(user_details, status=status.HTTP_200_OK)
 
             except Exception as e:
@@ -42,12 +44,13 @@ def authenticate_user(request):
         return Response(res)
 
 
-class CreateUserAPIView(APIView):
+class CreateUserAPIView(CreateAPIView):
     permission_classes = (AllowAny,)
+    serializer_class = EmployeeUserSerializer
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         user = request.data
-        serializer = EmployeeUserSerializer(data=user)
+        serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
