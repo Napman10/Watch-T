@@ -5,12 +5,13 @@ import { showErrorNotify } from '@/utils';
 export default {
     namespaced: true,
     state: {
+        username: null,
         token: localStorage.getItem("token")
     },
 
     getters: {
-        token: (state) => state.token
-        // username: (state) => state.user.username,
+        token: (state) => state.token,
+        username: (state) => state.username,
         // email: (state) => state.user.email,
         // isActive: (state) => state.user.is_active,
         // isStaff: (state) => state.user.is_staff,
@@ -28,7 +29,7 @@ export default {
             try {
                 const result = await api.login(params);
                 localStorage.setItem("token", result.token);
-                setState(commit, { token: result.token });
+                setState(commit, { token: result.token, username: result.name });
             } catch (e) {
                 showErrorNotify("Неправильные данные входа");
             }

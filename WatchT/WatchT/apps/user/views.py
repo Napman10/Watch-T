@@ -24,8 +24,7 @@ def authenticate_user(request):
             try:
                 payload = jwt_payload_handler(user)
                 token = jwt.encode(payload, settings.SECRET_KEY)
-                user_details = {'name': "%s %s" % (
-                    user.first_name, user.last_name), 'token': token}
+                user_details = {'name': user.username, 'token': token}
                 user_logged_in.send(sender=user.__class__,
                                     request=request, user=user)
                 request_user.user = user
@@ -46,7 +45,7 @@ def authenticate_user(request):
 @permission_classes([AllowAny, ])
 def logout(request):
     request_user.logout()
-    return Response(status=status.HTTP_200_OK)
+    return Response('ok', status=status.HTTP_200_OK)
 
 
 class CreateUserAPIView(CreateAPIView):
