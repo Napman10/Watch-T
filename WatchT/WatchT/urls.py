@@ -22,12 +22,11 @@ from .settings import MEDIA_ROOT, MEDIA_URL
 api_urls = [
     path('issue/', include('WatchT.apps.issue.api.urls')),
     path('project/', include('WatchT.apps.project.urls')),
-    path('user/', include('WatchT.apps.user.urls')),
+    path('user/', include('WatchT.apps.user.urls'), name='users'),
 ]
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(r'api/', include(api_urls)),
-    path('auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.jwt')),
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)

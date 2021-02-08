@@ -1,8 +1,6 @@
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
-from django.db import models
-
-from ..abstract.models import BaseModel
+from django.db import models, transaction
 
 
 def user_photo_upload_to(instance, filename):
@@ -10,32 +8,35 @@ def user_photo_upload_to(instance, filename):
 
 
 class UserManager(BaseUserManager):
-    def _create_user(self, email, username, password, **extra_fields):
+
+    def _create_user(self, email, password, **extra_fields):
+        """
+        Creates and saves a User with the given email,and password.
+        """
         if not email:
-            raise ValueError("Вы не ввели Email")
+            raise ValueError('The given email must be set')
+        try:
+            with transaction.atomic():
+                user = self.model(email=email, **extra_fields)
+                user.set_password(password)
+                user.save(using=self._db)
+                return user
+        except:
+            raise
 
-        if not username:
-            raise ValueError("Вы не ввели Логин")
+    def create_user(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
+        return self._create_user(email, password, **extra_fields)
 
-        user = self.model(
-            email=self.normalize_email(email),
-            username=username,
-            **extra_fields,
-        )
+    def create_superuser(self, email, password, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
 
-        user.set_password(password)
-        user.save(using=self._db)
-
-        return user
-
-    def create_user(self, email, username, password):
-        return self._create_user(email, username, password)
-
-    def create_superuser(self, email, username, password):
-        return self._create_user(email, username, password, is_staff=True, is_superuser=True)
+        return self._create_user(email, password=password, **extra_fields)
 
 
-class EmployeeUser(AbstractBaseUser, PermissionsMixin, BaseModel):
+class EmployeeUser(AbstractBaseUser, PermissionsMixin):
     GUEST = 0
     DEVELOPER = 1
     ANALYST = 2
@@ -54,17 +55,23 @@ class EmployeeUser(AbstractBaseUser, PermissionsMixin, BaseModel):
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
-    username = models.CharField(max_length=50, unique=True)
-    email = models.EmailField(max_length=100, unique=True)
+    email = models.EmailField(max_length=40, unique=True, verbose_name='Почта')
+    username = models.CharField(max_length=40, unique=True, verbose_name='Имя пользователя')
+    first_name = models.CharField(max_length=30, blank=True, verbose_name='Имя')
+    last_name = models.CharField(max_length=30, blank=True, verbose_name='Фамилия')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     photo = models.ImageField(upload_to=user_photo_upload_to, default='default_user_pic.jpg', verbose_name='Фото')
     role = models.IntegerField(choices=ROLE_CHOICES, verbose_name='Роль', default=GUEST)
 
-    USERNAME_FIELD = 'username'
-    # REQUIRED_FIELDS = ['username']
-
     objects = UserManager()
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
+
+    def save(self, *args, **kwargs):
+        super(EmployeeUser, self).save(*args, **kwargs)
+        return self
 
     def __str__(self):
         return self.username

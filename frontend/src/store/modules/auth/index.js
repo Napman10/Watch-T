@@ -34,8 +34,8 @@ export default {
         async login({ commit }, params) {
             try {
                 const result = await api.login(params);
-                localStorage.setItem("token", result.access);
-                setState(commit, { token: result.access });
+                localStorage.setItem("token", result.token);
+                setState(commit, { token: result.token });
             } catch (e) {
                 showErrorNotify("Неправильные данные входа");
             }
