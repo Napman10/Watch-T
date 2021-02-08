@@ -15,6 +15,11 @@ export const routes = [
                 name: 'issues'
             },
             {
+                path: 'issues',
+                component: require('../pages/IssuePage').default,
+                name: 'issues'
+            },
+            {
                 path: 'login',
                 component: require('../pages/LoginPage').default,
                 name: 'login'

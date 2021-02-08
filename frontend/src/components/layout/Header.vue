@@ -1,6 +1,7 @@
 <template>
     <header class="header">
         <router-link class="logo" to='/' exact>WatchT</router-link>
+        <router-link to='/issues' exact>Задачи</router-link>
         <router-link to='/projects' exact>Проекты</router-link>
         <menu class="userInfo">
             <li>{{ username }}</li>
