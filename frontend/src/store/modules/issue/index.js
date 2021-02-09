@@ -6,10 +6,15 @@ export default {
     namespaced: true,
     state: {
         issues: [],
-        issue: {}
+        issue: {},
+        loading: false,
+        isCreateModalVisible: false
     },
     getters: {
-        issues: (state) => state.issues
+        issue: (state) => state.issue,
+        issues: (state) => state.issues,
+        loading: (state) => state.loading,
+        isCreateModalVisible: (state) => state.isCreateModalVisible
     },
     mutations: {
         SET_STATE
@@ -24,20 +29,17 @@ export default {
             } finally {
                 setState(commit, { loading: false });
             }
-        }
-        // async addIssue({ commit, dispatch }, payload) {
-        //     try {
-        //         const result = await api.addIssue(payload);
-        //         if (!result.isSuccess) {
-        //             return showErrorNotify(result.errorMessage);
-        //         }
-        //         showSuccessNotify(`Задание создано! Id: ${result.result}`);
-        //         setState(commit, { isCreateModalVisible: false });
-        //         dispatch('getIssues');
-        //     } catch (e) {
-        //         showErrorNotify(e.message);
-        //     }
-        // },
+        },
+        async addIssue({ commit, dispatch }, payload) {
+            try {
+                const result = await api.addIssue(payload);
+                showSuccessNotify(`Задание создано! Id: ${result}`);
+                setState(commit, { isCreateModalVisible: false });
+                dispatch('getIssues');
+            } catch (e) {
+                showErrorNotify(e.message);
+            }
+        },
         // async getIssue({ commit }, issueId) {
         //     try {
         //         setState(commit, { loading: true });
