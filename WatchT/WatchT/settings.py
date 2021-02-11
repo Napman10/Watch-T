@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'WatchT.apps.user',
 
     'rest_framework',
-    'rest_framework.authtoken',
     'corsheaders',
 ]
 
