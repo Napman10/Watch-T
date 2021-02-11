@@ -1,12 +1,16 @@
 <template>
-    <el-dialog title="Новое задание" :visible="isCreateModalVisible" :before-close="closeModal">
-        <el-form :model="form" ref="issueForm" :rules="rules">
+    <el-dialog title="Новый проект" :visible="isCreateModalVisible" :before-close="closeModal">
+        <el-form :model="form" ref="projectForm" :rules="rules">
             <el-form-item label="Короткое название" prop="shortName">
                 <el-input v-model="form.shortName"></el-input>
             </el-form-item>
 
             <el-form-item label="Заголовок" prop="model">
                 <el-input v-model="form.header"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Описание" prop="model">
+                <el-input v-model="form.description"></el-input>
             </el-form-item>
 
         </el-form>
@@ -37,30 +41,32 @@ export default {
                 ],
                 header: [
                     {
-                        required: true,
-                        message: 'Поле обязательно для заполнения'
-                    },
-                    {
                         max: 65,
                         message: 'Не больше 65 символов'
                     }
                 ],
+                description: [
+                      {
+                          max: 255,
+                          message: 'Не больше 255 символов'
+                      }
+                  ],
             }
         };
     },
     computed: {
-        ...mapGetters('issue', ['isCreateModalVisible']),
+        ...mapGetters('project', ['isCreateModalVisible']),
     },
     methods: {
         submit() {
-            this.$refs['issueForm'].validate((valid) => {
+            this.$refs['projectForm'].validate((valid) => {
                 if (valid) {
-                    this.$store.dispatch('issue/addIssue', this.form);
+                    this.$store.dispatch('project/addProject', this.form);
                 }
             });
         },
         closeModal() {
-            this.$store.commit('issue/SET_STATE', { isCreateModalVisible: false });
+            this.$store.commit('project/SET_STATE', { isCreateModalVisible: false });
         }
     }
 };
