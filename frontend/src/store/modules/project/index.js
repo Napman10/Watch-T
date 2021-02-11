@@ -30,7 +30,7 @@ export default {
         },
         async addProject({ commit, dispatch }, payload) {
             try {
-                const result = await api.addIssue(payload);
+                const result = await api.addProject(payload);
                 showSuccessNotify(`Проект создан!`);
                 setState(commit, { isCreateModalVisible: false });
                 dispatch('getProjects');

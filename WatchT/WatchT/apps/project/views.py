@@ -1,6 +1,6 @@
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, RetrieveUpdateAPIView)
-
+from rest_framework.authentication import TokenAuthentication
 from .models import Project
 from .serializers import ProjectSerializer
 
@@ -23,6 +23,7 @@ class ProjectOpenView(RetrieveUpdateAPIView):
 class ProjectCreateView(CreateAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    authentication_classes = [TokenAuthentication]
     action_map = {
         'post': 'create'
     }
