@@ -1,8 +1,9 @@
 <template>
   <div>
     <div style="text-align: right">
-      <el-button type="primary" @click="showModal" style="margin-bottom: 10px">Новая задача</el-button>
+      <el-button type="primary" @click="showIssueModal" style="margin-bottom: 10px">Новая задача</el-button>
     </div>
+    <issue-form />
     <issue-grid />
   </div>
 </template>
@@ -18,7 +19,7 @@ export default {
     IssueForm
   },
   methods: {
-        showModal() {
+        showIssueModal() {
             this.$store.commit('issue/SET_STATE', { isCreateModalVisible: true });
         }
     },
