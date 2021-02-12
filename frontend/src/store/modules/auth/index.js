@@ -22,6 +22,12 @@ export default {
     mutations: {
         SET_STATE,
         setState,
+        LOG_OUT(state) {
+            state.isAuth = false;
+            state.token = null;
+            localStorage.removeItem('token')
+            state.user = {};
+        },
     },
 
     actions: {
@@ -32,15 +38,6 @@ export default {
                 setState(commit, { token: result.token, username: result.name });
             } catch (e) {
                 showErrorNotify("Неправильные данные входа");
-            }
-        },
-        async logout({commit}, params){
-            try {
-                await api.logout(params);
-                setState(commit, { token: null, isAuth: false });
-                localStorage.removeItem('token');
-            } catch (e) {
-                showErrorNotify("ERR");
             }
         }
     }
