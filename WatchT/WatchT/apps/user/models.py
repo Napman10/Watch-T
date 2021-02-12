@@ -1,8 +1,7 @@
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
-from django.db import models, transaction
+from django.db import models
 
-from ..abstract.models import BaseModel
 import datetime
 from datetime import timedelta, datetime
 from django.conf import settings
@@ -66,7 +65,7 @@ class UserManager(BaseUserManager):
         return self._create_user(username, email, password, **extra_fields)
 
 
-class EmployeeUser(AbstractBaseUser, PermissionsMixin, BaseModel):
+class EmployeeUser(AbstractBaseUser, PermissionsMixin):
     GUEST = 0
     DEVELOPER = 1
     ANALYST = 2
@@ -97,7 +96,7 @@ class EmployeeUser(AbstractBaseUser, PermissionsMixin, BaseModel):
     objects = UserManager()
 
     USERNAME_FIELD = 'username'
-    # REQUIRED_FIELDS = ['email']
+    REQUIRED_FIELDS = ['email']
 
     def save(self, *args, **kwargs):
         super(EmployeeUser, self).save(*args, **kwargs)
