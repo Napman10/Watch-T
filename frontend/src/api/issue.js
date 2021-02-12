@@ -3,13 +3,13 @@ import { axios } from '@/utils';
 
 const headers = {
     'Content-Type': 'application/json',
-    'Authorization': localStorage.getItem('token')
+    'Authorization': `JWT ${localStorage.getItem('token')}`
 }
 
 export const getIssues = async (params) => {
     return (
         await axios.get('api/issue/list', {
-            params
+            params, headers: headers
         })
     ).data;
 };

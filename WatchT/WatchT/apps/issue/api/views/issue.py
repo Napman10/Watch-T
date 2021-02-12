@@ -2,14 +2,18 @@ from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, RetrieveUpdateAPIView)
 
 from ...models import Issue
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from ...serializers import IssueSerializer
+from rest_framework.permissions import IsAuthenticated
 from django.db.models.query import Q
-from ....abstract.functional import sanitize_query_params#, request_user
+from ....abstract.functional import sanitize_query_params  # , request_user
 from ...consts import *
 
 
 class IssueListView(ListAPIView):
     serializer_class = IssueSerializer
+    authentication_classes = (JSONWebTokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         params = sanitize_query_params(dict(self.request.query_params))
@@ -28,7 +32,7 @@ class IssueListView(ListAPIView):
         else:
             qs = Issue.objects.filter(**params)
 
-        #username = request_user.user.username
+        # username = request_user.user.username
         username = 'chel'
 
         if author_own is not None:

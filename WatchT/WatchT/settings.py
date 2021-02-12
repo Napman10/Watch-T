@@ -169,4 +169,8 @@ JWT_AUTH = {
 
 }
 
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+}
+
 AUTH_USER_MODEL = 'user.EmployeeUser'
