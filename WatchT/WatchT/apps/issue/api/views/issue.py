@@ -6,10 +6,12 @@ from ...serializers import IssueSerializer
 from django.db.models.query import Q
 from ....abstract.functional import sanitize_query_params, request_user
 from ...consts import *
+from rest_framework.permissions import IsAuthenticated
 
 
 class IssueListView(ListAPIView):
     serializer_class = IssueSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         params = sanitize_query_params(dict(self.request.query_params))
