@@ -161,12 +161,10 @@ CORS_ORIGIN_REGEX_WHITELIST = [
 ]
 
 JWT_AUTH = {
-
-    'JWT_VERIFY': True,
-    'JWT_VERIFY_EXPIRATION': True,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3000),
-    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
-
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=90000),
+    'JWT_USER_MODEL': 'user.EmployeeUser',
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
 }
 
 SIMPLE_JWT = {
