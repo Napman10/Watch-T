@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'WatchT.apps.user',
 
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
     'djoser'
 ]
@@ -155,7 +156,7 @@ FRONTEND_URL = "http://0.0.0.0:8080"
 FRONTEND_NEW_URL = "http://0.0.0.0:8080"
 
 CORS_ORIGIN_ALLOW_ALL = True  # If this is used then `CORS_ORIGIN_WHITELIST` will not have any effect
-CORS_ALLOW_CREDENTIALS = True
+#CORS_ALLOW_CREDENTIALS = True
 
 # JWT_AUTH = {
 #     'JWT_VERIFY': True,

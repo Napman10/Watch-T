@@ -2,6 +2,7 @@ import api from '@/api';
 import { SET_STATE, setState } from '@/store/helpers';
 import { showErrorNotify } from '@/utils';
 
+
 export default {
     namespaced: true,
     state: {
@@ -28,8 +29,8 @@ export default {
         async login({ commit }, params) {
             try {
                 const result = await api.login(params);
-                localStorage.setItem("token", result.token);
-                setState(commit, { token: result.token, username: result.name });
+                localStorage.setItem("token", result.auth_token );
+                setState(commit, { token: result.auth_token });
             } catch (e) {
                 showErrorNotify("Неправильные данные входа");
             }

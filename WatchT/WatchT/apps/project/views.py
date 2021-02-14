@@ -23,7 +23,7 @@ class ProjectOpenView(RetrieveUpdateAPIView):
 class ProjectCreateView(CreateAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication, ]
     action_map = {
         'post': 'create'
     }

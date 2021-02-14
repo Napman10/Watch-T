@@ -1,5 +1,3 @@
-from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
-                                        PermissionsMixin)
 from django.db import models, transaction
 from django.db.models.manager import Manager
 from django.contrib.auth.models import User
@@ -10,7 +8,7 @@ def user_photo_upload_to(instance, filename):
     return f'user/{instance.id}/{filename}'
 
 
-class EmployeeUser(AbstractBaseUser, PermissionsMixin, BaseModel):
+class EmployeeUser(BaseModel):
     GUEST = 0
     DEVELOPER = 1
     ANALYST = 2

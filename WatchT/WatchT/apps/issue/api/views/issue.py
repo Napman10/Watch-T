@@ -4,7 +4,7 @@ from rest_framework.generics import (CreateAPIView, DestroyAPIView,
 from ...models import Issue
 from ...serializers import IssueSerializer
 from django.db.models.query import Q
-from ....abstract.functional import sanitize_query_params, request_user
+from ....abstract.functional import sanitize_query_params
 from ...consts import *
 from rest_framework.permissions import IsAuthenticated
 
@@ -30,7 +30,7 @@ class IssueListView(ListAPIView):
         else:
             qs = Issue.objects.filter(**params)
 
-        username = request_user.user.username
+        username = self.user.username
 
         if author_own is not None:
             if author_own == ALL:
