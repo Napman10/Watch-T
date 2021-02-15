@@ -1,12 +1,13 @@
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, RetrieveUpdateAPIView)
-from rest_framework.authentication import TokenAuthentication
 from .models import Project
 from .serializers import ProjectSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
 class ProjectListView(ListAPIView):
     serializer_class = ProjectSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         return Project.objects.all()
@@ -14,6 +15,7 @@ class ProjectListView(ListAPIView):
 
 class ProjectOpenView(RetrieveUpdateAPIView):
     serializer_class = ProjectSerializer
+    permission_classes = (IsAuthenticated,)
     lookup_field = 'id'
 
     def get_queryset(self):
@@ -23,7 +25,8 @@ class ProjectOpenView(RetrieveUpdateAPIView):
 class ProjectCreateView(CreateAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    authentication_classes = [TokenAuthentication, ]
+    permission_classes = (IsAuthenticated,)
+
     action_map = {
         'post': 'create'
     }

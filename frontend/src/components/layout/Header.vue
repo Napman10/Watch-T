@@ -4,7 +4,6 @@
         <router-link to='/issues' exact>Задачи</router-link>
         <router-link to='/projects' exact>Проекты</router-link>
         <menu class="userInfo">
-            <li>{{ username }}</li>
             <li class="cursor-pointer" @click="logout">Выйти</li>
         </menu>
     </header>

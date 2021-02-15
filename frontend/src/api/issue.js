@@ -1,10 +1,5 @@
 import { axios } from '@/utils';
-
-
-const headers = {
-    'Content-Type': 'application/json',
-    'Authorization': "Token " + localStorage.getItem('token')
-}
+import {headers} from "@/api/headers";
 
 export const getIssues = async (params) => {
     return (

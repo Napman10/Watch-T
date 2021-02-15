@@ -33,7 +33,7 @@ body {
     margin-right: auto;
     margin-top: 12%;
     padding: 16px;
-    border: 2px solid #a9a9ff;
+    border: 2px solid #4f2aa3;
     width: 350px;
     border-radius: 5%;
 }

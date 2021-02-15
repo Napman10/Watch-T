@@ -30,7 +30,7 @@ class IssueListView(ListAPIView):
         else:
             qs = Issue.objects.filter(**params)
 
-        username = self.user.username
+        username = self.request.user.username
 
         if author_own is not None:
             if author_own == ALL:
@@ -47,6 +47,7 @@ class IssueListView(ListAPIView):
 
 class IssueOpenView(RetrieveUpdateAPIView):
     serializer_class = IssueSerializer
+    permission_classes = (IsAuthenticated,)
     lookup_field = 'id'
 
     def get_queryset(self):
@@ -56,6 +57,7 @@ class IssueOpenView(RetrieveUpdateAPIView):
 class IssueCreateView(CreateAPIView):
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
+    permission_classes = (IsAuthenticated,)
     action_map = {
         'post': 'create'
     }
@@ -64,6 +66,7 @@ class IssueCreateView(CreateAPIView):
 class IssueDestroyView(DestroyAPIView):
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
+    permission_classes = (IsAuthenticated,)
     lookup_field = 'id'
     action_map = {
         'delete': 'delete'
