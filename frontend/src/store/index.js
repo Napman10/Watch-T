@@ -7,12 +7,14 @@ window.Vuex = Vuex;
 import auth from './modules/auth';
 import issue from './modules/issue';
 import project from './modules/project';
+import user from './modules/user';
 
 let store = new Vuex.Store({
     modules: {
         auth,
         issue,
-        project
+        project,
+        user
     }
 });
 

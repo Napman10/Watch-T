@@ -1,7 +1,9 @@
 import re
 
 
-def sanitize_query_params(dictionary: dict):
+def sanitize_query_params(request):
+    query_params = request.query_params
+    dictionary = dict(query_params)
     return {k: v[0] for k, v in dictionary.items() if v[0]}
 
 

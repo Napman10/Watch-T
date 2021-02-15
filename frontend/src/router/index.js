@@ -28,6 +28,11 @@ export const routes = [
                 path: 'projects',
                 component: require('../pages/ProjectPage').default,
                 name: 'projects'
+            },
+            {
+                path: 'users',
+                component: require('../pages/UsersPage').default,
+                name: 'users'
             }
         ]
     }

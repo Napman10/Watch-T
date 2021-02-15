@@ -14,7 +14,7 @@ class IssueListView(ListAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        params = sanitize_query_params(dict(self.request.query_params))
+        params = sanitize_query_params(self.request)
 
         somename = params.get('somename')
 
@@ -24,6 +24,7 @@ class IssueListView(ListAPIView):
             del params['ownerrel']
 
         if somename is not None:
+            del params['somename']
             q1 = {**params, "short_name__contains": somename}
             q2 = {**params, "header__contains": somename}
             qs = Issue.objects.filter(Q(**q1) | Q(**q2))
@@ -36,11 +37,11 @@ class IssueListView(ListAPIView):
             if author_own == ALL:
                 return qs
             elif author_own == TO_ME:
-                return qs.filter(executor__username=username)
+                return qs.filter(executor__user__username=username)
             elif author_own == BY_ME:
-                return qs.filter(author__username=username)
+                return qs.filter(author__user__username=username)
             elif author_own == OR:
-                return qs.filter(Q(executor__username=username) | Q(author__username=username))
+                return qs.filter(Q(executor__user__username=username) | Q(author__user__username=username))
         else:
             return qs
 

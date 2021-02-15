@@ -6,17 +6,16 @@ from .models import Comment, Issue, TrackTime
 class IssueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Issue
-        fields = ('id', 'short_name', 'header', 'description', 'project', 'author', 'executor',
-                  'priority', 'status', 'want_minutes', 'got_minutes', 'parent', 'level')
+        fields = '__all__'
 
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ('id', 'author', 'text', 'datetime', 'edited', 'issue')
+        fields = '__all__'
 
 
 class TrackTimeSerializer(serializers.ModelSerializer):
     class Meta:
         model = TrackTime
-        fields = ('id', 'minutes', 'executor', 'issue')
+        fields = '__all__'

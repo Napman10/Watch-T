@@ -3,6 +3,7 @@
         <router-link class="logo" to='/' exact>WatchT</router-link>
         <router-link to='/issues' exact>Задачи</router-link>
         <router-link to='/projects' exact>Проекты</router-link>
+        <router-link to='/users' exact>Пользователи</router-link>
         <menu class="userInfo">
             <li class="cursor-pointer" @click="logout">Выйти</li>
         </menu>
@@ -10,12 +11,10 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
 
 export default {
   name: "PageHeader",
   computed: {
-        ...mapGetters('auth', ['username'])
     },
   methods: {
         logout() {

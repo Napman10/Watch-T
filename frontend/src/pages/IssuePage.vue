@@ -11,7 +11,6 @@
 <script>
 import IssueGrid from "@/components/issue/IssueGrid";
 import IssueForm from "@/components/issue/IssueForm";
-import { mapGetters } from 'vuex';
 
 export default {
   components: {
