@@ -27,8 +27,6 @@ def user_dict_is_valid(user_data: dict) -> bool:
 
 
 def create_user(user_data: dict) -> Response:
-    role = user_data.get('role')
-
     password = user_data.get('password')
     password_confirm = user_data.get('password2')
 
@@ -37,7 +35,9 @@ def create_user(user_data: dict) -> Response:
 
     del user_data['password2']
 
-    del user_data['role']
+    role = user_data.get('role')
+    if role:
+        del user_data['role']
 
     try:
         username = user_data.get('username')
@@ -49,7 +49,10 @@ def create_user(user_data: dict) -> Response:
             return Response({"detail": "invalid"}, status=status.HTTP_400_BAD_REQUEST)
 
         original_user = User.objects.create_user(**user_data)
-        EmployeeUser.objects.create(user=original_user, role=role)
+        if role:
+            EmployeeUser.objects.create(user=original_user, role=role)
+        else:
+            EmployeeUser.objects.create(user=original_user)
 
     except BaseException as e:
         return Response({"detail": e}, status=status.HTTP_400_BAD_REQUEST)
