@@ -3,7 +3,7 @@ import {headers} from "@/api/headers";
 
 export const getUsers = async (params) => {
     return (
-        await axios.get('api/user/list', {
+        await axios.get('api/user/list/', {
             params, headers: headers
         })
     ).data;
