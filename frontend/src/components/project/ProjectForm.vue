@@ -64,6 +64,7 @@ export default {
             this.$refs['projectForm'].validate((valid) => {
                 if (valid) {
                     this.$store.dispatch('project/addProject', this.form);
+                    this.form = {};
                 }
             });
         },

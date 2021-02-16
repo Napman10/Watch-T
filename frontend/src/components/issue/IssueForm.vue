@@ -57,6 +57,7 @@ export default {
             this.$refs['issueForm'].validate((valid) => {
                 if (valid) {
                     this.$store.dispatch('issue/addIssue', this.form);
+                    this.form = {};
                 }
             });
         },

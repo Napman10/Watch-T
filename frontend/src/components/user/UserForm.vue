@@ -128,6 +128,7 @@ export default {
             this.$refs['userForm'].validate((valid) => {
                 if (valid) {
                     this.$store.dispatch('user/addUser', this.form);
+                    this.form = {};
                 }
             });
         },
