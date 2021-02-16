@@ -26,9 +26,9 @@ class UserAPIListView(ListAPIView):
 
         if somename is not None:
             del params['somename']
-            q1 = {**params, "user_username__contains": somename}
-            q2 = {**params, "user_first_name__contains": somename}
-            q3 = {**params, "user_last_name__contains": somename}
+            q1 = {**params, "user__username__contains": somename}
+            q2 = {**params, "user__first_name__contains": somename}
+            q3 = {**params, "user__last_name__contains": somename}
             return EmployeeUser.objects.filter(Q(**q1) | Q(**q2) | Q(**q3))
         elif bool(params):
             return EmployeeUser.objects.filter(**params)
