@@ -9,6 +9,23 @@
                 <el-input v-model="form.header"></el-input>
             </el-form-item>
 
+            <el-form-item label="Проект" prop="header">
+                <el-select v-model="form.project_name"
+                  multiple
+                  filterable
+                  remote
+                  reserve-keyword
+                  clearable placeholder="Проект"
+                  :remote-method="getProjectsNames">
+                  <el-option
+                    v-for="item in prjNames"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+            </el-form-item>
+
         </el-form>
 
         <div slot="footer">
@@ -25,6 +42,7 @@ export default {
     data() {
         return {
             form: {},
+            prjNames: [],
             rules: {
                 short_name: [
                     {
@@ -51,6 +69,7 @@ export default {
     },
     computed: {
         ...mapGetters('issue', ['isCreateModalVisible']),
+        ...mapGetters('project', ['projects'])
     },
     methods: {
         submit() {
@@ -66,6 +85,10 @@ export default {
         },
         clearForm(){
             this.form = {}
+        },
+        getProjectsNames(query){
+          this.$store.dispatch('project/getProjects', query)
+          this.prjNames = this.projects
         }
     }
 };

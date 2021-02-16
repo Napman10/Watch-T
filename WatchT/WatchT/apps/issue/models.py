@@ -5,6 +5,7 @@ from ..abstract.models import BaseModel
 from ..abstract.validators import bigger_than_zero_validate, is_int_validate
 from ..project.models import Project
 from ..user.models import EmployeeUser
+from .managers import IssueManager
 
 
 class Issue(BaseModel):
@@ -36,7 +37,7 @@ class Issue(BaseModel):
         (DONE, 'Готово'),
     )
 
-    objects = Manager()
+    objects = IssueManager()
 
     class Meta:
         verbose_name = 'Задача'

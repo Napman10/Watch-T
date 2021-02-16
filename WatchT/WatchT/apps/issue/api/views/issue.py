@@ -1,6 +1,8 @@
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, RetrieveUpdateAPIView)
-
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 from ...models import Issue
 from ...serializers import IssueSerializer
 from django.db.models.query import Q
@@ -55,13 +57,27 @@ class IssueOpenView(RetrieveUpdateAPIView):
         return Issue.objects.all()
 
 
-class IssueCreateView(CreateAPIView):
-    queryset = Issue.objects.all()
-    serializer_class = IssueSerializer
+class IssueCreateView(APIView):
     permission_classes = (IsAuthenticated,)
-    action_map = {
-        'post': 'create'
-    }
+
+    def post(self, request):
+        data = request.data
+
+        short_name = data.get('short_name')
+        header = data.get('header')
+        author_username = data.get('author_username')
+        project_name = data.get('project_name')
+        want_minutes = data.get('want_minutes'),
+        executor_username = data.get('executor_username')
+        description = data.get('description')
+
+        try:
+            Issue.objects.inherit_from_proj(short_name=short_name, header=header, author_username=author_username,
+                                            project_name=project_name, want_minutes=want_minutes,
+                                            executor_username=executor_username, description=description)
+            return Response(status=status.HTTP_201_CREATED)
+        except BaseException:
+            return Response(data={"detail": "invalid"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class IssueDestroyView(DestroyAPIView):

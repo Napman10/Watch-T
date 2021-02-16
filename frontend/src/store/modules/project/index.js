@@ -25,7 +25,7 @@ export default {
                 const result = await api.getProjects(filter);
                 setState(commit, { projects: result });
             } catch (e) {
-                showErrorNotify(e.message);
+                showErrorNotify(e);
             }
         },
         async addProject({ commit, dispatch }, payload) {
@@ -35,9 +35,9 @@ export default {
                 setState(commit, { isCreateModalVisible: false });
                 dispatch('getProjects');
             } catch (e) {
-                showErrorNotify(e.message);
+                showErrorNotify(e);
             }
-        }
+        },
         // async getIssue({ commit }, issueId) {
         //     try {
         //         setState(commit, { loading: true });

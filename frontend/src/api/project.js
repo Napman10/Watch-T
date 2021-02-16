@@ -19,5 +19,5 @@ export const addProject = async (payload) => {
 
 export default {
     getProjects,
-    addProject
+    addProject,
 };
