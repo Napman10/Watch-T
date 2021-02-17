@@ -9,20 +9,31 @@
                 <el-input v-model="form.header"></el-input>
             </el-form-item>
 
-            <el-form-item label="Проект" prop="header">
+            <el-form-item label="Проект" prop="project">
                 <el-select v-model="form.project_name"
-                  multiple
-                  filterable
-                  remote
-                  reserve-keyword
-                  clearable placeholder="Проект"
-                  :remote-method="getProjectsNames">
+                  clearable placeholder="Выберите проект">
                   <el-option
-                    v-for="item in prjNames"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
+                    v-for="item in projects"
+                    :key="item.short_name"
+                    :value="item.short_name">
                   </el-option>
+                </el-select>
+            </el-form-item>
+
+            <el-form-item label="Оценка" prop="want_time">
+                <el-input
+                placeholder=""
+                v-model="form.want_time"
+                clearable>
+              </el-input>
+            </el-form-item>
+
+            <el-form-item>
+                <el-select v-model="form.priority" clearable placeholder="Приоритет">
+                    <el-option :value="0" label="Низкий" />
+                    <el-option :value="1" label="Обычный" />
+                    <el-option :value="2" label="Высокий" />
+                    <el-option :value="3" label="Критический" />
                 </el-select>
             </el-form-item>
 
@@ -42,7 +53,6 @@ export default {
     data() {
         return {
             form: {},
-            prjNames: [],
             rules: {
                 short_name: [
                     {
@@ -85,10 +95,6 @@ export default {
         },
         clearForm(){
             this.form = {}
-        },
-        getProjectsNames(query){
-          this.$store.dispatch('project/getProjects', query)
-          this.prjNames = this.projects
         }
     }
 };

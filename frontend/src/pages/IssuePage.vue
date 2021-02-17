@@ -19,6 +19,7 @@ export default {
   },
   methods: {
         showIssueModal() {
+            this.$store.dispatch('project/getProjects')
             this.$store.commit('issue/SET_STATE', { isCreateModalVisible: true });
         }
     },

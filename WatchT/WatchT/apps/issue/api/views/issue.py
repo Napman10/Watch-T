@@ -65,9 +65,9 @@ class IssueCreateView(APIView):
 
         short_name = data.get('short_name')
         header = data.get('header')
-        author_username = data.get('author_username')
+        author_username = request.user.username
         project_name = data.get('project_name')
-        want_minutes = data.get('want_minutes'),
+        want_minutes = data.get('want_time')
         executor_username = data.get('executor_username')
         description = data.get('description')
 
@@ -76,7 +76,8 @@ class IssueCreateView(APIView):
                                             project_name=project_name, want_minutes=want_minutes,
                                             executor_username=executor_username, description=description)
             return Response(status=status.HTTP_201_CREATED)
-        except BaseException:
+        except BaseException as e:
+            print(e)
             return Response(data={"detail": "invalid"}, status=status.HTTP_400_BAD_REQUEST)
 
 
