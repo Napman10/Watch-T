@@ -32,6 +32,7 @@
                     <el-option :value="1" label="Разработчик" />
                     <el-option :value="2" label="Аналитик" />
                     <el-option :value="3" label="Тимлид" />
+                    <el-option :value="4" label="Администратор" />
                 </el-select>
             </el-form-item>
 
