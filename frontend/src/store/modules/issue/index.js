@@ -32,8 +32,8 @@ export default {
         },
         async addIssue({ commit, dispatch }, payload) {
             try {
-                const result = await api.addIssue(payload);
-                showSuccessNotify(`Задание создано! Id: ${result}`);
+                await api.addIssue(payload);
+                showSuccessNotify(`Задание создано!`);
                 setState(commit, { isCreateModalVisible: false });
                 dispatch('getIssues');
             } catch (e) {

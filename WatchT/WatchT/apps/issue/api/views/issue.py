@@ -9,6 +9,7 @@ from django.db.models.query import Q
 from ....abstract.functional import sanitize_query_params
 from ...consts import *
 from rest_framework.permissions import IsAuthenticated
+from ...services import string_to_issue_time
 
 
 class IssueListView(ListAPIView):
@@ -67,17 +68,20 @@ class IssueCreateView(APIView):
         header = data.get('header')
         author_username = request.user.username
         project_name = data.get('project_name')
-        want_minutes = data.get('want_time')
+
+        want_time_str = data.get('want_time')
+        want_minutes = string_to_issue_time(want_time_str)
+
+        priority = data.get('priority')
         executor_username = data.get('executor_username')
         description = data.get('description')
 
         try:
             Issue.objects.inherit_from_proj(short_name=short_name, header=header, author_username=author_username,
-                                            project_name=project_name, want_minutes=want_minutes,
+                                            project_name=project_name, want_minutes=want_minutes, priority=priority,
                                             executor_username=executor_username, description=description)
             return Response(status=status.HTTP_201_CREATED)
-        except BaseException as e:
-            print(e)
+        except BaseException:
             return Response(data={"detail": "invalid"}, status=status.HTTP_400_BAD_REQUEST)
 
 

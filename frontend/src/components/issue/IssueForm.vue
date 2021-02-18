@@ -28,7 +28,7 @@
               </el-input>
             </el-form-item>
 
-            <el-form-item>
+            <el-form-item label="Приоритет" prop="priority">
                 <el-select v-model="form.priority" clearable placeholder="Приоритет">
                     <el-option :value="0" label="Низкий" />
                     <el-option :value="1" label="Обычный" />
@@ -74,6 +74,27 @@ export default {
                         message: 'Не больше 65 символов'
                     }
                 ],
+
+                project_name: [
+                    {
+                        required: true,
+                        message: 'Поле обязательно для заполнения'
+                    }
+                ],
+
+                want_time: [
+                    {
+                        required: true,
+                        message: 'Поле обязательно для заполнения'
+                    }
+                ],
+
+                priority: [
+                    {
+                        required: true,
+                        message: 'Поле обязательно для заполнения'
+                    }
+                ]
             }
         };
     },
