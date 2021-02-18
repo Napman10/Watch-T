@@ -9,7 +9,7 @@ class IssueManager(Manager):
         author = EmployeeUser.objects.filter(user__username=author_username).first()
         project = Project.objects.filter(short_name=project_name).first()
         query = {"short_name": short_name, "header": header, "author": author,
-                 "project": project, "got_minutes": 0}
+                 "project": project, "got_minutes": 0, "priority": priority}
         if executor_username:
             executor = EmployeeUser.objects.filter(user__username=executor_username).first()
             query["executor"] = executor

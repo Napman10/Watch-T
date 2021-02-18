@@ -9,13 +9,24 @@
                 <el-input v-model="form.header"></el-input>
             </el-form-item>
 
-            <el-form-item label="Проект" prop="project">
+            <el-form-item label="Проект" prop="project_name">
                 <el-select v-model="form.project_name"
                   clearable placeholder="Выберите проект">
                   <el-option
                     v-for="item in projects"
                     :key="item.short_name"
                     :value="item.short_name">
+                  </el-option>
+                </el-select>
+            </el-form-item>
+
+            <el-form-item label="Выполнит" prop="executor_username">
+                <el-select v-model="form.executor_username"
+                  clearable placeholder="Выберите исполнителя">
+                  <el-option
+                    v-for="item in users"
+                    :key="item.pure_user.username"
+                    :value="item.pure_user.username">
                   </el-option>
                 </el-select>
             </el-form-item>
@@ -100,7 +111,8 @@ export default {
     },
     computed: {
         ...mapGetters('issue', ['isCreateModalVisible']),
-        ...mapGetters('project', ['projects'])
+        ...mapGetters('project', ['projects']),
+        ...mapGetters('user', ['users'])
     },
     methods: {
         submit() {
