@@ -30,8 +30,10 @@
             :data="users"
             style="width: 100%"
         >
-            <el-table-column prop="user" width="50" />
-            <el-table-column prop="role"  width="400" />
+            <el-table-column prop="pure_user.username" width="100" />
+            <el-table-column prop="pure_user.first_name" width="100" />
+            <el-table-column prop="pure_user.last_name" width="200" />
+            <el-table-column prop="role" :formatter="printRole" width="200" />
         </el-table>
     </div>
 </template>
@@ -48,6 +50,10 @@ export default {
     methods: {
       filterUsers(){
         this.$store.dispatch('user/getUsers', this.form)
+      },
+      printRole(row){
+        const roles = ['Гость', 'Разработчик', 'Аналитик', 'Тимлид', 'Администратор']
+        return roles[row.role]
       }
     },
     mounted() {
