@@ -2,5 +2,5 @@ __pycache__
 .idea/
 .vscode/
 venv/
-db.sqlite3
+WatchT/db.sqlite3
 WatchT/files/media/**
