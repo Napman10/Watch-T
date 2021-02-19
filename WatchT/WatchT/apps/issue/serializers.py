@@ -28,6 +28,15 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = '__all__'
 
+    author = serializers.SerializerMethodField()
+    issue = serializers.SerializerMethodField()
+
+    def get_author(self, obj: Comment) -> str:
+        return str(obj.author)
+
+    def get_issue(self, obj: Comment) -> str:
+        return str(obj.issue)
+
 
 class TrackTimeSerializer(serializers.ModelSerializer):
     class Meta:
