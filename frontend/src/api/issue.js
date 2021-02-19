@@ -9,15 +9,16 @@ export const getIssues = async (params) => {
     ).data;
 };
 
-// export const getIssue = async (issueId) => {
-//     return (await axios.get(`api/issue/${issueId}`)).data;
-// };
-//
+export const getIssue = async (id) => {
+    return (await axios.get(`api/issue/${id}`, {headers: headers})).data;
+};
+
 export const addIssue = async (payload) => {
     return (await axios.post('api/issue/new', payload, {headers: headers})).data;
 };
 
 export default {
     getIssues,
-    addIssue
+    addIssue,
+    getIssue
 };

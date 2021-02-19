@@ -1,31 +1,29 @@
 <template>
   <div>
-    <div style="text-align: right">
-      <el-button type="primary" @click="showIssueModal" style="margin-bottom: 10px">Новая задача</el-button>
-    </div>
-    <issue-form />
-    <issue-grid />
+    <h2>{{issue.short_name}}</h2>
+    <h2>{{issue.header}}</h2>
+    {{issue.description}}
   </div>
 </template>
 
 <script>
-import IssueGrid from "@/components/issue/IssueGrid";
-import IssueForm from "@/components/issue/IssueForm";
+import {mapGetters} from "vuex";
 
 export default {
-  components: {
-    IssueGrid,
-    IssueForm
-  },
-  methods: {
-        showIssueModal() {
-            this.$store.dispatch('project/getProjects');
-            this.$store.dispatch('user/getUsers');
-            this.$store.commit('issue/SET_STATE', { isCreateModalVisible: true });
-        }
+  data() {
+        return {
+            issueId: this.$route.params.issueId
+        };
     },
+  computed: {
+        ...mapGetters('issue', ['issue']),
+    },
+   mounted() {
+        this.$store.dispatch('issue/getIssue', this.issueId);
+    }
 }
 </script>
 
-<style>
+<style scoped>
+
 </style>

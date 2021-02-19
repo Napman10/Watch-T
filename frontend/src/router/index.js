@@ -11,12 +11,17 @@ export const routes = [
         children: [
             {
                 path: '',
-                component: require('../pages/IssuePage').default,
+                component: require('../pages/IssuesPage').default,
                 name: 'issues'
             },
             {
-                path: 'issues',
+                path: 'issue/:issueId',
                 component: require('../pages/IssuePage').default,
+                name: 'issue'
+            },
+            {
+                path: 'issues',
+                component: require('../pages/IssuesPage').default,
                 name: 'issues'
             },
             {

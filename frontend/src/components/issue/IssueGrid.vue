@@ -48,6 +48,7 @@
         <el-table
             :data="issues"
             style="width: 100%"
+            @cell-click="openIssue"
         >
             <el-table-column prop="short_name" label="Задание" width="100" />
             <el-table-column prop="header"  width="300" />
@@ -75,6 +76,11 @@ export default {
       printPriority(row){
         const priorities = ['Низкий', 'Обычный', 'Серьёзный', 'Критический']
         return priorities[row.priority]
+      },
+      openIssue(cell){
+        const id = cell.id;
+        this.$store.dispatch('issue/getIssue', id);
+        this.$router.push({'name': 'issue', params: {issueId: id}});
       }
     },
     mounted() {
