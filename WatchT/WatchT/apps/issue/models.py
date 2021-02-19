@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import Manager
 
 from ..abstract.models import BaseModel
-from ..abstract.validators import bigger_than_zero_validate, is_int_validate
+from ..abstract.validators import is_int_validate, non_negative_int_validate, positive_int_validate
 from ..project.models import Project
 from ..user.models import EmployeeUser
 from .managers import IssueManager
@@ -53,12 +53,12 @@ class Issue(BaseModel):
                                  null=True, related_name='executor_task')
     priority = models.IntegerField(choices=PRIORITY_CHOICES, default=NORMAL, verbose_name='Приоритет')
     status = models.IntegerField(choices=STATUS_CHOICES, default=NEW, verbose_name='Статус')
-    want_minutes = models.IntegerField(validators=[is_int_validate, bigger_than_zero_validate], verbose_name='Оценка')
-    got_minutes = models.IntegerField(validators=[is_int_validate, bigger_than_zero_validate], verbose_name='Затрачено')
+    want_minutes = models.IntegerField(validators=[is_int_validate, non_negative_int_validate], verbose_name='Оценка')
+    got_minutes = models.IntegerField(validators=[is_int_validate, non_negative_int_validate], verbose_name='Затрачено')
     parent = models.ForeignKey('self', verbose_name='Родительская задача', null=True,
                                blank=True, on_delete=models.CASCADE)
     level = models.IntegerField(verbose_name='Уровень вложенности',
-                                validators=[is_int_validate, bigger_than_zero_validate],
+                                validators=[is_int_validate, positive_int_validate],
                                 default=1)
 
     def __str__(self):
@@ -93,7 +93,7 @@ class TrackTime(BaseModel):
         verbose_name = 'Затреканное время'
         verbose_name_plural = 'Затреканное время'
 
-    minutes = models.IntegerField(validators=[is_int_validate, bigger_than_zero_validate],
+    minutes = models.IntegerField(validators=[is_int_validate, positive_int_validate],
                                   verbose_name='Время в минутах')
     executor = models.ForeignKey(EmployeeUser, verbose_name='Сотрудник', on_delete=models.SET_NULL,
                                  null=True)

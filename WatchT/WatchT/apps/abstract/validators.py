@@ -6,6 +6,11 @@ def is_int_validate(value):
         raise ValidationError("Значение должно быть целочисленным")
 
 
-def bigger_than_zero_validate(value):
+def non_negative_int_validate(value):
+    if value < 0:
+        raise ValidationError("Значение не должно быть отрицательным")
+
+
+def positive_int_validate(value):
     if value <= 0:
-        raise ValidationError("Значение должно быть больше 0")
+        raise ValidationError("Значение должно быть положительным")
