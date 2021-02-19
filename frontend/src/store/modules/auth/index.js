@@ -24,7 +24,7 @@ export default {
                 const result = await api.login(params);
                 localStorage.setItem("token", result.auth_token );
                 setState(commit, { token: result.auth_token });
-                window.location.reload();
+                location.reload();
             } catch (e) {
                 showErrorNotify("Неправильные данные входа");
             }
@@ -34,6 +34,7 @@ export default {
                 await api.logout(params);
                 setState(commit, { token: null});
                 localStorage.removeItem('token');
+                location.href = '/';
             } catch (e) {
                 showErrorNotify(e);
             }
