@@ -3,4 +3,4 @@ __pycache__
 .vscode/
 venv/
 db.sqlite3
-WatchT/files/media/user
+WatchT/files/media/**
