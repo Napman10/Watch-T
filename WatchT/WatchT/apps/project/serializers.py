@@ -7,9 +7,3 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = '__all__'
-
-
-class ProjectNamesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Project
-        fields = ('short_name',)
