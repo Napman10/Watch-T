@@ -1,6 +1,5 @@
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, RetrieveUpdateAPIView)
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from ...models import Issue
@@ -9,12 +8,13 @@ from django.db.models.query import Q
 from ....abstract.functional import sanitize_query_params
 from ...consts import *
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 from ...services import string_to_issue_time
 
 
 class IssueListView(ListAPIView):
-    serializer_class = IssueSerializer
     permission_classes = (IsAuthenticated,)
+    serializer_class = IssueSerializer
 
     def get_queryset(self):
         params = sanitize_query_params(self.request)

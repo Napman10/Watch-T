@@ -30,9 +30,9 @@
             :data="users"
             style="width: 100%"
         >
-            <el-table-column prop="pure_user.username" width="100" />
-            <el-table-column prop="pure_user.first_name" width="100" />
-            <el-table-column prop="pure_user.last_name" width="200" />
+            <el-table-column prop="username" width="100" />
+            <el-table-column prop="first_name" width="100" />
+            <el-table-column prop="last_name" width="200" />
             <el-table-column prop="role" :formatter="printRole" width="200" />
         </el-table>
     </div>

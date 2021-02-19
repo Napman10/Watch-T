@@ -1,17 +1,25 @@
 from rest_framework import serializers
-from django.conf import settings
 from .models import EmployeeUser
-import os
 
 
-class UserSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    username = serializers.CharField(max_length=150)
-    first_name = serializers.CharField(max_length=30, allow_blank=True)
-    last_name = serializers.CharField(max_length=150, allow_blank=True)
+class EmployeeUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmployeeUser
+        fields = ('photo', 'role', 'first_name', 'last_name', 'email', 'username',)
 
+    first_name = serializers.SerializerMethodField()
+    last_name = serializers.SerializerMethodField()
+    username = serializers.SerializerMethodField()
+    email = serializers.SerializerMethodField()
 
-class EmployeeUserSerializer(serializers.Serializer):
-    pure_user = UserSerializer()
-    role = serializers.IntegerField()
-    photo = serializers.CharField()
+    def get_first_name(self, obj: EmployeeUser) -> str:
+        return str(obj.user.first_name)
+
+    def get_last_name(self, obj: EmployeeUser) -> str:
+        return str(obj.user.last_name)
+
+    def get_username(self, obj: EmployeeUser) -> str:
+        return str(obj)
+
+    def get_email(self, obj: EmployeeUser) -> str:
+        return str(obj.user.email)
