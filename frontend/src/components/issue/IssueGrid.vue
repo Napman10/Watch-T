@@ -49,12 +49,12 @@
             :data="issues"
             style="width: 100%"
         >
-            <el-table-column prop="short_name" width="100" />
+            <el-table-column prop="short_name" label="Задание" width="100" />
             <el-table-column prop="header"  width="300" />
-            <el-table-column prop="project"  width="400" />
-            <el-table-column prop="author"  width="250" />
-            <el-table-column prop="executor" min-width="150" />
-            <el-table-column prop="priority" :formatter="printPriority" min-width="150" />
+            <el-table-column prop="project"  label="Проект" width="400" />
+            <el-table-column prop="author"  label="Составил" width="250" />
+            <el-table-column prop="executor" label="Выполняет" min-width="150" />
+            <el-table-column prop="priority" label="Приоритет" :formatter="printPriority" min-width="150" />
         </el-table>
     </div>
 </template>
