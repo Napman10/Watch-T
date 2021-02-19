@@ -25,8 +25,8 @@
                   clearable placeholder="Выберите исполнителя">
                   <el-option
                     v-for="item in users"
-                    :key="item.pure_user.username"
-                    :value="item.pure_user.username">
+                    :key="item.username"
+                    :value="item.username">
                   </el-option>
                 </el-select>
             </el-form-item>
