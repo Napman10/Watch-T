@@ -18,6 +18,6 @@ def string_to_issue_time(string):
         hours = get_period_size(hour_re.findall(string))
         minutes = get_period_size(minute_re.findall(string))
 
-        return minutes + hours * 60 + days * 24 * 60 + weeks * 7 * 24 * 60
+        return minutes + hours * 60 + days * 480 + weeks * 2400
 
     return None
