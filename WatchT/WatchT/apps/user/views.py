@@ -3,19 +3,26 @@ from rest_framework.permissions import IsAuthenticated
 from .services import create_user
 from .serializers import EmployeeUserSerializer
 from .models import EmployeeUser
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView
 from ..abstract.functional import sanitize_query_params
 from django.db.models.query import Q
-from rest_framework.response import Response
-from rest_framework import status
 
 
-class UserSingleAPI(APIView):
+class UserCreateAPIView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         data = request.data
         return create_user(user_data=data)
+
+
+class UserOpenView(RetrieveUpdateAPIView):
+    serializer_class = EmployeeUserSerializer
+    permission_classes = (IsAuthenticated,)
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        return EmployeeUser.objects.all()
 
 
 class UserAPIListView(ListAPIView):

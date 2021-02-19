@@ -1,7 +1,8 @@
 from django.urls import include, path
-from .views import UserSingleAPI, UserAPIListView
+from .views import UserCreateAPIView, UserAPIListView, UserOpenView
 
 urlpatterns = [
-    path('', UserSingleAPI.as_view()),
-    path('list/', UserAPIListView.as_view())
+    path('', UserCreateAPIView.as_view()),
+    path('list/', UserAPIListView.as_view()),
+    path('<uuid:id>', UserOpenView.as_view()),
 ]

@@ -5,7 +5,7 @@ from .models import EmployeeUser
 class EmployeeUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmployeeUser
-        fields = ('photo', 'role', 'first_name', 'last_name', 'email', 'username',)
+        fields = ('id', 'photo', 'role', 'first_name', 'last_name', 'email', 'username',)
 
     first_name = serializers.SerializerMethodField()
     last_name = serializers.SerializerMethodField()

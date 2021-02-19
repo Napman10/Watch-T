@@ -30,6 +30,11 @@ export const routes = [
                 name: 'projects'
             },
             {
+                path: 'user/:userId',
+                component: require('../pages/UserPage').default,
+                name: 'user'
+            },
+            {
                 path: 'users',
                 component: require('../pages/UsersPage').default,
                 name: 'users'

@@ -29,6 +29,7 @@
         <el-table
             :data="users"
             style="width: 100%"
+            @cell-click="openUser"
         >
             <el-table-column prop="username" width="100" />
             <el-table-column prop="first_name" width="100" />
@@ -54,10 +55,15 @@ export default {
       printRole(row){
         const roles = ['Гость', 'Разработчик', 'Аналитик', 'Тимлид', 'Администратор']
         return roles[row.role]
+      },
+      openUser(cell){
+        const id = cell.id
+        this.$store.dispatch('user/getUser', id);
+        this.$router.push({'name': 'user', params: {userId: id}})
       }
     },
     mounted() {
-        this.$store.dispatch('user/getUsers');
+        this.$store.dispatch('user/getUsers', this.userId);
     }
 };
 </script>
