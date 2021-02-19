@@ -9,10 +9,10 @@ export const getProjects = async (params) => {
     ).data;
 };
 
-// export const getIssue = async (projectId) => {
-//     return (await axios.get(`api/project/${projectId}`)).data;
-// };
-//
+export const getProject = async (id) => {
+    return (await axios.get(`api/project/${id}`, {headers: headers})).data;
+};
+
 export const addProject = async (payload) => {
     return (await axios.post('api/project/new', payload, {headers: headers})).data;
 };
@@ -20,4 +20,5 @@ export const addProject = async (payload) => {
 export default {
     getProjects,
     addProject,
+    getProject
 };

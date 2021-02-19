@@ -25,8 +25,13 @@ export const routes = [
                 name: 'login'
             },
             {
-                path: 'projects',
+                path: 'project/:projectId',
                 component: require('../pages/ProjectPage').default,
+                name: 'project'
+            },
+            {
+                path: 'projects',
+                component: require('../pages/ProjectsPage').default,
                 name: 'projects'
             },
             {

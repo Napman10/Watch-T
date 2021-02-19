@@ -1,29 +1,29 @@
 <template>
   <div>
-    <div style="text-align: right">
-      <el-button type="primary" @click="showProjectModal" style="margin-bottom: 10px">Создать проект</el-button>
-    </div>
-    <project-form />
-    <project-grid />
+    <h2>{{project.short_name}}</h2>
+    <h2>{{project.header}}</h2>
+    {{project.description}}
   </div>
 </template>
 
 <script>
-import ProjectGrid from "@/components/project/ProjectGrid";
-import ProjectForm from "@/components/project/ProjectForm";
+import {mapGetters} from "vuex";
 
 export default {
-  components: {
-    ProjectGrid,
-    ProjectForm
-  },
-  methods: {
-    showProjectModal(){
-      this.$store.commit('project/SET_STATE', {isCreateModalVisible: true})
+  data() {
+        return {
+            projectId: this.$route.params.projectId
+        };
+    },
+  computed: {
+        ...mapGetters('project', ['project']),
+    },
+   mounted() {
+        this.$store.dispatch('project/getProject', this.projectId);
     }
-  }
 }
 </script>
 
-<style>
+<style scoped>
+
 </style>

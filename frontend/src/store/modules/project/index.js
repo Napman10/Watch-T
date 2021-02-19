@@ -38,19 +38,16 @@ export default {
                 showErrorNotify(e);
             }
         },
-        // async getIssue({ commit }, issueId) {
-        //     try {
-        //         setState(commit, { loading: true });
-        //         const result = await api.getIssue(issueId);
-        //         if (!result.isSuccess) {
-        //             return showErrorNotify(result.errorMessage);
-        //         }
-        //         setState(commit, { direction: result.result });
-        //     } catch (e) {
-        //         showErrorNotify(e.message);
-        //     } finally {
-        //         setState(commit, { loading: false });
-        //     }
-        // }
+        async getProject({ commit }, projectId) {
+            try {
+                setState(commit, { loading: true });
+                const result = await api.getProject(projectId);
+                setState(commit, { project: result });
+            } catch (e) {
+                showErrorNotify(e.message);
+            } finally {
+                setState(commit, { loading: false });
+            }
+        }
     }
 };

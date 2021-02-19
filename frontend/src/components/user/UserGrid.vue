@@ -63,7 +63,7 @@ export default {
       }
     },
     mounted() {
-        this.$store.dispatch('user/getUsers', this.userId);
+        this.$store.dispatch('user/getUsers');
     }
 };
 </script>
