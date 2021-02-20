@@ -38,6 +38,12 @@ class CommentSerializer(serializers.ModelSerializer):
         return str(obj.issue)
 
 
+class CommentUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('text',)
+
+
 class TrackTimeSerializer(serializers.ModelSerializer):
     class Meta:
         model = TrackTime

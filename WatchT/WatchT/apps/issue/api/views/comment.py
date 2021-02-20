@@ -1,8 +1,8 @@
 from rest_framework.generics import (CreateAPIView, ListAPIView,
-                                     RetrieveUpdateDestroyAPIView)
+                                     RetrieveAPIView, UpdateAPIView, DestroyAPIView)
 
 from ...models import Comment
-from ...serializers import CommentSerializer
+from ...serializers import CommentSerializer, CommentUpdateSerializer
 from ....abstract.functional import sanitize_query_params
 
 
@@ -18,8 +18,8 @@ class CommentListView(ListAPIView):
         return Comment.objects.none()
 
 
-class CommentOpenView(RetrieveUpdateDestroyAPIView):
-    serializer_class = CommentSerializer
+class CommentUpdateView(UpdateAPIView):
+    serializer_class = CommentUpdateSerializer
     lookup_field = 'id'
 
     def get_queryset(self):
@@ -32,3 +32,19 @@ class CommentCreateView(CreateAPIView):
     action_map = {
         'post': 'create'
     }
+
+
+class CommentOpenView(RetrieveAPIView):
+    serializer_class = CommentUpdateSerializer
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        return Comment.objects.all()
+
+
+class CommentDeleteView(DestroyAPIView):
+    serializer_class = CommentUpdateSerializer
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        return Comment.objects.all()
