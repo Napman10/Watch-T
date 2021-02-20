@@ -3,13 +3,19 @@ from rest_framework.generics import (CreateAPIView, ListAPIView,
 
 from ...models import Comment
 from ...serializers import CommentSerializer
+from ....abstract.functional import sanitize_query_params
 
 
 class CommentListView(ListAPIView):
     serializer_class = CommentSerializer
 
     def get_queryset(self):
-        return Comment.objects.all()
+        params = sanitize_query_params(self.request)
+        issue_id = params.get('issue_id')
+        if issue_id:
+            return Comment.objects.filter(issue__id=issue_id)
+
+        return Comment.objects.none()
 
 
 class CommentOpenView(RetrieveUpdateDestroyAPIView):
