@@ -7,12 +7,14 @@ export default {
     state: {
         issues: [],
         issue: {},
+        comments: [],
         loading: false,
         isCreateModalVisible: false
     },
     getters: {
         issue: (state) => state.issue,
         issues: (state) => state.issues,
+        comments: (state) => state.comments,
         loading: (state) => state.loading,
         isCreateModalVisible: (state) => state.isCreateModalVisible
     },
@@ -40,16 +42,35 @@ export default {
                 showErrorNotify(e.message);
             }
         },
-        async getIssue({ commit }, issueId) {
+        async getIssue({ commit, dispatch}, issueId) {
             try {
                 setState(commit, { loading: true });
                 const result = await api.getIssue(issueId);
                 setState(commit, { issue: result });
+                dispatch('getComments', issueId);
             } catch (e) {
                 showErrorNotify(e.message);
             } finally {
                 setState(commit, { loading: false });
             }
-        }
+        },
+        async getComments({ commit }, issueId) {
+            try {
+                const result = await api.getComments(issueId);
+                setState(commit, { comments: result });
+            } catch (e) {
+                showErrorNotify(e.message);
+            } finally {
+                setState(commit, { loading: false });
+            }
+        },
+        async addComment({dispatch }, payload) {
+            try {
+                await api.addComment(payload);
+                dispatch('getIssue', payload.issue_id)
+            } catch (e) {
+                showErrorNotify(e.message);
+            }
+        },
     }
 };

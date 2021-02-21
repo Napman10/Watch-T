@@ -3,7 +3,7 @@ import {headers} from "@/api/headers";
 
 export const getComments = async (issueId) => {
     return (
-        await axios.get(`api/issue/comment/list/${issueId}`, {
+        await axios.get(`api/issue/comment/list/?issue_id=${issueId}`, {
             headers: headers
         })
     ).data;
