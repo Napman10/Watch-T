@@ -3,7 +3,7 @@ from rest_framework.generics import (CreateAPIView, DestroyAPIView,
 from rest_framework.response import Response
 from rest_framework import status
 from ...models import Issue
-from ...serializers import IssueSerializer
+from ..serializers.issue import IssueSerializer
 from django.db.models.query import Q
 from ....abstract.functional import sanitize_query_params
 from ...consts import *
