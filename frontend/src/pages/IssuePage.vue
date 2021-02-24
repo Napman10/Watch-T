@@ -15,7 +15,7 @@
         >
       <el-table-column prop="author" width="100" />
       <el-table-column prop="datetime"  width="300" />
-      <el-table-column prop="text" width="400" />
+      <el-table-column :formatter="isEdited" prop="text" width="400" />
       <el-table-column align="right">
         <template slot-scope="scope">
           <el-button
@@ -70,6 +70,12 @@ export default {
       this.$store.dispatch('issue/addComment', payload);
       this.form = {};
     },
+    isEdited(row){
+      if (row.edited){
+        return row.text + (" (ред).");
+      }
+      return row.text;
+    },
     executorOrNull(issue){
       if (issue.executor !== ''){
         return issue.executor;
@@ -97,16 +103,16 @@ export default {
 
       var result = "";
       if (weeks !== 0){
-        result += weeks + 'н '
+        result += weeks + 'н ';
       }
       if (days !== 0) {
-        result += days + 'д '
+        result += days + 'д ';
       }
       if (hours !== 0){
-        result += hours + 'ч '
+        result += hours + 'ч ';
       }
       if (minutes !== 0) {
-        result += minutes + 'м '
+        result += minutes + 'м ';
       }
       if (result === ""){
         return "-";
@@ -116,7 +122,7 @@ export default {
       }
     },
     deleteComment(){
-      return ""
+      return "";
     },
     callEditComment(row){
       this.$store.commit('issue/SET_STATE', { comment: row });
