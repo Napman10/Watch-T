@@ -50,7 +50,7 @@ class Issue(BaseModel):
     author = models.ForeignKey(EmployeeUser, verbose_name='Составил', on_delete=models.SET_NULL,
                                null=True, related_name='author_task')
     executor = models.ForeignKey(EmployeeUser, verbose_name='Выполняет', on_delete=models.SET_NULL,
-                                 null=True, related_name='executor_task')
+                                 null=True, related_name='executor_task', blank=True)
     priority = models.IntegerField(choices=PRIORITY_CHOICES, default=NORMAL, verbose_name='Приоритет')
     status = models.IntegerField(choices=STATUS_CHOICES, default=NEW, verbose_name='Статус')
     want_minutes = models.IntegerField(validators=[is_int_validate, non_negative_int_validate], verbose_name='Оценка')
