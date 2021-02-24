@@ -65,10 +65,12 @@ export default {
   },
   methods: {
     addComment(){
-      const obj = {issue_id: this.issueId};
-      const payload = Object.assign(obj, this.form);
-      this.$store.dispatch('issue/addComment', payload);
-      this.form = {};
+      if (this.form.text) {
+        const obj = {issue_id: this.issueId};
+        const payload = Object.assign(obj, this.form);
+        this.$store.dispatch('issue/addComment', payload);
+        this.form = {};
+      }
     },
     isEdited(row){
       if (row.edited){
