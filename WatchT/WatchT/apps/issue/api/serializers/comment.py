@@ -21,4 +21,4 @@ class CommentSerializer(serializers.ModelSerializer):
 class CommentUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ('text', )
+        fields = ('text', 'edited', )

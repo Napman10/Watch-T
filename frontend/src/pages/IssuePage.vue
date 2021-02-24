@@ -16,6 +16,17 @@
       <el-table-column prop="author" width="100" />
       <el-table-column prop="datetime"  width="300" />
       <el-table-column prop="text" width="400" />
+      <el-table-column align="right">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            @click="callEditComment(scope.row)">Edit</el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            @click="deleteComment">Delete</el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <el-form
@@ -31,11 +42,13 @@
         <el-button type="primary" @click="addComment">Отправить</el-button>
       </el-form-item>
     </el-form>
+    <comment-edit-form/>
   </div>
 </template>
 
 <script>
 import {mapGetters} from "vuex";
+import CommentEditForm from "@/components/issue/CommentEditForm";
 
 export default {
   data() {
@@ -45,8 +58,11 @@ export default {
         };
     },
   computed: {
-        ...mapGetters('issue', ['issue', 'comments']),
+        ...mapGetters('issue', ['issue', 'comments', 'editCommentModalVisible']),
     },
+  components: {
+    CommentEditForm
+  },
   methods: {
     addComment(){
       const obj = {issue_id: this.issueId};
@@ -55,7 +71,6 @@ export default {
       this.form = {};
     },
     executorOrNull(issue){
-      console.log(issue.executor)
       if (issue.executor !== ''){
         return issue.executor;
       }
@@ -99,6 +114,13 @@ export default {
       else {
         return result;
       }
+    },
+    deleteComment(){
+      return ""
+    },
+    callEditComment(row){
+      this.$store.commit('issue/SET_STATE', { comment: row });
+      this.$store.commit('issue/SET_STATE', { editCommentModalVisible: true });
     }
   },
    mounted() {

@@ -33,13 +33,16 @@ class CommentUpdateView(UpdateAPIView):
     def get_queryset(self):
         return Comment.objects.all()
 
+    def put(self, request, *args, **kwargs):
+        self.request.data['edited'] = True
+        return super().put(self.request, *args, **kwargs)
+
 
 class CommentCreateView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         data = request.data
-        print(data)
         text = data.get('text')
         issue_id = data.get('issue_id')
 
@@ -49,7 +52,6 @@ class CommentCreateView(APIView):
         dt = datetime.now()
         Comment.objects.create(text=text, issue=issue, author=author, datetime=dt)
         return Response(status=status.HTTP_201_CREATED)
-
 
 
 class CommentOpenView(RetrieveAPIView):

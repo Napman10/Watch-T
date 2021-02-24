@@ -2,21 +2,26 @@ import api from '@/api';
 import { SET_STATE, setState } from '@/store/helpers';
 import { showErrorNotify, showSuccessNotify } from '@/utils';
 
+
 export default {
     namespaced: true,
     state: {
         issues: [],
         issue: {},
         comments: [],
+        comment : {},
         loading: false,
-        isCreateModalVisible: false
+        isCreateModalVisible: false,
+        editCommentModalVisible: false
     },
     getters: {
         issue: (state) => state.issue,
         issues: (state) => state.issues,
+        comment: (state) => state.comment,
         comments: (state) => state.comments,
         loading: (state) => state.loading,
-        isCreateModalVisible: (state) => state.isCreateModalVisible
+        isCreateModalVisible: (state) => state.isCreateModalVisible,
+        editCommentModalVisible: (state) => state.editCommentModalVisible
     },
     mutations: {
         SET_STATE
@@ -72,5 +77,13 @@ export default {
                 showErrorNotify(e.message);
             }
         },
+        async editComment({dispatch }, payload){
+            try {
+                await api.editComment(payload);
+                dispatch('getIssue', payload.issue_id)
+            } catch (e){
+                showErrorNotify(e.message);
+            }
+        }
     }
 };
