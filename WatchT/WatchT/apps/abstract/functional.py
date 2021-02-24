@@ -17,3 +17,9 @@ def email_is_valid(email: str) -> bool:
         return True
 
     return False
+
+
+def month_russian(month):
+    month = int(month) - 1
+    months = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек']
+    return months[month]
