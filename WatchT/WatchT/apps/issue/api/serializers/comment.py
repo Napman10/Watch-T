@@ -22,7 +22,7 @@ class CommentSerializer(serializers.ModelSerializer):
             return f"вчера в {dt.hour}:{dt.minute}"
         elif now.date() == dt.date():
             return f"сегодня в {dt.hour}:{dt.minute}"
-        elif now.year != dt.year():
+        elif now.year != dt.year:
             return f"{dt.day} {month_russian(dt.month)} {dt.year} в {dt.hour}:{dt.minute}"
         else:
             return f"{dt.day} {month_russian(dt.month)} в {dt.hour}:{dt.minute}"
