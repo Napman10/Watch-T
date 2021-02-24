@@ -55,7 +55,7 @@
             <el-table-column prop="project"  label="Проект" width="400" />
             <el-table-column prop="author"  label="Составил" width="250" />
             <el-table-column prop="executor" label="Выполняет" min-width="150" />
-            <el-table-column prop="priority" label="Приоритет" :formatter="printPriority" min-width="150" />
+            <el-table-column prop="priority" label="Приоритет" min-width="150" />
         </el-table>
     </div>
 </template>
@@ -72,10 +72,6 @@ export default {
     methods: {
       filterIssues(){
         this.$store.dispatch('issue/getIssues', this.form)
-      },
-      printPriority(row){
-        const priorities = ['Низкий', 'Обычный', 'Серьёзный', 'Критический']
-        return priorities[row.priority]
       },
       openIssue(cell){
         const id = cell.id;

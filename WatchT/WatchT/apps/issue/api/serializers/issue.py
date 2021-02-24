@@ -12,6 +12,12 @@ class IssueSerializer(serializers.ModelSerializer):
     author = serializers.SerializerMethodField()
     executor = serializers.SerializerMethodField()
     project = serializers.SerializerMethodField()
+    priority = serializers.SerializerMethodField()
+    status = serializers.SerializerMethodField()
+
+    def get_status(self, obj: Issue) -> str:
+        statuses = ['Новая', 'Требуется уточнение', 'Назначена', 'В работе', 'Проверка', 'Готово']
+        return statuses[obj.status]
 
     def get_author(self, obj: Issue) -> str:
         return str(obj.author)
@@ -21,3 +27,7 @@ class IssueSerializer(serializers.ModelSerializer):
 
     def get_project(self, obj: Issue) -> str:
         return str(obj.project)
+
+    def get_priority(self, obj: Issue) -> str:
+        priorities = ['Низкий', 'Обычный', 'Серьёзный', 'Критический']
+        return priorities[obj.priority]
