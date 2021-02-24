@@ -20,11 +20,17 @@ export const addComment = async (payload) => {
 export const editComment = async (payload) => {
     const id = payload.id;
     return (await axios.put(`api/issue/comment/${id}/update`, payload, {headers: headers})).data;
-}
+};
+
+export const deleteComment = async (payload) => {
+    const id = payload.id;
+    return (await axios.delete(`api/issue/comment/${id}/delete`, {payload, headers: headers})).data;
+};
 
 export default {
     getComments,
     addComment,
     getComment,
-    editComment
+    editComment,
+    deleteComment
 };

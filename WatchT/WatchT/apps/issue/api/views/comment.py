@@ -3,7 +3,7 @@ from rest_framework.generics import (CreateAPIView, ListAPIView,
 
 from ...models import Comment, Issue
 from rest_framework.permissions import IsAuthenticated
-from ..serializers.comment import CommentSerializer, CommentUpdateSerializer
+from ..serializers.comment import CommentSerializer, CommentUpdateSerializer, CommentDeleteSerializer
 from rest_framework.views import APIView
 from ....abstract.functional import sanitize_query_params
 from ....user.models import EmployeeUser
@@ -65,7 +65,7 @@ class CommentOpenView(RetrieveAPIView):
 
 class CommentDeleteView(DestroyAPIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = CommentUpdateSerializer
+    serializer_class = CommentDeleteSerializer
     lookup_field = 'id'
 
     def get_queryset(self):

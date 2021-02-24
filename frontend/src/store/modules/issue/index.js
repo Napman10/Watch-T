@@ -72,7 +72,7 @@ export default {
         async addComment({dispatch }, payload) {
             try {
                 await api.addComment(payload);
-                dispatch('getIssue', payload.issue_id)
+                dispatch('getIssue', payload.issue_id);
             } catch (e) {
                 showErrorNotify(e.message);
             }
@@ -80,7 +80,15 @@ export default {
         async editComment({dispatch }, payload){
             try {
                 await api.editComment(payload);
-                dispatch('getIssue', payload.issue_id)
+                dispatch('getIssue', payload.issue_id);
+            } catch (e){
+                showErrorNotify(e.message);
+            }
+        },
+        async deleteComment({dispatch }, payload){
+            try {
+                await api.deleteComment(payload);
+                dispatch('getIssue', payload.issue_id);
             } catch (e){
                 showErrorNotify(e.message);
             }

@@ -24,7 +24,7 @@
           <el-button
             size="mini"
             type="danger"
-            @click="deleteComment">Delete</el-button>
+            @click="deleteComment(scope.row)">Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -121,8 +121,9 @@ export default {
         return result;
       }
     },
-    deleteComment(){
-      return "";
+    deleteComment(row){
+      this.$store.commit('issue/SET_STATE', { comment: row });
+      this.$store.dispatch('issue/deleteComment', {id: row.id, issue_id: this.issueId});
     },
     callEditComment(row){
       this.$store.commit('issue/SET_STATE', { comment: row });
