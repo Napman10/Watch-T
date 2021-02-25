@@ -1,4 +1,4 @@
-from rest_framework.generics import (CreateAPIView, ListAPIView,
+from rest_framework.generics import (ListAPIView,
                                      RetrieveAPIView, UpdateAPIView, DestroyAPIView)
 
 from ...models import Comment, Issue
