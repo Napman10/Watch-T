@@ -79,6 +79,8 @@ class IssueCreateView(APIView):
         parent_id = data.get('parent')
 
         level = data.get('level')
+        if not level:
+            level = 1
 
         try:
             Issue.objects.inherit_from_proj(short_name=short_name, header=header, author_username=author_username,
@@ -86,7 +88,7 @@ class IssueCreateView(APIView):
                                             executor_username=executor_username, description=description, level=level,
                                             parent_id=parent_id)
             return Response(status=status.HTTP_201_CREATED)
-        except BaseException:
+        except BaseException as e:
             return Response(data={"detail": "invalid"}, status=status.HTTP_400_BAD_REQUEST)
 
 
