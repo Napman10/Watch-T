@@ -12,7 +12,8 @@ export default {
         comment : {},
         loading: false,
         isCreateModalVisible: false,
-        editCommentModalVisible: false
+        editCommentModalVisible: false,
+        descIssueModalVisible: false
     },
     getters: {
         issue: (state) => state.issue,
@@ -21,7 +22,8 @@ export default {
         comments: (state) => state.comments,
         loading: (state) => state.loading,
         isCreateModalVisible: (state) => state.isCreateModalVisible,
-        editCommentModalVisible: (state) => state.editCommentModalVisible
+        editCommentModalVisible: (state) => state.editCommentModalVisible,
+        descIssueModalVisible: (state) => state.descIssueModalVisible
     },
     mutations: {
         SET_STATE

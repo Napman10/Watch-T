@@ -1,15 +1,19 @@
 <template>
   <div>
     <h2>{{issue.short_name}}</h2>
-    <h5>{{issue.project}}</h5>
     <h2>{{issue.header}}</h2>
-    <h5>{{issue.description}}</h5>
+    {{issue.description}}
+    <h5>Проект: {{issue.project}}</h5>
     <h5>Автор: {{issue.author}}</h5>
     <h5>Исполнитель: {{executorOrNull(issue)}} </h5>
     <h5>Статус: {{issue.status}} </h5>
     <h5>Приоритет: {{issue.priority}} </h5>
     <h5>Оценка: {{parseFromMinutes(issue.want_minutes)}} </h5>
     <h5>Затрачено: {{parseFromMinutes(issue.got_minutes)}} </h5>
+    <h5>Родительская задача: {{parentOrNull(issue)}}</h5>
+    <div style="text-align: right">
+      <el-button type="primary" @click="showIssueDescModal" style="margin-bottom: 10px">Отнаследовать задачу</el-button>
+    </div>
     <h2>Комментарии</h2>
     <el-table
         :data="comments"
@@ -45,12 +49,14 @@
       </el-form-item>
     </el-form>
     <comment-edit-form/>
+    <desc-issue-form/>
   </div>
 </template>
 
 <script>
 import {mapGetters} from "vuex";
 import CommentEditForm from "@/components/issue/CommentEditForm";
+import DescIssueForm from "@/components/issue/DescIssueForm";
 
 export default {
   data() {
@@ -60,10 +66,11 @@ export default {
         };
     },
   computed: {
-        ...mapGetters('issue', ['issue', 'comments', 'editCommentModalVisible']),
+        ...mapGetters('issue', ['issue', 'comments', 'editCommentModalVisible', 'descIssueModalVisible']),
     },
   components: {
-    CommentEditForm
+    CommentEditForm,
+    DescIssueForm
   },
   methods: {
     addComment(){
@@ -86,6 +93,14 @@ export default {
       }
       else {
         return "Нет исполнителя";
+      }
+    },
+    parentOrNull(issue){
+      if (issue.parent !== ''){
+        return issue.parent;
+      }
+      else {
+        return '-';
       }
     },
     div(val, by){
@@ -132,6 +147,10 @@ export default {
     callEditComment(row){
       this.$store.commit('issue/SET_STATE', { comment: row });
       this.$store.commit('issue/SET_STATE', { editCommentModalVisible: true });
+    },
+    showIssueDescModal(){
+      this.$store.dispatch('user/getUsers');
+      this.$store.commit('issue/SET_STATE', {descIssueModalVisible: true})
     }
   },
    mounted() {

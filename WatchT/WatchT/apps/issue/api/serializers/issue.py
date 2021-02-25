@@ -14,6 +14,10 @@ class IssueSerializer(serializers.ModelSerializer):
     project = serializers.SerializerMethodField()
     priority = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
+    parent = serializers.SerializerMethodField()
+
+    def get_parent(self, obj: Issue) -> str:
+        return string_or_empty(obj.parent)
 
     def get_status(self, obj: Issue) -> str:
         statuses = ['Новая', 'Требуется уточнение', 'Назначена', 'В работе', 'Проверка', 'Готово']
