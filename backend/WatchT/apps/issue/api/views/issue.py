@@ -87,7 +87,7 @@ class IssueCreateView(APIView):
                                             parent_id=parent_id)
             return Response(status=status.HTTP_201_CREATED)
         except BaseException as e:
-            return Response(data={"detail": "invalid"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"detail": "invalid", "exception": e}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class IssueDestroyView(DestroyAPIView):
@@ -98,3 +98,18 @@ class IssueDestroyView(DestroyAPIView):
     action_map = {
         'delete': 'delete'
     }
+
+
+class IssueChildListView(ListAPIView):
+    serializer_class = IssueSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        params = sanitize_query_params(self.request)
+        parent_id = params.get('id')
+
+        if parent_id:
+            parent = Issue.objects.get(id=parent_id)
+            return Issue.objects.filter(parent=parent)
+
+        return Issue.objects.none()

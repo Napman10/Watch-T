@@ -1,13 +1,9 @@
 from django.urls import include, path
 
 from .views.issue import (IssueCreateView, IssueDestroyView, IssueListView,
-                          IssueOpenView)
+                          IssueOpenView, IssueChildListView)
 from .views.comment import CommentListView, CommentOpenView, CommentUpdateView, CommentCreateView, CommentDeleteView
 from .views.track_time import TrackCreateView, TrackListView,  TrackDeleteView
-
-update_issue_patterns = [
-    path('', IssueOpenView.as_view()),
-]
 
 single_comment_patterns = [
     path('', CommentOpenView.as_view()),
@@ -31,12 +27,17 @@ track_patterns = [
     path('list/', TrackListView.as_view()),
 ]
 
+single_issue_patterns = [
+    path('', IssueOpenView.as_view()),
+]
+
 urlpatterns = [
     path('comment/', include(comment_patterns)),
     path('track/', include(track_patterns)),
 
-    path('<uuid:id>', include(update_issue_patterns)),
+    path('<uuid:id>/', include(single_issue_patterns)),
     path('list', IssueListView.as_view()),
     path('new', IssueCreateView.as_view()),
     path('delete/<uuid:id>', IssueDestroyView.as_view()),
+    path('childlist', IssueChildListView.as_view()),
 ]

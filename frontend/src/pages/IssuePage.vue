@@ -11,6 +11,17 @@
     <h5>Оценка: {{timeToText(issue.want_minutes)}} </h5>
     <h5>Затрачено: {{timeToText(issue.got_minutes)}} </h5>
     <h5>Родительская задача: {{parentOrNull(issue)}}</h5>
+    <div v-if="children.length !== 0">
+      <h5>Подзадачи: </h5>
+      <el-table
+        :data="children"
+        style="width: 100%"
+        @cell-click="openIssue"
+      >
+        <el-table-column prop="short_name" width="100" />
+        <el-table-column prop="header"  width="300" />
+      </el-table>
+    </div>
     <div style="text-align: right">
       <el-button type="primary" @click="showIssueDescModal" style="margin-bottom: 10px">Отнаследовать задачу</el-button>
     </div>
@@ -106,7 +117,8 @@ export default {
         };
     },
   computed: {
-        ...mapGetters('issue', ['issue', 'comments', 'tracks', 'editCommentModalVisible', 'descIssueModalVisible']),
+        ...mapGetters('issue', ['issue', 'comments', 'tracks', 'children',
+          'editCommentModalVisible', 'descIssueModalVisible']),
     },
   components: {
     CommentEditForm,
@@ -171,7 +183,12 @@ export default {
     },
     showIssueDescModal(){
       this.$store.dispatch('user/getUsers');
-      this.$store.commit('issue/SET_STATE', {descIssueModalVisible: true})
+      this.$store.commit('issue/SET_STATE', {descIssueModalVisible: true});
+    },
+    openIssue(cell){
+      const id = cell.id;
+      this.$store.dispatch('issue/getIssue', id);
+      this.$router.push({'name': 'issue', params: {issueId: id}});
     }
   },
    mounted() {

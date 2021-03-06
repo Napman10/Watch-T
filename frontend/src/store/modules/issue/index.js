@@ -12,6 +12,7 @@ export default {
         comment : {},
         tracks: [],
         track: {},
+        children: [],
         loading: false,
         isCreateModalVisible: false,
         editCommentModalVisible: false,
@@ -25,6 +26,7 @@ export default {
         comments: (state) => state.comments,
         tracks: (state) => state.tracks,
         track: (state) => state.track,
+        children: (state) => state.children,
         loading: (state) => state.loading,
         isCreateModalVisible: (state) => state.isCreateModalVisible,
         editCommentModalVisible: (state) => state.editCommentModalVisible,
@@ -61,6 +63,7 @@ export default {
                 setState(commit, { loading: true });
                 const result = await api.getIssue(issueId);
                 setState(commit, { issue: result });
+                dispatch('getChildren', {'id': issueId});
                 dispatch('getComments', issueId);
                 dispatch('getTracks', issueId);
             } catch (e) {
@@ -75,8 +78,6 @@ export default {
                 setState(commit, { comments: result });
             } catch (e) {
                 showErrorNotify(e.message);
-            } finally {
-                setState(commit, { loading: false });
             }
         },
         async addComment({dispatch }, payload) {
@@ -109,8 +110,6 @@ export default {
                 setState(commit, { tracks: result });
             } catch (e) {
                 showErrorNotify(e.message);
-            } finally {
-                setState(commit, { loading: false });
             }
         },
         async addTrack({dispatch }, payload) {
@@ -131,5 +130,13 @@ export default {
                 showErrorNotify(e.message);
             }
         },
+        async getChildren({ commit }, filter) {
+            try {
+                const result = await api.getChildren(filter);
+                setState(commit, { children: result });
+            } catch (e) {
+                showErrorNotify(e.message);
+            }
+        }
     }
 };
