@@ -9,7 +9,6 @@ from ....abstract.functional import sanitize_query_params
 from ...consts import *
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from ...services import string_to_issue_time
 
 
 class IssueListView(ListAPIView):
@@ -69,8 +68,7 @@ class IssueCreateView(APIView):
         author_username = request.user.username
         project_name = data.get('project_name')
 
-        want_time_str = data.get('want_time')
-        want_minutes = string_to_issue_time(want_time_str)
+        want_minutes = data.get('want_time')
 
         priority = data.get('priority')
         executor_username = data.get('executor_username')

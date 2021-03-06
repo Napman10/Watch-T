@@ -26,3 +26,10 @@ class IssueManager(Manager):
             query['parent'] = parent
 
         self.create(**query)
+
+
+class TrackTimeManager(Manager):
+    def depend_create(self, issue, minutes, executor):
+        issue.got_minutes += minutes
+        issue.save()
+        self.create(issue=issue, minutes=minutes, executor=executor)

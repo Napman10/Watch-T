@@ -15,4 +15,4 @@ class CommentAdmin(admin.ModelAdmin):
 
 @admin.register(TrackTime)
 class TrackTimeAdmin(admin.ModelAdmin):
-    list_display = ['minutes', 'executor', 'issue']
+    list_display = ['issue', 'executor', 'minutes']

@@ -5,7 +5,7 @@ from ..abstract.models import BaseModel
 from ..abstract.validators import is_int_validate, non_negative_int_validate, positive_int_validate
 from ..project.models import Project
 from ..user.models import EmployeeUser
-from .managers import IssueManager
+from .managers import IssueManager, TrackTimeManager
 
 
 class Issue(BaseModel):
@@ -87,7 +87,7 @@ class Comment(BaseModel):
 
 
 class TrackTime(BaseModel):
-    objects = Manager()
+    objects = TrackTimeManager()
 
     class Meta:
         verbose_name = 'Затреканное время'

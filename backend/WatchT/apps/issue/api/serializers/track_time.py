@@ -14,12 +14,6 @@ class TrackTimeSerializer(serializers.ModelSerializer):
         return str(obj.executor)
 
 
-class TrackUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TrackTime
-        fields = ('id', 'time',)
-
-
 class TrackDeleteSerializer(serializers.ModelSerializer):
     class Meta:
         model = TrackTime

@@ -1,7 +1,7 @@
 import api from '@/api';
 import { SET_STATE, setState } from '@/store/helpers';
 import { showErrorNotify, showSuccessNotify } from '@/utils';
-
+import { textToMinutes } from '@/utils/transfer';
 
 export default {
     namespaced: true,
@@ -10,6 +10,8 @@ export default {
         issue: {},
         comments: [],
         comment : {},
+        tracks: [],
+        track: {},
         loading: false,
         isCreateModalVisible: false,
         editCommentModalVisible: false,
@@ -21,6 +23,8 @@ export default {
         issues: (state) => state.issues,
         comment: (state) => state.comment,
         comments: (state) => state.comments,
+        tracks: (state) => state.tracks,
+        track: (state) => state.track,
         loading: (state) => state.loading,
         isCreateModalVisible: (state) => state.isCreateModalVisible,
         editCommentModalVisible: (state) => state.editCommentModalVisible,
@@ -42,6 +46,7 @@ export default {
             }
         },
         async addIssue({ commit, dispatch }, payload) {
+            payload.want_minutes = textToMinutes(payload.want_minutes);
             try {
                 await api.addIssue(payload);
                 showSuccessNotify(`Задание создано!`);
@@ -57,6 +62,7 @@ export default {
                 const result = await api.getIssue(issueId);
                 setState(commit, { issue: result });
                 dispatch('getComments', issueId);
+                dispatch('getTracks', issueId);
             } catch (e) {
                 showErrorNotify(e.message);
             } finally {
@@ -96,6 +102,34 @@ export default {
             } catch (e){
                 showErrorNotify(e.message);
             }
-        }
+        },
+        async getTracks({ commit }, issueId) {
+            try {
+                const result = await api.getTracks(issueId);
+                setState(commit, { tracks: result });
+            } catch (e) {
+                showErrorNotify(e.message);
+            } finally {
+                setState(commit, { loading: false });
+            }
+        },
+        async addTrack({dispatch }, payload) {
+            payload.minutes = textToMinutes(payload.minutes);
+
+            try {
+                await api.addTrack(payload);
+                dispatch('getIssue', payload.issue_id);
+            } catch (e) {
+                showErrorNotify(e.message);
+            }
+        },
+        async deleteTrack({dispatch }, payload){
+            try {
+                await api.deleteTrack(payload);
+                dispatch('getIssue', payload.issue_id);
+            } catch (e){
+                showErrorNotify(e.message);
+            }
+        },
     }
 };
