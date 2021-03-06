@@ -27,15 +27,11 @@ track_patterns = [
     path('list/', TrackListView.as_view()),
 ]
 
-single_issue_patterns = [
-    path('', IssueOpenView.as_view()),
-]
-
 urlpatterns = [
     path('comment/', include(comment_patterns)),
     path('track/', include(track_patterns)),
 
-    path('<uuid:id>/', include(single_issue_patterns)),
+    path('<uuid:id>/', IssueOpenView.as_view()),
     path('list', IssueListView.as_view()),
     path('new', IssueCreateView.as_view()),
     path('delete/<uuid:id>', IssueDestroyView.as_view()),

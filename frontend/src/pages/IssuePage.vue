@@ -25,6 +25,9 @@
     <div style="text-align: right">
       <el-button type="primary" @click="showIssueDescModal" style="margin-bottom: 10px">Отнаследовать задачу</el-button>
     </div>
+    <div style="text-align: right">
+      <el-button type="danger" @click="deleteMe" style="margin-bottom: 10px">Удалить задачу</el-button>
+    </div>
     <el-tabs type="card">
       <el-tab-pane label="Комментарии">
         <el-table
@@ -127,7 +130,7 @@ export default {
   methods: {
     addComment(){
       if (this.commentForm.text) {
-        const obj = {issue_id: this.issueId};
+        const obj = {issue_id: this.issue.id};
         const payload = Object.assign(obj, this.commentForm);
         this.$store.dispatch('issue/addComment', payload);
         this.commentForm = {};
@@ -135,10 +138,18 @@ export default {
     },
     addTrack(){
       if (this.trackForm.minutes) {
-        const obj = {issue_id: this.issueId};
+        const obj = {issue_id: this.issue.id};
         const payload = Object.assign(obj, this.trackForm);
         this.$store.dispatch('issue/addTrack', payload);
         this.trackForm = {};
+      }
+    },
+    deleteMe() {
+      let run = confirm('Вы уверены, что хотите удалить задачу? Все подзадачи будут так же удалены')
+      if (run) {
+        this.$store.dispatch('issue/deleteIssue', {id: this.issue.id});
+        this.$router.push({'name': 'issues'});
+        this.$store.commit('issue/SET_STATE', { issue: {} });
       }
     },
     isEdited(row){
@@ -171,7 +182,7 @@ export default {
     },
     deleteComment(row){
       this.$store.commit('issue/SET_STATE', { comment: row });
-      this.$store.dispatch('issue/deleteComment', {id: row.id, issue_id: this.issueId});
+      this.$store.dispatch('issue/deleteComment', {id: row.id, issue_id: this.issue.id});
     },
     callEditComment(row){
       this.$store.commit('issue/SET_STATE', { comment: row });
@@ -179,7 +190,7 @@ export default {
     },
     deleteTrack(row){
       this.$store.commit('issue/SET_STATE', {track: row});
-      this.$store.dispatch('issue/deleteTrack', {id: row.id, issue_id: this.issueId});
+      this.$store.dispatch('issue/deleteTrack', {id: row.id, issue_id: this.issue.id});
     },
     showIssueDescModal(){
       this.$store.dispatch('user/getUsers');

@@ -1,6 +1,7 @@
 from django.db.models.manager import Manager
 from ..user.models import EmployeeUser
 from ..project.models import Project
+from ..abstract.exceptions import BufferWantTimeException
 
 
 class IssueManager(Manager):
@@ -16,14 +17,21 @@ class IssueManager(Manager):
             query["executor"] = executor
 
         if want_minutes:
+            if parent_id:
+                parent = self.get(id=parent_id)
+                buffer = parent.want_buffer_minutes
+                if buffer - want_minutes >= 0:
+                    parent.want_buffer_minutes -= want_minutes
+                    parent.save()
+                    query['parent'] = parent
+                else:
+                    raise BufferWantTimeException
+
             query['want_minutes'] = want_minutes
+            query['want_buffer_minutes'] = want_minutes
 
         if description:
             query['description'] = description
-
-        if parent_id:
-            parent = self.get(id=parent_id)
-            query['parent'] = parent
 
         self.create(**query)
 

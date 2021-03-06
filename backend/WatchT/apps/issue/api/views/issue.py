@@ -1,7 +1,5 @@
 from rest_framework.generics import (DestroyAPIView,
                                      ListAPIView, RetrieveUpdateAPIView)
-from rest_framework.response import Response
-from rest_framework import status
 from ...models import Issue
 from ..serializers.issue import IssueSerializer
 from django.db.models.query import Q
@@ -9,6 +7,8 @@ from ....abstract.functional import sanitize_query_params
 from ...consts import *
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 
 class IssueListView(ListAPIView):
@@ -80,24 +80,25 @@ class IssueCreateView(APIView):
         if not level:
             level = 1
 
-        try:
-            Issue.objects.inherit_from_proj(short_name=short_name, header=header, author_username=author_username,
-                                            project_name=project_name, want_minutes=want_minutes, priority=priority,
-                                            executor_username=executor_username, description=description, level=level,
-                                            parent_id=parent_id)
-            return Response(status=status.HTTP_201_CREATED)
-        except BaseException as e:
-            return Response(data={"detail": "invalid", "exception": e}, status=status.HTTP_400_BAD_REQUEST)
+        Issue.objects.inherit_from_proj(short_name=short_name, header=header, author_username=author_username,
+                                        project_name=project_name, want_minutes=want_minutes, priority=priority,
+                                        executor_username=executor_username, description=description, level=level,
+                                        parent_id=parent_id)
+        return Response(status=status.HTTP_201_CREATED)
 
 
 class IssueDestroyView(DestroyAPIView):
-    queryset = Issue.objects.all()
-    serializer_class = IssueSerializer
     permission_classes = (IsAuthenticated,)
+    serializer_class = IssueSerializer
+    queryset = Issue.objects.all()
     lookup_field = 'id'
-    action_map = {
-        'delete': 'delete'
-    }
+
+    def delete(self, request, *args, **kwargs):
+        me = self.get_object()
+        parent = me.parent
+        parent.want_buffer_minutes += me.want_minutes
+        parent.save()
+        return super().delete(request, *args, **kwargs)
 
 
 class IssueChildListView(ListAPIView):

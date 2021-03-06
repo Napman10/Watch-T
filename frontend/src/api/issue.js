@@ -21,9 +21,15 @@ export const getChildren = async (params) => {
     return (await axios.get(`api/issue/childlist`, {params, headers: headers})).data;
 }
 
+export const deleteIssue = async (payload) => {
+    const id = payload.id;
+    return (await axios.delete(`api/issue/delete/${id}`, { payload, headers: headers})).data;
+}
+
 export default {
     getChildren,
     getIssues,
     addIssue,
-    getIssue
+    getIssue,
+    deleteIssue
 };

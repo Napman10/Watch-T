@@ -55,6 +55,8 @@ class Issue(BaseModel):
     status = models.IntegerField(choices=STATUS_CHOICES, default=NEW, verbose_name='Статус')
     want_minutes = models.IntegerField(validators=[is_int_validate, non_negative_int_validate], verbose_name='Оценка')
     got_minutes = models.IntegerField(validators=[is_int_validate, non_negative_int_validate], verbose_name='Затрачено')
+    want_buffer_minutes = models.IntegerField(validators=[is_int_validate, non_negative_int_validate],
+                                              verbose_name='Буфер оценки')
     parent = models.ForeignKey('self', verbose_name='Родительская задача', null=True,
                                blank=True, on_delete=models.CASCADE)
     level = models.IntegerField(verbose_name='Уровень вложенности',

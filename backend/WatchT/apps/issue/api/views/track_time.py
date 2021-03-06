@@ -45,7 +45,6 @@ class TrackListView(ListAPIView):
 class TrackDeleteView(DestroyAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = TrackDeleteSerializer
-    lookup_field = 'id'
 
     def get_queryset(self):
         return TrackTime.objects.all()

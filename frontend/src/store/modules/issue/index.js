@@ -72,6 +72,14 @@ export default {
                 setState(commit, { loading: false });
             }
         },
+        async deleteIssue({dispatch }, payload) {
+            try {
+                await api.deleteIssue(payload);
+                dispatch('getIssues')
+            } catch (e) {
+                showErrorNotify(e.message);
+            }
+        },
         async getComments({ commit }, issueId) {
             try {
                 const result = await api.getComments(issueId);

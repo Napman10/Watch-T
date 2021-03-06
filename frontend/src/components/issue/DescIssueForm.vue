@@ -104,7 +104,6 @@ export default {
                     this.$store.dispatch('issue/addIssue', payload);
                     this.$store.commit('issue/SET_STATE', { descIssueModalVisible: false });
                     this.form = {};
-                    location.reload();
                 }
             });
         },
