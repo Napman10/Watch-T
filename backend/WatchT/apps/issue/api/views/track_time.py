@@ -1,4 +1,4 @@
-from rest_framework.generics import (CreateAPIView, DestroyAPIView,
+from rest_framework.generics import (DestroyAPIView,
                                      ListAPIView)
 from ..serializers.track_time import TrackTimeSerializer, TrackDeleteSerializer
 from ...models import TrackTime
