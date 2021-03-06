@@ -46,7 +46,7 @@ export default {
             }
         },
         async addIssue({ commit, dispatch }, payload) {
-            payload.want_minutes = textToMinutes(payload.want_minutes);
+            payload.want_time = textToMinutes(payload.want_time);
             try {
                 await api.addIssue(payload);
                 showSuccessNotify(`Задание создано!`);
