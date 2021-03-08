@@ -83,8 +83,6 @@ class Comment(BaseModel):
 
     def __str__(self):
         string = f'{self.author} {self.datetime}'
-        if self.edited:
-            string += ' (ред.)'
         return string
 
 
