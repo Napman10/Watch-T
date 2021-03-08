@@ -100,3 +100,4 @@ class TrackTime(BaseModel):
     executor = models.ForeignKey(EmployeeUser, verbose_name='Сотрудник', on_delete=models.SET_NULL,
                                  null=True)
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE, verbose_name='Задача')
+    text = models.CharField(max_length=255, verbose_name='Описание работы', blank=True, null=True)

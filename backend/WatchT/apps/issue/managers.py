@@ -38,6 +38,6 @@ class IssueManager(Manager):
 
 
 class TrackTimeManager(Manager):
-    def depend_create(self, issue, minutes, executor):
+    def depend_create(self, issue, minutes, executor, text):
         set_got_time(issue, minutes)
-        self.create(issue=issue, minutes=minutes, executor=executor)
+        self.create(issue=issue, minutes=minutes, executor=executor, text=text)

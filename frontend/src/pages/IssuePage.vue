@@ -59,7 +59,7 @@
             <el-input
                 type="textarea"
                 v-model="commentForm.text"
-                clearable placeholder="Комментарий...">
+                clearable placeholder="Комментарий">
             </el-input>
           </el-form-item>
           <el-form-item>
@@ -74,6 +74,7 @@
         >
           <el-table-column prop="executor" width="150"/>
           <el-table-column prop="minutes" :formatter="tableMinutes" width="150"/>
+          <el-table-column prop="text" wigth="300"/>
           <el-table-column align="right">
             <template slot-scope="scope">
               <el-button
@@ -93,6 +94,11 @@
           <el-form-item label="Добавить время">
             <el-input v-model="trackForm.minutes" clearable placeholder="Затраченное время"></el-input>
           </el-form-item>
+          <el-input
+              type="textarea"
+              v-model="trackForm.text"
+              clearable placeholder="Описание">
+          </el-input>
           <el-form-item>
             <el-button type="primary" @click="addTrack">Затратить время</el-button>
           </el-form-item>

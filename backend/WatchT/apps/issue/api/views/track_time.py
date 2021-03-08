@@ -20,13 +20,15 @@ class TrackCreateView(APIView):
 
         executor = EmployeeUser.objects.filter(user=request.user).first()
         minutes = data.get('minutes')
+        text = data.get('text', '')
+
         if not minutes:
             return Response(data={"detail": "invalid time"}, status=status.HTTP_400_BAD_REQUEST)
 
         issue_id = data.get('issue_id')
         if issue_id:
             issue = Issue.objects.get(id=issue_id)
-            TrackTime.objects.depend_create(issue=issue, minutes=minutes, executor=executor)
+            TrackTime.objects.depend_create(issue=issue, minutes=minutes, executor=executor, text=text)
             return Response(status=status.HTTP_201_CREATED)
         return Response(data={"detail": "invalid"}, status=status.HTTP_400_BAD_REQUEST)
 
