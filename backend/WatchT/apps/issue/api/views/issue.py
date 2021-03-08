@@ -9,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from ...services import set_got_time
 
 
 class IssueListView(ListAPIView):
@@ -98,6 +99,10 @@ class IssueDestroyView(DestroyAPIView):
         parent = me.parent
         parent.want_buffer_minutes += me.want_minutes
         parent.save()
+
+        minutes = -me.got_minutes
+        set_got_time(me, minutes)
+
         return super().delete(request, *args, **kwargs)
 
 

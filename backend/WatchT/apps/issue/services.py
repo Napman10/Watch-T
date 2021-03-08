@@ -1,4 +1,5 @@
 import re
+from ..abstract.exceptions import NegativeGotTimeException
 
 
 def get_period_size(lst):
@@ -21,3 +22,12 @@ def string_to_issue_time(string):
         return minutes + hours * 60 + days * 480 + weeks * 2400
 
     return None
+
+
+def set_got_time(issue, minutes):
+    issue.got_minutes += minutes
+    if issue.got_minutes < 0:
+        raise NegativeGotTimeException
+    issue.save()
+    if issue.parent:
+        set_got_time(issue.parent, minutes)

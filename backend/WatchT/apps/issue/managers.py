@@ -2,6 +2,7 @@ from django.db.models.manager import Manager
 from ..user.models import EmployeeUser
 from ..project.models import Project
 from ..abstract.exceptions import BufferWantTimeException
+from .services import set_got_time
 
 
 class IssueManager(Manager):
@@ -38,6 +39,5 @@ class IssueManager(Manager):
 
 class TrackTimeManager(Manager):
     def depend_create(self, issue, minutes, executor):
-        issue.got_minutes += minutes
-        issue.save()
+        set_got_time(issue, minutes)
         self.create(issue=issue, minutes=minutes, executor=executor)

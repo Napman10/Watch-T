@@ -9,6 +9,7 @@ from ....user.models import EmployeeUser
 from ...models import Issue
 from rest_framework.response import Response
 from rest_framework import status
+from ...services import set_got_time
 
 
 class TrackCreateView(APIView):
@@ -45,6 +46,7 @@ class TrackListView(ListAPIView):
 class TrackDeleteView(DestroyAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = TrackDeleteSerializer
+    lookup_field = 'id'
 
     def get_queryset(self):
         return TrackTime.objects.all()
@@ -52,8 +54,7 @@ class TrackDeleteView(DestroyAPIView):
     def delete(self, request, *args, **kwargs):
         track = self.get_object()
         issue = track.issue
-        issue.got_minutes -= track.minutes
-        if issue.got_minutes < 0:
-            return Response(data={"detail": "invalid"}, status=status.HTTP_400_BAD_REQUEST)
-        issue.save()
+        minutes = -track.minutes
+        set_got_time(issue, minutes)
+
         return super().delete(request, *args, **kwargs)
