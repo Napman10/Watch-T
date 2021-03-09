@@ -17,8 +17,14 @@ export const addUser = async (payload) => {
     return (await axios.post('api/user/', payload, {headers: headers})).data;
 };
 
+export const editUser = async (payload) => {
+    const id = payload.id;
+    return (await axios.put(`api/user/${id}`, payload, {headers: headers})).data;
+}
+
 export default {
     getUsers,
     addUser,
-    getUser
+    getUser,
+    editUser
 };

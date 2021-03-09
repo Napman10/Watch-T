@@ -8,13 +8,15 @@ export default {
         users: [],
         user: {},
         loading: false,
-        isCreateModalVisible: false
+        isCreateModalVisible: false,
+        isEdit: false
     },
     getters: {
         user: (state) => state.user,
         users: (state) => state.users,
         loading: (state) => state.loading,
-        isCreateModalVisible: (state) => state.isCreateModalVisible
+        isCreateModalVisible: (state) => state.isCreateModalVisible,
+        isEdit: (state) => state.isEdit
     },
     mutations: {
         SET_STATE
@@ -50,6 +52,17 @@ export default {
             } finally {
                 setState(commit, { loading: false });
             }
+        },
+        async editUser({commit}, payload) {
+            try {
+                await api.editUser(payload);
+                showSuccessNotify(`Сохранено`);
+                setState(commit, {isEdit: false});
+                location.reload()
+            } catch (e) {
+                showErrorNotify(e.message)
+            }
         }
+
     }
 };

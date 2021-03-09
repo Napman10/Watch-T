@@ -1,6 +1,6 @@
 <template>
-    <el-dialog title="Регистрация нового пользователя" :visible="isCreateModalVisible" :before-close="closeModal">
-        <el-form :model="form" ref="userForm" :rules="rules">
+    <el-dialog :title="this.isEdit ? `Редактирование пользователя` : `Регистрация пользователя`" :visible="isCreateModalVisible" :before-close="closeModal">
+        <el-form :model="form" ref="userForm" :rules="this.isEdit ? rulesEdit : rulesCreate">
 
             <el-form-item label="Никнейм" prop="username">
                 <el-input v-model="form.username"></el-input>
@@ -27,7 +27,7 @@
             </el-form-item>
 
             <el-form-item label="Роль">
-                <el-select v-model="form.role"  value=0 clearable placeholder="Выберите роль">
+                <el-select v-model="form.role"  :value="this.user.role" clearable placeholder="Выберите роль">
                     <el-option :value="0" label="Гость" />
                     <el-option :value="1" label="Разработчик" />
                     <el-option :value="2" label="Аналитик" />
@@ -41,7 +41,7 @@
         <div slot="footer">
             <el-button @click="closeModal">Закрыть</el-button>
             <el-button @click="clearForm">Очистить</el-button>
-            <el-button @click="submit" type="primary">Создать</el-button>
+            <el-button @click="submit" type="primary">Сохранить</el-button>
         </div>
     </el-dialog>
 </template>
@@ -52,7 +52,7 @@ export default {
     data() {
         return {
             form: {},
-            rules: {
+            rulesCreate: {
                 username: [
                     {
                         required: true,
@@ -108,18 +108,56 @@ export default {
                         message: 'Не больше 254 символов'
                     }
                 ],
-            }
+            },
+          rulesEdit: {
+            username: [
+              {
+                max: 150,
+                message: 'Не больше 150 символов'
+              }
+            ],
+            password: [
+              {
+                max: 128,
+                message: 'Не больше 128 символов'
+              },
+              {
+                min: 8,
+                message: 'Не менее 8 символов'
+              }
+            ],
+            password2: [
+              {
+                validator: this.validatePassword
+              }
+            ],
+            first_name: [
+              {
+                max: 30,
+                message: 'Не больше 30 символов'
+              }
+            ],
+            last_name: [
+              {
+                max: 150,
+                message: 'Не больше 150 символов'
+              }
+            ],
+            email: [
+              {
+                max: 254,
+                message: 'Не больше 254 символов'
+              }
+            ],
+          },
         };
     },
     computed: {
-        ...mapGetters('user', ['isCreateModalVisible']),
+        ...mapGetters('user', ['isCreateModalVisible', 'isEdit', 'user']),
     },
     methods: {
       validatePassword(rule, value, callback) {
-            console.log(this.form.password)
-            if (!value || value === '') {
-                return callback(new Error('Поле обязательно для заполнения'));
-            } else if (value !== this.form.password) {
+            if (value !== this.form.password && this.form.password) {
                 return callback(new Error('Пароли не совпадают'));
             } else {
                 callback();
@@ -128,7 +166,12 @@ export default {
         submit() {
             this.$refs['userForm'].validate((valid) => {
                 if (valid) {
-                    this.$store.dispatch('user/addUser', this.form);
+                    if (this.isEdit) {
+                      const payload = Object.assign(this.form, {id: this.user.id});
+                      this.$store.dispatch('user/editUser', payload);
+                    } else {
+                      this.$store.dispatch('user/addUser', this.form);
+                    }
                     this.form = {};
                 }
             });

@@ -57,6 +57,10 @@ class IssueOpenView(RetrieveUpdateAPIView):
     def get_queryset(self):
         return Issue.objects.all()
 
+    def put(self, request, *args, **kwargs):
+
+        return super().put(request, *args, **kwargs)
+
 
 class IssueCreateView(APIView):
     permission_classes = (IsAuthenticated,)

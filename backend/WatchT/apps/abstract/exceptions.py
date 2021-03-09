@@ -9,3 +9,8 @@ class BufferWantTimeException(APIException):
 class NegativeGotTimeException(APIException):
     status_code = 400
     default_detail = 'got_time < 0'
+
+
+class NotConfirmedPass(APIException):
+    status_code = 400
+    default_detail = 'password != confirm'
