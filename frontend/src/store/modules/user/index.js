@@ -62,6 +62,14 @@ export default {
             } catch (e) {
                 showErrorNotify(e.message)
             }
+        },
+        async deleteUser({dispatch}, payload){
+            try {
+                await api.deleteUser(payload);
+                dispatch('getUsers');
+            } catch (e) {
+                showErrorNotify(e.message);
+            }
         }
 
     }

@@ -29,7 +29,15 @@ export default {
   methods: {
     callEditUser(){
       this.$store.commit('user/SET_STATE', { isEdit: true, isCreateModalVisible: true });
-    }
+    },
+    deleteMe() {
+      let run = confirm('Вы уверены, что хотите удалить пользователя?')
+      if (run) {
+        this.$store.dispatch('user/deleteUser', {id: this.user.id});
+        this.$router.push({'name': 'users'});
+        this.$store.commit('user/SET_STATE', { user: {} });
+      }
+    },
   },
    mounted() {
         this.$store.dispatch('user/getUser', this.userId);

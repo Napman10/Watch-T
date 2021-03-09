@@ -22,9 +22,15 @@ export const editUser = async (payload) => {
     return (await axios.put(`api/user/${id}`, payload, {headers: headers})).data;
 }
 
+export const deleteUser = async (payload) => {
+    const id = payload.id;
+    return (await axios.delete(`api/user/delete/${id}`, { payload, headers: headers})).data;
+}
+
 export default {
     getUsers,
     addUser,
     getUser,
-    editUser
+    editUser,
+    deleteUser
 };
