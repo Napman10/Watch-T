@@ -24,7 +24,7 @@ export const editUser = async (payload) => {
 
 export const deleteUser = async (payload) => {
     const id = payload.id;
-    return (await axios.delete(`api/user/delete/${id}`, { payload, headers: headers})).data;
+    return (await axios.delete(`api/user/${id}`, { payload, headers: headers})).data;
 }
 
 export default {

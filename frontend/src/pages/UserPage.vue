@@ -6,6 +6,9 @@
     <div style="text-align: right">
       <el-button type="primary" @click="callEditUser" style="margin-bottom: 10px">Редактировать пользователя</el-button>
     </div>
+    <div style="text-align: right">
+      <el-button type="danger" @click="deleteMe" style="margin-bottom: 10px">Удалить пользователя</el-button>
+    </div>
     <user-form/>
   </div>
 </template>

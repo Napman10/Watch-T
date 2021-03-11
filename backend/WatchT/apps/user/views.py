@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from .services import create_user
 from .serializers import EmployeeUserSerializer
 from .models import EmployeeUser
-from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
 from ..abstract.functional import sanitize_query_params
 from ..abstract.exceptions import NotConfirmedPass
 from django.db.models.query import Q
@@ -19,7 +19,7 @@ class UserCreateAPIView(APIView):
         return create_user(user_data=data)
 
 
-class UserOpenView(RetrieveUpdateAPIView):
+class UserOpenView(RetrieveUpdateDestroyAPIView):
     serializer_class = EmployeeUserSerializer
     permission_classes = (IsAuthenticated,)
     lookup_field = 'id'
@@ -67,6 +67,12 @@ class UserOpenView(RetrieveUpdateAPIView):
             real_user.save()
 
         return Response(status=status.HTTP_200_OK)
+
+    def delete(self, request, *args, **kwargs):
+        user = self.get_object()
+        pure_user = user.user
+        pure_user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class UserAPIListView(ListAPIView):
