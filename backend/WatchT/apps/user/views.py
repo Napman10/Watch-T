@@ -9,6 +9,8 @@ from ..abstract.exceptions import NotConfirmedPass
 from django.db.models.query import Q
 from rest_framework.response import Response
 from rest_framework import status
+from ..project.models import Project2User
+from rest_framework.exceptions import APIException
 
 
 class UserCreateAPIView(APIView):
@@ -81,6 +83,15 @@ class UserAPIListView(ListAPIView):
 
     def get_queryset(self):
         params = sanitize_query_params(self.request)
+        project_id = params.get('project_id')
+        if project_id is not None:
+            exclude = params.get('exclude')
+            p2u = Project2User.objects.filter(project__id=project_id)
+            user_ids = [p.user.id for p in p2u]
+            if exclude is not None:
+                return EmployeeUser.objects.exclude(id__in=user_ids)
+            return EmployeeUser.objects.filter(id__in=user_ids)
+
         somename = params.get('somename')
 
         if somename is not None:

@@ -29,8 +29,8 @@ class IssueSerializer(serializers.ModelSerializer):
     def get_executor(self, obj: Issue) -> str:
         return string_or_empty(obj.executor)
 
-    def get_project(self, obj: Issue) -> str:
-        return str(obj.project)
+    def get_project(self, obj: Issue) -> dict:
+        return {'name': str(obj.project), 'id': str(obj.project.id)}
 
     def get_priority(self, obj: Issue) -> str:
         priorities = ['Низкий', 'Обычный', 'Серьёзный', 'Критический']

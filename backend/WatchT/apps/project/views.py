@@ -50,13 +50,13 @@ class Project2UserView(APIView):
 
     def initialize(self, request):
         data = request.data
-        user_id = data.get('user_id')
-        if not user_id:
+        username = data.get('user')
+        if not username:
             raise APIException
         project_id = data.get('project_id')
         if not project_id:
             raise APIException
-        user = EmployeeUser.objects.get(id=user_id)
+        user = EmployeeUser.objects.filter(user__username=username).first()
         project = Project.objects.get(id=project_id)
         return user, project
 

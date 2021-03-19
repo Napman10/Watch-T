@@ -8,13 +8,15 @@ export default {
         projects: [],
         project: {},
         loading: false,
-        isCreateModalVisible: false
+        isCreateModalVisible: false,
+        isAssignModalVisible: false
     },
     getters: {
         projects: (state) => state.projects,
         project: (state) => state.project,
         loading: (state) => state.loading,
-        isCreateModalVisible: (state) => state.isCreateModalVisible
+        isCreateModalVisible: (state) => state.isCreateModalVisible,
+        isAssignModalVisible: (state) => state.isAssignModalVisible
     },
     mutations: {
         SET_STATE
@@ -47,6 +49,15 @@ export default {
                 showErrorNotify(e.message);
             } finally {
                 setState(commit, { loading: false });
+            }
+        },
+        async assignUser({ commit, dispatch }, payload) {
+            try {
+                await api.assignUser(payload);
+                alert(payload)
+                showSuccessNotify(`Сотрудник назначен`);
+            } catch (e) {
+                showErrorNotify(e.message)
             }
         }
     }

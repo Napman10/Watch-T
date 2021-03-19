@@ -3,7 +3,7 @@
     <h2>{{issue.short_name}}</h2>
     <h2>{{issue.header}}</h2>
     {{issue.description}}
-    <h5>Проект: {{issue.project}}</h5>
+    <h5>Проект: {{issue.project.name}}</h5>
     <h5>Автор: {{issue.author}}</h5>
     <h5>Исполнитель: {{executorOrNull(issue)}} </h5>
     <h5>Статус: {{issue.status}} </h5>
@@ -127,7 +127,7 @@ export default {
     },
   computed: {
         ...mapGetters('issue', ['issue', 'comments', 'tracks', 'children',
-          'editCommentModalVisible', 'descIssueModalVisible']),
+          'editCommentModalVisible', 'descIssueModalVisible'])
     },
   components: {
     CommentEditForm,
@@ -199,7 +199,7 @@ export default {
       this.$store.dispatch('issue/deleteTrack', {id: row.id, issue_id: this.issue.id});
     },
     showIssueDescModal(){
-      this.$store.dispatch('user/getUsers');
+      this.$store.dispatch('user/getUsers', {project_id: this.issue.project.id});
       this.$store.commit('issue/SET_STATE', {descIssueModalVisible: true});
     },
     openIssue(cell){
