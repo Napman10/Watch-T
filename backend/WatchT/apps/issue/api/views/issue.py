@@ -72,6 +72,7 @@ class IssueCreateView(APIView):
         header = data.get('header')
         author_username = request.user.username
         project_name = data.get('project_name')
+        executor_username = data.get('executor_username')
 
         want_minutes = data.get('want_time')
 
@@ -87,7 +88,7 @@ class IssueCreateView(APIView):
 
         Issue.objects.inherit_from_proj(short_name=short_name, header=header, author_username=author_username,
                                         project_name=project_name, want_minutes=want_minutes,
-                                        priority=priority,
+                                        priority=priority, executor_username=executor_username,
                                         description=description, level=level,
                                         parent_id=parent_id)
         return Response(status=status.HTTP_201_CREATED)
@@ -102,8 +103,9 @@ class IssueDestroyView(DestroyAPIView):
     def delete(self, request, *args, **kwargs):
         me = self.get_object()
         parent = me.parent
-        parent.want_buffer_minutes += me.want_minutes
-        parent.save()
+        if parent:
+            parent.want_buffer_minutes += me.want_minutes
+            parent.save()
 
         minutes = -me.got_minutes
         set_got_time(me, minutes)

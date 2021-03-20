@@ -99,7 +99,7 @@ export default {
         submit() {
             this.$refs['issueForm'].validate((valid) => {
                 if (valid) {
-                    const desc = {parent: this.issue.id, level: this.issue.level + 1, project_name: this.issue.project}
+                    const desc = {parent: this.issue.id, level: this.issue.level + 1, project_name: this.issue.project.name}
                     let payload = Object.assign(this.form, desc);
                     this.$store.dispatch('issue/addIssue', payload);
                     this.$store.commit('issue/SET_STATE', { descIssueModalVisible: false });

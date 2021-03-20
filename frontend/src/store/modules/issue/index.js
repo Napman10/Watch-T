@@ -75,7 +75,8 @@ export default {
         async deleteIssue({dispatch }, payload) {
             try {
                 await api.deleteIssue(payload);
-                dispatch('getIssues')
+                showSuccessNotify(`Задание удалено`);
+                dispatch('getIssues');
             } catch (e) {
                 showErrorNotify(e.message);
             }
