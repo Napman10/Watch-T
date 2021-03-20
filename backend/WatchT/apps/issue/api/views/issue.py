@@ -76,7 +76,7 @@ class IssueCreateView(APIView):
         want_minutes = data.get('want_time')
 
         priority = data.get('priority')
-        executor_username = data.get('executor_username')
+
         description = data.get('description')
 
         parent_id = data.get('parent')
@@ -86,8 +86,9 @@ class IssueCreateView(APIView):
             level = 1
 
         Issue.objects.inherit_from_proj(short_name=short_name, header=header, author_username=author_username,
-                                        project_name=project_name, want_minutes=want_minutes, priority=priority,
-                                        executor_username=executor_username, description=description, level=level,
+                                        project_name=project_name, want_minutes=want_minutes,
+                                        priority=priority,
+                                        description=description, level=level,
                                         parent_id=parent_id)
         return Response(status=status.HTTP_201_CREATED)
 

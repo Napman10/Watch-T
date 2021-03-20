@@ -20,17 +20,6 @@
                 </el-select>
             </el-form-item>
 
-            <el-form-item label="Выполнит" prop="executor_username">
-                <el-select v-model="form.executor_username"
-                  clearable placeholder="Выберите исполнителя">
-                  <el-option
-                    v-for="item in users"
-                    :key="item.username"
-                    :value="item.username">
-                  </el-option>
-                </el-select>
-            </el-form-item>
-
             <el-form-item label="Оценка" prop="want_time">
                 <el-input
                 placeholder=""
