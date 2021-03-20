@@ -47,6 +47,7 @@ export default {
         if (valid) {
           const data = Object.assign(this.form, {id: this.issue.id});
           this.$store.dispatch('issue/assignUser', data);
+          this.$store.dispatch('issue/getIssue', this.issue.id);
           this.form = {};
         }
       });

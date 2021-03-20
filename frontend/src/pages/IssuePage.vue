@@ -215,7 +215,8 @@ export default {
       this.$router.push({'name': 'issue', params: {issueId: id}});
     },
     assignUser() {
-      this.$store.dispatch('user/getUsers', {project_id: this.issue.project.id});
+      this.$store.dispatch('user/getUsers',
+          {project_id: this.issue.project.id, dev: true});
       this.$store.commit('issue/SET_STATE', { isAssignModalVisible: true });
     }
   },

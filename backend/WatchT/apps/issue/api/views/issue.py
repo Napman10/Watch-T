@@ -65,7 +65,7 @@ class IssueOpenView(RetrieveUpdateAPIView):
         executor_username = request.data.get('user')
         employee = EmployeeUser.objects.filter(user__username=executor_username).first()
         p2u = Project2User.objects.filter(user=employee, project=issue.project).exists()
-        if p2u:
+        if p2u and employee.role in [EmployeeUser.ADMINISTRATOR, EmployeeUser.LEAD, EmployeeUser.DEVELOPER]:
             issue.executor = employee
             issue.save()
             return Response(status=status.HTTP_200_OK)

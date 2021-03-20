@@ -84,12 +84,18 @@ class UserAPIListView(ListAPIView):
     def get_queryset(self):
         params = sanitize_query_params(self.request)
         project_id = params.get('project_id')
+        dev = params.get('dev')
         if project_id is not None:
             exclude = params.get('exclude')
             p2u = Project2User.objects.filter(project__id=project_id)
             user_ids = [p.user.id for p in p2u]
             if exclude is not None:
                 return EmployeeUser.objects.exclude(id__in=user_ids)
+            if dev is not None:
+                return EmployeeUser.objects.filter(id__in=user_ids,
+                                                   role__in=[EmployeeUser.DEVELOPER,
+                                                             EmployeeUser.ADMINISTRATOR,
+                                                             EmployeeUser.LEAD])
             return EmployeeUser.objects.filter(id__in=user_ids)
 
         somename = params.get('somename')
