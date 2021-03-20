@@ -51,11 +51,11 @@ export default {
                 setState(commit, { loading: false });
             }
         },
-        async assignUser({ commit, dispatch }, payload) {
+        async assignUser({ dispatch }, payload) {
             try {
                 await api.assignUser(payload);
-                alert(payload)
                 showSuccessNotify(`Сотрудник назначен`);
+                dispatch('getProject');
             } catch (e) {
                 showErrorNotify(e.message)
             }
