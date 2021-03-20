@@ -21,9 +21,15 @@ export const assignUser = async (payload) => {
     return (await axios.post('api/project/assign/', payload, {headers: headers})).data;
 }
 
+export const unAssignUser = async (payload) => {
+    return (await axios.delete(`api/project/assign/?project_id=${payload.project_id}&user=${payload.user}`,
+        {payload, headers: headers})).data;
+}
+
 export default {
     assignUser,
     getProjects,
     addProject,
-    getProject
+    getProject,
+    unAssignUser
 };

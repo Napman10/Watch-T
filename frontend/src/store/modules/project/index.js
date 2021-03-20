@@ -9,14 +9,16 @@ export default {
         project: {},
         loading: false,
         isCreateModalVisible: false,
-        isAssignModalVisible: false
+        isAssignModalVisible: false,
+        isUnAssignModalVisible: false
     },
     getters: {
         projects: (state) => state.projects,
         project: (state) => state.project,
         loading: (state) => state.loading,
         isCreateModalVisible: (state) => state.isCreateModalVisible,
-        isAssignModalVisible: (state) => state.isAssignModalVisible
+        isAssignModalVisible: (state) => state.isAssignModalVisible,
+        isUnAssignModalVisible: (state) => state.isUnAssignModalVisible
     },
     mutations: {
         SET_STATE
@@ -51,13 +53,22 @@ export default {
                 setState(commit, { loading: false });
             }
         },
-        async assignUser({ dispatch }, payload) {
+        async assignUser({ commit }, payload) {
             try {
                 await api.assignUser(payload);
-                showSuccessNotify(`Сотрудник назначен`);
-                dispatch('getProject');
+                showSuccessNotify(`Сотрудник назначен на проект`);
+                setState(commit, { isAssignModalVisible: false });
             } catch (e) {
-                showErrorNotify(e.message)
+                showErrorNotify(e.message);
+            }
+        },
+        async unAssignUser({ commit }, payload) {
+            try {
+                await api.unAssignUser(payload);
+                showSuccessNotify(`Сотрудник отстранен от проекта`);
+                setState(commit, { isUnAssignModalVisible: false });
+            } catch (e) {
+                showErrorNotify(e.message);
             }
         }
     }

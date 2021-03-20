@@ -8,6 +8,7 @@ from ..user.models import EmployeeUser
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from ..abstract.functional import sanitize_query_params
 
 
 class ProjectListView(ListAPIView):
@@ -50,6 +51,8 @@ class Project2UserView(APIView):
 
     def initialize(self, request):
         data = request.data
+        if not data:
+            data = sanitize_query_params(request)
         username = data.get('user')
         if not username:
             raise APIException
