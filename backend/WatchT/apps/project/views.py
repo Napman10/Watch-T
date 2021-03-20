@@ -70,5 +70,7 @@ class Project2UserView(APIView):
 
     def delete(self, request):
         user, project = self.initialize(request)
-        Project2User.objects.filter(user=user, project=project).first().delete()
+        p = Project2User.objects.filter(user=user, project=project).first()
+        if p:
+            p.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
