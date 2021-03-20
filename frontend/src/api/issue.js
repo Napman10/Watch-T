@@ -26,8 +26,14 @@ export const deleteIssue = async (payload) => {
     return (await axios.delete(`api/issue/delete/${id}`, { payload, headers: headers})).data;
 }
 
+export const assignUserIssue = async (payload) => {
+    const id = payload.id;
+    return (await axios.put(`api/issue/${id}/`, payload, {headers: headers})).data;
+}
+
 export default {
     getChildren,
+    assignUserIssue,
     getIssues,
     addIssue,
     getIssue,

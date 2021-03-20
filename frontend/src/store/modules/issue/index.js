@@ -17,7 +17,8 @@ export default {
         isCreateModalVisible: false,
         editCommentModalVisible: false,
         descIssueModalVisible: false,
-        descProjectIssueModalVisible: false
+        descProjectIssueModalVisible: false,
+        isAssignModalVisible: false
     },
     getters: {
         issue: (state) => state.issue,
@@ -31,7 +32,8 @@ export default {
         isCreateModalVisible: (state) => state.isCreateModalVisible,
         editCommentModalVisible: (state) => state.editCommentModalVisible,
         descIssueModalVisible: (state) => state.descIssueModalVisible,
-        descProjectIssueModalVisible: (state) => state.descProjectIssueModalVisible
+        descProjectIssueModalVisible: (state) => state.descProjectIssueModalVisible,
+        isAssignModalVisible: (state) => state.isAssignModalVisible
     },
     mutations: {
         SET_STATE
@@ -146,6 +148,15 @@ export default {
             } catch (e) {
                 showErrorNotify(e.message);
             }
-        }
+        },
+        async assignUser({ commit }, payload) {
+            try {
+                await api.assignUserIssue(payload);
+                showSuccessNotify(`Задача назначена на сотрудника`);
+                setState(commit, { isAssignModalVisible: false });
+            } catch (e) {
+                showErrorNotify(e.message);
+            }
+        },
     }
 };

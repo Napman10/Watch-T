@@ -28,6 +28,9 @@
     <div style="text-align: right">
       <el-button type="danger" @click="deleteMe" style="margin-bottom: 10px">Удалить задачу</el-button>
     </div>
+    <div style="text-align: right">
+      <el-button type="primary" @click="assignUser">Назначить сотрудника</el-button>
+    </div>
     <el-tabs type="card">
       <el-tab-pane label="Комментарии">
         <el-table
@@ -102,12 +105,14 @@
           <el-form-item>
             <el-button type="primary" @click="addTrack">Затратить время</el-button>
           </el-form-item>
+
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="История">Role</el-tab-pane>
     </el-tabs>
     <comment-edit-form/>
     <desc-issue-form/>
+    <assign-user-form/>
   </div>
 </template>
 
@@ -115,6 +120,7 @@
 import {mapGetters} from "vuex";
 import CommentEditForm from "@/components/issue/CommentEditForm";
 import DescIssueForm from "@/components/issue/DescIssueForm";
+import AssignUserForm from "@/components/issue/AssignUserForm";
 import { minutesToText } from "@/utils/transfer";
 
 export default {
@@ -131,7 +137,8 @@ export default {
     },
   components: {
     CommentEditForm,
-    DescIssueForm
+    DescIssueForm,
+    AssignUserForm
   },
   methods: {
     addComment(){
@@ -206,6 +213,10 @@ export default {
       const id = cell.id;
       this.$store.dispatch('issue/getIssue', id);
       this.$router.push({'name': 'issue', params: {issueId: id}});
+    },
+    assignUser() {
+      this.$store.dispatch('user/getUsers', {project_id: this.issue.project.id});
+      this.$store.commit('issue/SET_STATE', { isAssignModalVisible: true });
     }
   },
    mounted() {

@@ -10,6 +10,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from ...services import set_got_time
+from ....user.models import EmployeeUser
+from ....project.models import Project2User
+from rest_framework.exceptions import APIException
 
 
 class IssueListView(ListAPIView):
@@ -58,8 +61,15 @@ class IssueOpenView(RetrieveUpdateAPIView):
         return Issue.objects.all()
 
     def put(self, request, *args, **kwargs):
-
-        return super().put(request, *args, **kwargs)
+        issue = self.get_object()
+        executor_username = request.data.get('user')
+        employee = EmployeeUser.objects.filter(user__username=executor_username).first()
+        p2u = Project2User.objects.filter(user=employee, project=issue.project).exists()
+        if p2u:
+            issue.executor = employee
+            issue.save()
+            return Response(status=status.HTTP_200_OK)
+        raise APIException
 
 
 class IssueCreateView(APIView):

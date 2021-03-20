@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from ..abstract.functional import sanitize_query_params
+from ..issue.models import Issue
 
 
 class ProjectListView(ListAPIView):
@@ -72,5 +73,10 @@ class Project2UserView(APIView):
         user, project = self.initialize(request)
         p = Project2User.objects.filter(user=user, project=project).first()
         if p:
+            project = p.project
+            issues = Issue.objects.filter(project=project)
+            for issue in issues:
+                issue.executor = None
+                issue.save()
             p.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
