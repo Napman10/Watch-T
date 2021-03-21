@@ -70,7 +70,7 @@ export default {
                 showSuccessNotify(`Сотрудник назначен на проект`);
                 setState(commit, { isAssignModalVisible: false });
             } catch (e) {
-                showErrorNotify(e.message);
+                showErrorNotify(e.response.data.detail);
             }
         },
         async unAssignUser({ commit }, payload) {
@@ -79,7 +79,7 @@ export default {
                 showSuccessNotify(`Сотрудник отстранен от проекта`);
                 setState(commit, { isUnAssignModalVisible: false });
             } catch (e) {
-                showErrorNotify(e.message);
+                showErrorNotify(e.response.data.detail);
             }
         }
     }
