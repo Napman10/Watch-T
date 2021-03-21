@@ -8,7 +8,7 @@ from ..user.models import EmployeeUser
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from ..abstract.functional import sanitize_query_params
+from ..abstract.functional import sanitize_query_params, get_user
 from ..issue.models import Issue
 from ..abstract.permissions import AssignedStuffOnly, MustBeAdmin
 
@@ -36,8 +36,7 @@ class ProjectCreateView(CreateAPIView):
     permission_classes = (IsAuthenticated, MustBeAdmin)
 
     def post(self, request, *args, **kwargs):
-        pure_user = request.user
-        user = EmployeeUser.objects.filter(user=pure_user).first()
+        user = get_user(request)
 
         response = super().post(request, *args, **kwargs)
         returned_id = response.data.get('id')

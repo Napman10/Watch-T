@@ -1,4 +1,5 @@
 import re
+from ..user.models import EmployeeUser
 
 
 def sanitize_query_params(request):
@@ -23,3 +24,8 @@ def month_russian(month):
     month = int(month) - 1
     months = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек']
     return months[month]
+
+
+def get_user(request):
+    pure_user = request.user
+    return EmployeeUser.objects.filter(user=pure_user).first()
