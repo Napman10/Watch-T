@@ -8,6 +8,7 @@ export default {
         projects: [],
         project: {},
         loading: false,
+        unAssignedStuff: false,
         isCreateModalVisible: false,
         isAssignModalVisible: false,
         isUnAssignModalVisible: false
@@ -15,6 +16,7 @@ export default {
     getters: {
         projects: (state) => state.projects,
         project: (state) => state.project,
+        unAssignedStuff: (state) => state.unAssignedStuff,
         loading: (state) => state.loading,
         isCreateModalVisible: (state) => state.isCreateModalVisible,
         isAssignModalVisible: (state) => state.isAssignModalVisible,
@@ -46,9 +48,18 @@ export default {
             try {
                 setState(commit, { loading: true });
                 const result = await api.getProject(projectId);
-                setState(commit, { project: result });
+
+                setState(commit, { project: result.data });
             } catch (e) {
-                showErrorNotify(e.message);
+                const assignedStuffOnlyDetail = 'You do not have permission to watch this project';
+                const detail = e.response.data.detail;
+                if (detail === assignedStuffOnlyDetail) {
+                    setState(commit, { unAssignedStuff: true });
+                }
+                else {
+                    showErrorNotify(detail);
+                }
+
             } finally {
                 setState(commit, { loading: false });
             }

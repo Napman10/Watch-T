@@ -3,8 +3,8 @@ from ..project.models import Project2User, Project
 from ..issue.models import Issue
 from ..user.models import EmployeeUser
 
-class AssignedStuffOnly(permissions.BasePermission):
 
+class AssignedStuffOnly(permissions.BasePermission):
     message = "You do not have permission to watch this project"
 
     def has_permission(self, request, view):
@@ -16,11 +16,10 @@ class AssignedStuffOnly(permissions.BasePermission):
         obj = view.get_object()
         if isinstance(obj, Issue):
             project = obj.project
-        elif (obj, Project):
+        elif isinstance(obj, Project):
             project = obj
         else:
             print("permission error")
-            project = None
             raise BaseException
-        
+
         return Project2User.objects.filter(user=user, project=project).exists()

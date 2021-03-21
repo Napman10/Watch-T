@@ -10,7 +10,7 @@ export const getProjects = async (params) => {
 };
 
 export const getProject = async (id) => {
-    return (await axios.get(`api/project/${id}`, {headers: headers})).data;
+    return (await axios.get(`api/project/${id}`, {headers: headers}));
 };
 
 export const addProject = async (payload) => {

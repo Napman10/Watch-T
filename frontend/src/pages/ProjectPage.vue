@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!unAssignedStuff">
     <h2>{{project.short_name}}</h2>
     <h2>{{project.header}}</h2>
     {{project.description}}
@@ -15,6 +15,9 @@
   <desc-project-issue-form/>
   <assign-user-form/>
   <un-assign-user-form/>
+  </div>
+  <div v-else>
+    Вы не назначены на этот проект
   </div>
 </template>
 
@@ -36,7 +39,7 @@ export default {
     UnAssignUserForm
   },
   computed: {
-        ...mapGetters('project', ['project', 'isAssignModalVisible', 'isUnAssignModalVisible']),
+        ...mapGetters('project', ['project', 'isAssignModalVisible', 'isUnAssignModalVisible', 'unAssignedStuff']),
         ...mapGetters('issue', ['descProjectIssueModalVisible'])
     },
   methods: {
