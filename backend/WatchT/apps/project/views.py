@@ -42,6 +42,7 @@ class ProjectCreateView(CreateAPIView):
 class ProjectDestroyView(DestroyAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    permission_classes = (IsAuthenticated,)
     lookup_field = 'id'
     action_map = {
         'delete': 'delete'
@@ -49,6 +50,7 @@ class ProjectDestroyView(DestroyAPIView):
 
 
 class Project2UserView(APIView):
+    permission_classes = (IsAuthenticated,)
 
     def initialize(self, request):
         data = request.data
