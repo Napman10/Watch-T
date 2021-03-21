@@ -10,6 +10,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from ..abstract.functional import sanitize_query_params
 from ..issue.models import Issue
+from ..abstract.permissions import AssignedStuffOnly
 
 
 class ProjectListView(ListAPIView):
@@ -22,7 +23,7 @@ class ProjectListView(ListAPIView):
 
 class ProjectOpenView(RetrieveUpdateAPIView):
     serializer_class = ProjectSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, AssignedStuffOnly)
     lookup_field = 'id'
 
     def get_queryset(self):
