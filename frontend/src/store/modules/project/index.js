@@ -41,7 +41,7 @@ export default {
                 setState(commit, { isCreateModalVisible: false });
                 dispatch('getProjects');
             } catch (e) {
-                showErrorNotify(e);
+                showErrorNotify(e.response.data.detail);
             }
         },
         async getProject({ commit }, projectId) {

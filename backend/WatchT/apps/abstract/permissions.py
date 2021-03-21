@@ -23,3 +23,14 @@ class AssignedStuffOnly(permissions.BasePermission):
             raise BaseException
 
         return Project2User.objects.filter(user=user, project=project).exists()
+
+
+class MustBeAdmin(permissions.BasePermission):
+    message = "You must be an admin"
+
+    def has_permission(self, request, view):
+        pure_user = request.user
+        user = EmployeeUser.objects.filter(user=pure_user).first()
+        if user.role == EmployeeUser.ADMINISTRATOR:
+            return True
+        return False

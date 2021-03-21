@@ -10,7 +10,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from ..abstract.functional import sanitize_query_params
 from ..issue.models import Issue
-from ..abstract.permissions import AssignedStuffOnly
+from ..abstract.permissions import AssignedStuffOnly, MustBeAdmin
 
 
 class ProjectListView(ListAPIView):
@@ -33,11 +33,18 @@ class ProjectOpenView(RetrieveUpdateAPIView):
 class ProjectCreateView(CreateAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, MustBeAdmin)
 
-    action_map = {
-        'post': 'create'
-    }
+    def post(self, request, *args, **kwargs):
+        pure_user = request.user
+        user = EmployeeUser.objects.filter(user=pure_user).first()
+
+        response = super().post(request, *args, **kwargs)
+        returned_id = response.data.get('id')
+        project = Project.objects.get(id=returned_id)
+        Project2User.objects.create(project=project, user=user)
+
+        return response
 
 
 class ProjectDestroyView(DestroyAPIView):
