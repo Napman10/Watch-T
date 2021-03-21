@@ -57,7 +57,7 @@ export default {
                 setState(commit, { isCreateModalVisible: false });
                 dispatch('getIssues');
             } catch (e) {
-                showErrorNotify(e.message);
+                showErrorNotify(e.response.data.detail);
             }
         },
         async getIssue({ commit, dispatch}, issueId) {
@@ -80,7 +80,7 @@ export default {
                 showSuccessNotify(`Задание удалено`);
                 dispatch('getIssues');
             } catch (e) {
-                showErrorNotify(e.message);
+                showErrorNotify(e.response.data.detail);
             }
         },
         async getComments({ commit }, issueId) {
@@ -155,7 +155,7 @@ export default {
                 showSuccessNotify(`Задача назначена на сотрудника`);
                 setState(commit, { isAssignModalVisible: false });
             } catch (e) {
-                showErrorNotify(e.message);
+                showErrorNotify(e.response.data.detail);
             }
         },
     }

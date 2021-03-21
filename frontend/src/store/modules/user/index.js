@@ -39,7 +39,7 @@ export default {
                 setState(commit, { isCreateModalVisible: false });
                 dispatch('getUsers');
             } catch (e) {
-                showErrorNotify(e.message);
+                showErrorNotify(e.response.data.detail);
             }
         },
         async getUser({ commit }, userId) {
@@ -60,7 +60,7 @@ export default {
                 setState(commit, {isEdit: false});
                 location.reload()
             } catch (e) {
-                showErrorNotify(e.message)
+                showErrorNotify(e.response.data.detail);
             }
         },
         async deleteUser({dispatch}, payload){
@@ -68,7 +68,7 @@ export default {
                 await api.deleteUser(payload);
                 dispatch('getUsers');
             } catch (e) {
-                showErrorNotify(e.message);
+                showErrorNotify(e.response.data.detail);
             }
         }
 

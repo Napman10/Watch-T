@@ -10,11 +10,11 @@ from django.db.models.query import Q
 from rest_framework.response import Response
 from rest_framework import status
 from ..project.models import Project2User
-from rest_framework.exceptions import APIException
+from ..abstract.permissions import IsAdmin
 
 
 class UserCreateAPIView(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsAdmin)
 
     def post(self, request):
         data = request.data

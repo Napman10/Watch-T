@@ -25,11 +25,17 @@ class AssignedStuffOnly(permissions.BasePermission):
         return Project2User.objects.filter(user=user, project=project).exists()
 
 
-class MustBeAdmin(permissions.BasePermission):
+class IsAdmin(permissions.BasePermission):
     message = "You must be an admin"
 
     def has_permission(self, request, view):
         user = get_user(request)
-        if user.role == EmployeeUser.ADMINISTRATOR:
-            return True
-        return False
+        return user.role == EmployeeUser.ADMINISTRATOR
+
+
+class IsCreator(permissions.BasePermission):
+    message = "You do not have permission for this action"
+
+    def has_permission(self, request, view):
+        user = get_user(request)
+        return user.role in [EmployeeUser.ADMINISTRATOR, EmployeeUser.ANALYST, EmployeeUser.LEAD]

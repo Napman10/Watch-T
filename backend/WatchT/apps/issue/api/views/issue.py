@@ -13,6 +13,7 @@ from ...services import set_got_time
 from ....user.models import EmployeeUser
 from ....project.models import Project2User
 from rest_framework.exceptions import APIException
+from ....abstract.permissions import AssignedStuffOnly, IsAdmin, IsCreator
 
 
 class IssueListView(ListAPIView):
@@ -54,7 +55,7 @@ class IssueListView(ListAPIView):
 
 class IssueOpenView(RetrieveUpdateAPIView):
     serializer_class = IssueSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, AssignedStuffOnly)
     lookup_field = 'id'
 
     def get_queryset(self):
@@ -73,7 +74,7 @@ class IssueOpenView(RetrieveUpdateAPIView):
 
 
 class IssueCreateView(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsCreator)
 
     def post(self, request):
         data = request.data
@@ -105,7 +106,7 @@ class IssueCreateView(APIView):
 
 
 class IssueDestroyView(DestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsCreator)
     serializer_class = IssueSerializer
     queryset = Issue.objects.all()
     lookup_field = 'id'
