@@ -51,9 +51,6 @@ class ProjectDestroyView(DestroyAPIView):
     serializer_class = ProjectSerializer
     permission_classes = (IsAuthenticated, IsAdmin)
     lookup_field = 'id'
-    action_map = {
-        'delete': 'delete'
-    }
 
 
 class Project2UserView(APIView):

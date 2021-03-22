@@ -26,10 +26,16 @@ export const unAssignUser = async (payload) => {
         {payload, headers: headers})).data;
 }
 
+export const deleteProject = async (payload) => {
+    const id = payload.id;
+    return (await axios.delete(`api/project/delete/${id}`, { payload, headers: headers})).data;
+}
+
 export default {
     assignUser,
     getProjects,
     addProject,
     getProject,
-    unAssignUser
+    unAssignUser,
+    deleteProject
 };

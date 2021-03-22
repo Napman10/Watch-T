@@ -64,6 +64,15 @@ export default {
                 setState(commit, { loading: false });
             }
         },
+        async deleteProject({dispatch }, payload) {
+            try {
+                await api.deleteProject(payload);
+                showSuccessNotify(`Проект удален`);
+                dispatch('getProjects');
+            } catch (e) {
+                showErrorNotify(e.response.data.detail);
+            }
+        },
         async assignUser({ commit }, payload) {
             try {
                 await api.assignUser(payload);

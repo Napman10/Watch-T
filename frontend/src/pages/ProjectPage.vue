@@ -12,6 +12,9 @@
     <div style="text-align: right">
       <el-button type="primary" @click="showUnAssignModal" style="margin-bottom: 10px">Отстранить пользователя</el-button>
     </div>
+    <div style="text-align: right">
+      <el-button type="danger" @click="deleteMe" style="margin-bottom: 10px">Удалить проект</el-button>
+    </div>
   <desc-project-issue-form/>
   <assign-user-form/>
   <un-assign-user-form/>
@@ -54,6 +57,17 @@ export default {
     showUnAssignModal() {
       this.$store.dispatch('user/getUsers', {project_id: this.project.id});
       this.$store.commit('project/SET_STATE', {isUnAssignModalVisible: true});
+    },
+    deleteMe() {
+      let run = confirm('Вы уверены, что хотите удалить проект?');
+      if (run) {
+        let run2 = confirm('Все подзадачи будут так же удалены');
+        if (run2) {
+          this.$store.dispatch('project/deleteProject', {id: this.project.id});
+          this.$router.push({'name': 'projects'});
+          this.$store.commit('project/SET_STATE', { project: {} });
+        }
+      }
     }
   },
    mounted() {
