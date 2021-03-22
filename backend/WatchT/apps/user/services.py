@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from ..abstract.functional import string_or_empty, email_is_valid
 from ..user.models import EmployeeUser
+from ..project.models import Project, Project2User
 
 
 def user_dict_is_valid(user_data: dict) -> bool:
@@ -50,7 +51,12 @@ def create_user(user_data: dict) -> Response:
 
         original_user = User.objects.create_user(**user_data)
         if role:
-            EmployeeUser.objects.create(user=original_user, role=role)
+            user = EmployeeUser.objects.create(user=original_user, role=role)
+            if role == EmployeeUser.ADMINISTRATOR:
+                projects = Project.objects.all()
+                for p in projects:
+                    Project2User.objects.create(user=user, project=p)
+
         else:
             EmployeeUser.objects.create(user=original_user)
 
