@@ -29,3 +29,10 @@ def month_russian(month):
 def get_user(request):
     pure_user = request.user
     return EmployeeUser.objects.filter(user=pure_user).first()
+
+
+def get_user_dict(user):
+    pure = user.user
+    return {'id': user.id, 'photo': user.photo, 'role': user.role,
+            'first_name': pure.first_name, 'last_name': pure.last_name,
+            'email': pure.email, 'username': pure.username}

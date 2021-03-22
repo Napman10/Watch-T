@@ -27,8 +27,17 @@ export const deleteUser = async (payload) => {
     return (await axios.delete(`api/user/${id}`, { payload, headers: headers})).data;
 }
 
+export const getMe = async (token) => {
+    return (await axios.get(`api/user/me`, { headers: {
+        'Content-Type': 'application/json',
+        'Authorization': "Token " + token
+    }}))
+        .data;
+}
+
 export default {
     getUsers,
+    getMe,
     addUser,
     getUser,
     editUser,

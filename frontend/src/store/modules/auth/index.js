@@ -6,11 +6,13 @@ import { showErrorNotify } from '@/utils';
 export default {
     namespaced: true,
     state: {
-        token: localStorage.getItem("token")
+        token: localStorage.getItem("token"),
+        me: {}
     },
 
     getters: {
         token: (state) => state.token,
+        me: (state) => state.me
     },
 
     mutations: {
@@ -24,6 +26,8 @@ export default {
                 const result = await api.login(params);
                 localStorage.setItem("token", result.auth_token );
                 setState(commit, { token: result.auth_token });
+                const me = await api.getMe(result.auth_token);
+                setState(commit, {me: me});
                 location.reload();
             } catch (e) {
                 showErrorNotify("Неправильные данные входа");
@@ -35,6 +39,7 @@ export default {
                 setState(commit, { token: null});
                 localStorage.removeItem('token');
                 location.href = '/';
+                setState(commit, {me: {}});
             } catch (e) {
                 showErrorNotify(e);
             }

@@ -4,13 +4,14 @@ from .services import create_user
 from .serializers import EmployeeUserSerializer
 from .models import EmployeeUser
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
-from ..abstract.functional import sanitize_query_params
+from ..abstract.functional import sanitize_query_params, get_user, get_user_dict
 from ..abstract.exceptions import NotConfirmedPass
 from django.db.models.query import Q
 from rest_framework.response import Response
 from rest_framework import status
 from ..project.models import Project2User
 from ..abstract.permissions import IsAdmin
+from rest_framework.exceptions import APIException
 
 
 class UserCreateAPIView(APIView):
@@ -110,3 +111,13 @@ class UserAPIListView(ListAPIView):
             return EmployeeUser.objects.filter(**params)
         else:
             return EmployeeUser.objects.all()
+
+
+class OpenMe(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        user = get_user(request)
+        user_dict = get_user_dict(user)
+
+        return Response(status=status.HTTP_200_OK, data=user_dict)
