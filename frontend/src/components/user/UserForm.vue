@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :title="this.isEdit ? `Редактирование пользователя` : `Регистрация пользователя`" :visible="isCreateModalVisible" :before-close="closeModal">
+    <el-dialog :title="this.isEdit === true ? `Редактирование пользователя` : `Регистрация пользователя`" :visible="isCreateModalVisible" :before-close="closeModal">
         <el-form :model="form" ref="userForm" :rules="this.isEdit ? rulesEdit : rulesCreate">
 
             <el-form-item label="Никнейм" prop="username">

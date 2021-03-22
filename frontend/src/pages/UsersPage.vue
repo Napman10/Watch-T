@@ -19,7 +19,7 @@ export default {
   },
   methods: {
         showUserModal() {
-            this.$store.commit('user/SET_STATE', { isCreateModalVisible: true });
+            this.$store.commit('user/SET_STATE', { isCreateModalVisible: true, isEdit: false });
         }
     },
 }
