@@ -40,6 +40,7 @@ export default {
                 localStorage.removeItem('token');
                 location.href = '/';
                 setState(commit, {me: {}});
+
             } catch (e) {
                 showErrorNotify(e);
             }
