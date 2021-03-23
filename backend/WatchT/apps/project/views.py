@@ -1,6 +1,6 @@
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, RetrieveUpdateAPIView)
-from .models import Project, Project2User
+from .models import Project, Project2User, ProjectStatistics
 from .serializers import ProjectSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import APIException
@@ -42,6 +42,7 @@ class ProjectCreateView(CreateAPIView):
         returned_id = response.data.get('id')
         project = Project.objects.get(id=returned_id)
         Project2User.objects.create(project=project, user=user)
+        ProjectStatistics.objects.create(project=project)
 
         return response
 

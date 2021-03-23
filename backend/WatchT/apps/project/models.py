@@ -29,3 +29,15 @@ class Project2User(BaseModel):
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='Проект')
     user = models.ForeignKey(EmployeeUser, on_delete=models.CASCADE, verbose_name='Сотрудник')
+
+
+class ProjectStatistics(BaseModel):
+    objects = Manager()
+
+    class Meta:
+        verbose_name = 'Статистика о проектах'
+        verbose_name_plural = 'Статистика о проекте'
+
+    project = models.OneToOneField(Project, on_delete=models.CASCADE, verbose_name='Проект')
+    created_date = models.DateTimeField(verbose_name='Дата создания', auto_now=True)
+    tracked_minutes = models.IntegerField(verbose_name='Затреканные минуты (всего)', default=0)

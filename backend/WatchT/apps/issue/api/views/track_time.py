@@ -3,13 +3,14 @@ from rest_framework.generics import (DestroyAPIView,
 from ..serializers.track_time import TrackTimeSerializer, TrackDeleteSerializer
 from ...models import TrackTime
 from rest_framework.permissions import IsAuthenticated
-from ....abstract.functional import sanitize_query_params
+from ....abstract.functional import sanitize_query_params, get_user
 from rest_framework.views import APIView
-from ....user.models import EmployeeUser
+from ....user.models import EmployeeUser, UserStatistics
 from ...models import Issue
 from rest_framework.response import Response
 from rest_framework import status
-from ...services import set_got_time
+from ...services import set_got_time, commit_minutes_statistics
+from ....project.models import ProjectStatistics
 
 
 class TrackCreateView(APIView):
@@ -29,6 +30,7 @@ class TrackCreateView(APIView):
         if issue_id:
             issue = Issue.objects.get(id=issue_id)
             TrackTime.objects.depend_create(issue=issue, minutes=minutes, executor=executor, text=text)
+            commit_minutes_statistics(request, issue, minutes)
             return Response(status=status.HTTP_201_CREATED)
         return Response(data={"detail": "invalid"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -57,6 +59,7 @@ class TrackDeleteView(DestroyAPIView):
         track = self.get_object()
         issue = track.issue
         minutes = -track.minutes
+        commit_minutes_statistics(request, issue, minutes)
         set_got_time(issue, minutes)
 
         return super().delete(request, *args, **kwargs)

@@ -11,7 +11,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from ..project.models import Project2User
 from ..abstract.permissions import IsAdmin
-from rest_framework.exceptions import APIException
 
 
 class UserCreateAPIView(APIView):

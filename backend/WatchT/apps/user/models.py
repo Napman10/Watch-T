@@ -35,3 +35,15 @@ class EmployeeUser(BaseModel):
 
     def __str__(self):
         return self.user.username
+
+
+class UserStatistics(BaseModel):
+    objects = Manager()
+
+    class Meta:
+        verbose_name = 'Статистика о пользователях'
+        verbose_name_plural = 'Статистика о пользователе'
+
+    user = models.OneToOneField(EmployeeUser, on_delete=models.CASCADE, verbose_name='Пользователь')
+    joined = models.DateTimeField(verbose_name='Дата присоединения к команде', auto_now=True)
+    tracked_minutes = models.IntegerField(verbose_name='Затреканные минуты (всего)', default=0)

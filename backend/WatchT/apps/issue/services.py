@@ -1,5 +1,8 @@
 import re
 from ..abstract.exceptions import NegativeGotTimeException
+from ..project.models import ProjectStatistics
+from ..user.models import UserStatistics
+from ..abstract.functional import get_user
 
 
 def get_period_size(lst):
@@ -31,3 +34,13 @@ def set_got_time(issue, minutes):
     issue.save()
     if issue.parent:
         set_got_time(issue.parent, minutes)
+
+
+def commit_minutes_statistics(request, issue, minutes):
+    project_stat = ProjectStatistics.objects.get(project=issue.project)
+    project_stat.tracked_minutes -= minutes
+    project_stat.save()
+    user = get_user(request)
+    user_stat = UserStatistics.objects.get(user=user)
+    user_stat.tracked_minutes += minutes
+    user_stat.save()

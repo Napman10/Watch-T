@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.response import Response
 from ..abstract.functional import string_or_empty, email_is_valid
-from ..user.models import EmployeeUser
+from ..user.models import EmployeeUser, UserStatistics
 from ..project.models import Project, Project2User
 
 
@@ -52,13 +52,15 @@ def create_user(user_data: dict) -> Response:
         original_user = User.objects.create_user(**user_data)
         if role:
             user = EmployeeUser.objects.create(user=original_user, role=role)
+            UserStatistics.objects.create(user=user)
             if role == EmployeeUser.ADMINISTRATOR:
                 projects = Project.objects.all()
                 for p in projects:
                     Project2User.objects.create(user=user, project=p)
 
         else:
-            EmployeeUser.objects.create(user=original_user)
+            user = EmployeeUser.objects.create(user=original_user)
+            UserStatistics.objects.create(user=user)
 
     except BaseException as e:
         return Response({"detail": e}, status=status.HTTP_400_BAD_REQUEST)
