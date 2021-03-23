@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div style="text-align: right">
+  <div v-if="meCreator()">
+    <div v-if="meAdmin()" style="text-align: right">
       <el-button type="primary" @click="showProjectModal" style="margin-bottom: 10px">Создать проект</el-button>
     </div>
     <project-form />
@@ -11,6 +11,7 @@
 <script>
 import ProjectGrid from "@/components/project/ProjectGrid";
 import ProjectForm from "@/components/project/ProjectForm";
+import {meCreator, meAdmin} from "@/utils/indentMe";
 
 export default {
   components: {
@@ -20,7 +21,7 @@ export default {
   methods: {
     showProjectModal(){
       this.$store.commit('project/SET_STATE', {isCreateModalVisible: true})
-    }
+    }, meCreator, meAdmin
   }
 }
 </script>

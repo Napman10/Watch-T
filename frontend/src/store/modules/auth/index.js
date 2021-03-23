@@ -7,7 +7,7 @@ export default {
     namespaced: true,
     state: {
         token: localStorage.getItem("token"),
-        me: {}
+        me: localStorage.getItem("me")
     },
 
     getters: {
@@ -26,8 +26,12 @@ export default {
                 const result = await api.login(params);
                 localStorage.setItem("token", result.auth_token );
                 setState(commit, { token: result.auth_token });
-                const me = await api.getMe(result.auth_token);
-                setState(commit, {me: me});
+
+                const user = await api.getMe(result.auth_token);
+                const role = user.role;
+                localStorage.setItem("myRole", role );
+                setState(commit, {"myRole": role});
+
                 location.reload();
             } catch (e) {
                 showErrorNotify("Неправильные данные входа");
@@ -38,9 +42,9 @@ export default {
                 await api.logout(params);
                 setState(commit, { token: null});
                 localStorage.removeItem('token');
-                location.href = '/';
                 setState(commit, {me: {}});
-
+                localStorage.removeItem('me');
+                location.href = '/';
             } catch (e) {
                 showErrorNotify(e);
             }

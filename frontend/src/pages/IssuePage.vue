@@ -22,14 +22,16 @@
         <el-table-column prop="header"  width="300" />
       </el-table>
     </div>
-    <div style="text-align: right">
-      <el-button type="primary" @click="showIssueDescModal" style="margin-bottom: 10px">Отнаследовать задачу</el-button>
-    </div>
-    <div style="text-align: right">
-      <el-button type="danger" @click="deleteMe" style="margin-bottom: 10px">Удалить задачу</el-button>
-    </div>
-    <div style="text-align: right">
-      <el-button type="primary" @click="assignUser">Назначить сотрудника</el-button>
+    <div v-if="meCreator()">
+      <div style="text-align: right">
+        <el-button type="primary" @click="showIssueDescModal" style="margin-bottom: 10px">Отнаследовать задачу</el-button>
+      </div>
+      <div style="text-align: right">
+        <el-button type="danger" @click="deleteMe" style="margin-bottom: 10px">Удалить задачу</el-button>
+      </div>
+      <div style="text-align: right">
+        <el-button type="primary" @click="assignUser">Назначить сотрудника</el-button>
+      </div>
     </div>
     <el-tabs type="card">
       <el-tab-pane label="Комментарии">
@@ -87,7 +89,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-form
+        <el-form v-if="meExecutor()"
             v-model="trackForm"
             :inline="true"
             @submit.native.prevent="addTrack"
@@ -122,6 +124,7 @@ import CommentEditForm from "@/components/issue/CommentEditForm";
 import DescIssueForm from "@/components/issue/DescIssueForm";
 import AssignUserForm from "@/components/issue/AssignUserForm";
 import { minutesToText } from "@/utils/transfer";
+import {meCreator, meExecutor} from "@/utils/indentMe";
 
 export default {
   data() {
@@ -141,6 +144,7 @@ export default {
     AssignUserForm
   },
   methods: {
+    meCreator, meExecutor,
     addComment(){
       if (this.commentForm.text) {
         const obj = {issue_id: this.issue.id};

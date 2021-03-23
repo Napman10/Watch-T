@@ -3,11 +3,13 @@
     <el-avatar :size="150" :src="user.photo"></el-avatar>
     <h2>{{user.first_name}}</h2>
     <h2>{{user.last_name}}</h2>
-    <div style="text-align: right">
-      <el-button type="primary" @click="callEditUser" style="margin-bottom: 10px">Редактировать пользователя</el-button>
-    </div>
-    <div style="text-align: right">
-      <el-button type="danger" @click="deleteMe" style="margin-bottom: 10px">Удалить пользователя</el-button>
+    <div v-if="meAdmin()">
+      <div style="text-align: right">
+        <el-button type="primary" @click="callEditUser" style="margin-bottom: 10px">Редактировать пользователя</el-button>
+      </div>
+      <div style="text-align: right">
+        <el-button type="danger" @click="deleteMe" style="margin-bottom: 10px">Удалить пользователя</el-button>
+      </div>
     </div>
     <user-form/>
   </div>
@@ -16,6 +18,7 @@
 <script>
 import {mapGetters} from "vuex";
 import UserForm from "../components/user/UserForm";
+import {meAdmin} from "@/utils/indentMe";
 
 export default {
   data() {
@@ -40,7 +43,7 @@ export default {
         this.$router.push({'name': 'users'});
         this.$store.commit('user/SET_STATE', { user: {} });
       }
-    },
+    }, meAdmin
   },
    mounted() {
         this.$store.dispatch('user/getUser', this.userId);

@@ -2,8 +2,8 @@
     <header class="header">
         <router-link class="logo" to='/' exact>WatchT</router-link>
         <router-link to='/issues' exact>Задачи</router-link>
-        <router-link to='/projects' exact>Проекты</router-link>
-        <router-link to='/users' exact>Пользователи</router-link>
+        <router-link v-if="meCreator()" to='/projects' exact>Проекты</router-link>
+        <router-link v-if="meAdmin()" to='/users' exact>Пользователи</router-link>
         <menu class="userInfo">
             <li class="cursor-pointer" @click="logout">Выйти</li>
         </menu>
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import {meAdmin, meCreator} from "@/utils/indentMe";
 
 export default {
   name: "PageHeader",
@@ -19,7 +20,8 @@ export default {
   methods: {
         logout() {
             this.$store.dispatch('auth/logout');
-        }
+        },
+        meAdmin, meCreator
     }
 }
 </script>
