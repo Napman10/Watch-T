@@ -2,6 +2,8 @@ from rest_framework import serializers
 
 from ...models import TrackTime
 
+from ....abstract.functional import convert_last_seen
+
 
 class TrackTimeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,9 +11,13 @@ class TrackTimeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     executor = serializers.SerializerMethodField()
+    datetime = serializers.SerializerMethodField()
 
     def get_executor(self, obj: TrackTime) -> str:
         return str(obj.executor)
+
+    def get_datetime(self, obj: TrackTime) -> str:
+        return convert_last_seen(obj.datetime)
 
 
 class TrackDeleteSerializer(serializers.ModelSerializer):

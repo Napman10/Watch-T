@@ -78,6 +78,7 @@
           style="width: 100%"
         >
           <el-table-column prop="executor" width="150"/>
+          <el-table-column prop="datetime"  width="300" />
           <el-table-column prop="minutes" :formatter="tableMinutes" width="150"/>
           <el-table-column prop="text" wigth="300"/>
           <el-table-column align="right">
