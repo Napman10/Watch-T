@@ -39,21 +39,3 @@ class IsCreator(permissions.BasePermission):
     def has_permission(self, request, view):
         user = get_user(request)
         return user.role in [EmployeeUser.ADMINISTRATOR, EmployeeUser.ANALYST, EmployeeUser.LEAD]
-
-
-class CanDeleteComment(permissions.BasePermission):
-    message = "You can't delete this comment"
-
-    def has_permission(self, request, view):
-        comment = view.get_object()
-        user = get_user(request)
-        return comment.author == user or user.role == EmployeeUser.ADMINISTRATOR
-
-
-class CanDeleteTrack(permissions.BasePermission):
-    message = "You can't delete this track"
-
-    def has_permission(self, request, view):
-        track = view.get_object()
-        user = get_user(request)
-        return track.executor == user or user.role == EmployeeUser.ADMINISTRATOR

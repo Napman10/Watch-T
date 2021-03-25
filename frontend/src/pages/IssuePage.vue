@@ -44,7 +44,7 @@
           <el-table-column prop="text" width="400" />
           <el-table-column align="right">
             <template slot-scope="scope">
-              <el-button
+              <el-button v-if="meAdmin()"
                   size="mini"
                   type="danger"
                   @click="deleteComment(scope.row)">Delete</el-button>
@@ -79,7 +79,7 @@
           <el-table-column prop="text" wigth="300"/>
           <el-table-column align="right">
             <template slot-scope="scope">
-              <el-button
+              <el-button v-if="meAdmin()"
                   size="mini"
                   type="danger"
                   @click="deleteTrack(scope.row)">Delete</el-button>
@@ -119,7 +119,7 @@ import {mapGetters} from "vuex";
 import DescIssueForm from "@/components/issue/DescIssueForm";
 import AssignUserForm from "@/components/issue/AssignUserForm";
 import { minutesToText } from "@/utils/transfer";
-import {meCreator, meExecutor} from "@/utils/indentMe";
+import {meCreator, meExecutor, meAdmin} from "@/utils/indentMe";
 
 export default {
   data() {
@@ -138,7 +138,7 @@ export default {
     AssignUserForm
   },
   methods: {
-    meCreator, meExecutor,
+    meCreator, meExecutor, meAdmin,
     addComment(){
       if (this.commentForm.text) {
         const obj = {issue_id: this.issue.id};

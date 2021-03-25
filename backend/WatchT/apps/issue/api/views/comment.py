@@ -10,7 +10,7 @@ from ....user.models import EmployeeUser
 from datetime import datetime
 from rest_framework.response import Response
 from rest_framework import status
-from ....abstract.permissions import CanDeleteComment
+from ....abstract.permissions import IsAdmin
 
 
 class CommentListView(ListAPIView):
@@ -52,7 +52,7 @@ class CommentOpenView(RetrieveAPIView):
 
 
 class CommentDeleteView(DestroyAPIView):
-    permission_classes = (IsAuthenticated, CanDeleteComment)
+    permission_classes = (IsAuthenticated, IsAdmin)
     serializer_class = CommentDeleteSerializer
     lookup_field = 'id'
 
