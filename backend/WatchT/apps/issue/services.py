@@ -37,10 +37,10 @@ def set_got_time(issue, minutes):
 
 
 def commit_minutes_statistics(request, issue, minutes):
-    project_stat = ProjectStatistics.objects.get(project=issue.project)
-    project_stat.tracked_minutes -= minutes
+    project_stat = ProjectStatistics.objects.filter(project=issue.project).first()
+    project_stat.tracked_minutes += minutes
     project_stat.save()
     user = get_user(request)
-    user_stat = UserStatistics.objects.get(user=user)
+    user_stat = UserStatistics.objects.filter(user=user).first()
     user_stat.tracked_minutes += minutes
     user_stat.save()

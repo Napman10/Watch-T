@@ -1,7 +1,8 @@
-from django.db import models, transaction
+from django.db import models
 from django.db.models.manager import Manager
 from django.contrib.auth.models import User
 from ..abstract.models import BaseModel
+from ..abstract.validators import is_int_validate, non_negative_int_validate
 
 
 def user_photo_upload_to(instance, filename):
@@ -41,9 +42,10 @@ class UserStatistics(BaseModel):
     objects = Manager()
 
     class Meta:
-        verbose_name = 'Статистика о пользователях'
-        verbose_name_plural = 'Статистика о пользователе'
+        verbose_name = 'Статистика о пользователе'
+        verbose_name_plural = 'Статистика о пользователях'
 
     user = models.OneToOneField(EmployeeUser, on_delete=models.CASCADE, verbose_name='Пользователь')
-    joined = models.DateTimeField(verbose_name='Дата присоединения к команде', auto_now=True)
-    tracked_minutes = models.IntegerField(verbose_name='Затреканные минуты (всего)', default=0)
+    joined = models.DateTimeField(verbose_name='Дата присоединения к команде', auto_now_add=True)
+    tracked_minutes = models.IntegerField(verbose_name='Затреканные минуты (всего)', default=0,
+                                          validators=[is_int_validate, non_negative_int_validate])

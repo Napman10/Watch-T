@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import EmployeeUser
+from .models import EmployeeUser, UserStatistics
+from ..abstract.functional import convert_last_seen
 
 
 class EmployeeUserSerializer(serializers.ModelSerializer):
@@ -23,3 +24,14 @@ class EmployeeUserSerializer(serializers.ModelSerializer):
 
     def get_email(self, obj: EmployeeUser) -> str:
         return str(obj.user.email)
+
+
+class UserStatisticsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserStatistics
+        fields = ('joined', 'tracked_minutes')
+
+    joined = serializers.SerializerMethodField()
+
+    def get_joined(self, obj: UserStatistics) -> str:
+        return convert_last_seen(obj.joined)

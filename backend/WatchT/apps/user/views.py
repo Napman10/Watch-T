@@ -1,9 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from .services import create_user
-from .serializers import EmployeeUserSerializer
-from .models import EmployeeUser
-from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView
+from .serializers import EmployeeUserSerializer, UserStatisticsSerializer
+from .models import EmployeeUser, UserStatistics
+from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView
 from ..abstract.functional import sanitize_query_params, get_user, get_user_dict
 from ..abstract.exceptions import NotConfirmedPass
 from django.db.models.query import Q
@@ -120,3 +120,16 @@ class OpenMe(APIView):
         user_dict = get_user_dict(user)
 
         return Response(status=status.HTTP_200_OK, data=user_dict)
+
+
+class UserStatisticsView(RetrieveAPIView):
+    serializer_class = UserStatisticsSerializer
+    permission_classes = (IsAuthenticated,)
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        return EmployeeUser.objects.all()
+
+    def get_object(self):
+        user = super().get_object()
+        return UserStatistics.objects.filter(user=user).first()

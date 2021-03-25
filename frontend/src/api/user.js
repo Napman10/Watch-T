@@ -13,6 +13,10 @@ export const getUser = async (id) => {
     return (await axios.get(`api/user/${id}`, {headers: headers})).data;
 };
 
+export const getUserStatistics = async (id) => {
+    return (await axios.get(`api/user/statistics/${id}`, {headers: headers})).data;
+};
+
 export const addUser = async (payload) => {
     return (await axios.post('api/user/', payload, {headers: headers})).data;
 };
@@ -41,5 +45,6 @@ export default {
     addUser,
     getUser,
     editUser,
-    deleteUser
+    deleteUser,
+    getUserStatistics
 };

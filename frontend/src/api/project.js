@@ -10,7 +10,7 @@ export const getProjects = async (params) => {
 };
 
 export const getProject = async (id) => {
-    return (await axios.get(`api/project/${id}`, {headers: headers}));
+    return (await axios.get(`api/project/${id}`, {headers: headers})).data;
 };
 
 export const addProject = async (payload) => {
@@ -31,11 +31,16 @@ export const deleteProject = async (payload) => {
     return (await axios.delete(`api/project/delete/${id}`, { payload, headers: headers})).data;
 }
 
+export const getProjectStatistics = async (id) => {
+    return (await axios.get(`api/project/statistics/${id}`, {headers: headers})).data;
+};
+
 export default {
     assignUser,
     getProjects,
     addProject,
     getProject,
     unAssignUser,
-    deleteProject
+    deleteProject,
+    getProjectStatistics
 };

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Project, Project2User
+from .models import Project, Project2User, ProjectStatistics
 
 
 @admin.register(Project)
@@ -11,3 +11,8 @@ class ProjectAdmin(admin.ModelAdmin):
 @admin.register(Project2User)
 class Project2UserAdmin(admin.ModelAdmin):
     list_display = ['project', 'user']
+
+
+@admin.register(ProjectStatistics)
+class ProjectStatisticsAdmin(admin.ModelAdmin):
+    list_display = ['project']

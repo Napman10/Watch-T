@@ -3,14 +3,13 @@ from rest_framework.generics import (DestroyAPIView,
 from ..serializers.track_time import TrackTimeSerializer, TrackDeleteSerializer
 from ...models import TrackTime
 from rest_framework.permissions import IsAuthenticated
-from ....abstract.functional import sanitize_query_params, get_user
+from ....abstract.functional import sanitize_query_params
 from rest_framework.views import APIView
-from ....user.models import EmployeeUser, UserStatistics
+from ....user.models import EmployeeUser
 from ...models import Issue
 from rest_framework.response import Response
 from rest_framework import status
 from ...services import set_got_time, commit_minutes_statistics
-from ....project.models import ProjectStatistics
 
 
 class TrackCreateView(APIView):

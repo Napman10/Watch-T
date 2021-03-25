@@ -46,7 +46,8 @@ export default {
             try {
                 setState(commit, { loading: true });
                 const result = await api.getUser(userId);
-                setState(commit, { user: result });
+                const stat = await api.getUserStatistics(userId);
+                setState(commit, { user: {...result, ...stat} });
             } catch (e) {
                 showErrorNotify(e.message);
             } finally {

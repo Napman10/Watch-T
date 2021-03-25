@@ -3,6 +3,8 @@
     <el-avatar :size="150" :src="user.photo"></el-avatar>
     <h2>{{user.first_name}}</h2>
     <h2>{{user.last_name}}</h2>
+    Затрачено времени {{tableMinutes(user)}}
+    Был добавлен в команду {{user.joined}}
     <div v-if="meAdmin()">
       <div style="text-align: right">
         <el-button type="primary" @click="callEditUser" style="margin-bottom: 10px">Редактировать пользователя</el-button>
@@ -19,6 +21,7 @@
 import {mapGetters} from "vuex";
 import UserForm from "../components/user/UserForm";
 import {meAdmin} from "@/utils/indentMe";
+import {minutesToText} from "@/utils/transfer";
 
 export default {
   data() {
@@ -43,7 +46,12 @@ export default {
         this.$router.push({'name': 'users'});
         this.$store.commit('user/SET_STATE', { user: {} });
       }
-    }, meAdmin
+    }, meAdmin,
+    tableMinutes(row) {
+      const result = minutesToText(row.tracked_minutes);
+      if (result === "-") return "0м";
+      return result;
+    },
   },
    mounted() {
         this.$store.dispatch('user/getUser', this.userId);

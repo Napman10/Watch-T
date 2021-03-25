@@ -1,5 +1,6 @@
 import re
 from ..user.models import EmployeeUser
+from datetime import datetime, timedelta
 
 
 def sanitize_query_params(request):
@@ -36,3 +37,20 @@ def get_user_dict(user):
     return {'id': str(user.id), 'photo': user.photo.url, 'role': user.role,
             'first_name': pure.first_name, 'last_name': pure.last_name,
             'email': pure.email, 'username': pure.username}
+
+
+def convert_last_seen(dt):
+    now = datetime.now()
+
+    minute = dt.minute
+    if minute < 10:
+        minute = "0" + str(minute)
+
+    if now.date() - timedelta(1) == dt.date():
+        return f"вчера в {dt.hour}:{minute}"
+    elif now.date() == dt.date():
+        return f"сегодня в {dt.hour}:{minute}"
+    elif now.year != dt.year:
+        return f"{dt.day} {month_russian(dt.month)} {dt.year} в {dt.hour}:{minute}"
+    else:
+        return f"{dt.day} {month_russian(dt.month)} в {dt.hour}:{minute}"

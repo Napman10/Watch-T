@@ -1,7 +1,7 @@
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
-                                     ListAPIView, RetrieveUpdateAPIView)
+                                     ListAPIView, RetrieveUpdateAPIView, RetrieveAPIView)
 from .models import Project, Project2User, ProjectStatistics
-from .serializers import ProjectSerializer
+from .serializers import ProjectSerializer, ProjectStatisticsSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import APIException
 from ..user.models import EmployeeUser
@@ -87,3 +87,16 @@ class Project2UserView(APIView):
                 issue.save()
             p.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ProjectStatisticsView(RetrieveAPIView):
+    serializer_class = ProjectStatisticsSerializer
+    permission_classes = (IsAuthenticated,)
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        return Project.objects.all()
+
+    def get_object(self):
+        project = super().get_object()
+        return ProjectStatistics.objects.filter(project=project).first()

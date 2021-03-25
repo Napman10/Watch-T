@@ -3,7 +3,9 @@
     <div v-if="meCreator">
       <h2>{{project.short_name}}</h2>
       <h2>{{project.header}}</h2>
-      {{project.description}}
+      {{project.description}}<br/>
+      Затрачено времени {{tableMinutes(project)}}
+      Открыт {{project.created_date}}
       <div style="text-align: right">
           <el-button type="primary" @click="showIssueProjectDescModal" style="margin-bottom: 10px">Отнаследовать задачу</el-button>
       </div>
@@ -33,6 +35,7 @@ import DescProjectIssueForm from "@/components/issue/DescProjectIssueForm";
 import AssignUserForm from "@/components/project/AssignUserForm";
 import UnAssignUserForm from "@/components/project/UnAssignUserForm";
 import {meCreator, meAdmin} from "@/utils/indentMe";
+import {minutesToText} from "@/utils/transfer";
 
 export default {
   data() {
@@ -72,7 +75,12 @@ export default {
           this.$store.commit('project/SET_STATE', { project: {} });
         }
       }
-    }, meAdmin, meCreator
+    }, meAdmin, meCreator,
+    tableMinutes(row) {
+      const result = minutesToText(row.tracked_minutes);
+      if (result === "-") return "0м";
+      return result;
+    },
   },
    mounted() {
         this.$store.dispatch('project/getProject', this.projectId);

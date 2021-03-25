@@ -3,6 +3,7 @@ from django.db.models import Manager
 
 from ..abstract.models import BaseModel
 from ..user.models import EmployeeUser
+from ..abstract.validators import is_int_validate, non_negative_int_validate
 
 
 class Project(BaseModel):
@@ -35,9 +36,10 @@ class ProjectStatistics(BaseModel):
     objects = Manager()
 
     class Meta:
-        verbose_name = 'Статистика о проектах'
-        verbose_name_plural = 'Статистика о проекте'
+        verbose_name = 'Статистика о проекте'
+        verbose_name_plural = 'Статистика о проектах'
 
     project = models.OneToOneField(Project, on_delete=models.CASCADE, verbose_name='Проект')
-    created_date = models.DateTimeField(verbose_name='Дата создания', auto_now=True)
-    tracked_minutes = models.IntegerField(verbose_name='Затреканные минуты (всего)', default=0)
+    created_date = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
+    tracked_minutes = models.IntegerField(verbose_name='Затреканные минуты (всего)', default=0,
+                                          validators=[is_int_validate, non_negative_int_validate])
