@@ -53,10 +53,6 @@ def create_user(user_data: dict) -> Response:
         if role:
             user = EmployeeUser.objects.create(user=original_user, role=role)
             UserStatistics.objects.create(user=user)
-            if role == EmployeeUser.ADMINISTRATOR:
-                projects = Project.objects.all()
-                for p in projects:
-                    Project2User.objects.create(user=user, project=p)
 
         else:
             user = EmployeeUser.objects.create(user=original_user)
