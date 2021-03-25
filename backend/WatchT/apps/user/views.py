@@ -10,7 +10,7 @@ from django.db.models.query import Q
 from rest_framework.response import Response
 from rest_framework import status
 from ..project.models import Project2User
-from ..abstract.permissions import IsAdmin
+from ..abstract.permissions import IsAdmin, NonAdminChange
 
 
 class UserCreateAPIView(APIView):
@@ -23,7 +23,7 @@ class UserCreateAPIView(APIView):
 
 class UserOpenView(RetrieveUpdateDestroyAPIView):
     serializer_class = EmployeeUserSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, NonAdminChange)
     lookup_field = 'id'
 
     def get_queryset(self):

@@ -39,3 +39,16 @@ class IsCreator(permissions.BasePermission):
     def has_permission(self, request, view):
         user = get_user(request)
         return user.role in [EmployeeUser.ADMINISTRATOR, EmployeeUser.ANALYST, EmployeeUser.LEAD]
+
+
+class NonAdminChange(permissions.BasePermission):
+    message = "You do not have permission for edit/delete an admin user"
+
+    def has_permission(self, request, view):
+        if request.method == 'GET':
+            return True
+
+        user = get_user(request)
+        c_user = view.get_object()
+
+        return user == c_user or c_user.role != EmployeeUser.ADMINISTRATOR
