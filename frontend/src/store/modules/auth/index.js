@@ -8,13 +8,15 @@ export default {
     state: {
         token: localStorage.getItem("token"),
         me: localStorage.getItem("me"),
-        myId: localStorage.getItem("myId")
+        myId: localStorage.getItem("myId"),
+        myName: localStorage.getItem("myName")
     },
 
     getters: {
         token: (state) => state.token,
         me: (state) => state.me,
-        myId: (state) => state.myId
+        myId: (state) => state.myId,
+        myName: (state) => state.myName
     },
 
     mutations: {
@@ -32,11 +34,16 @@ export default {
                 const user = await api.getMe(result.auth_token);
                 const role = user.role;
                 const myId = user.id;
+                const myName = user.username;
+
                 localStorage.setItem("myRole", role );
                 setState(commit, {"myRole": role});
 
                 localStorage.setItem("myId", myId );
                 setState(commit, {"myId": myId });
+
+                localStorage.setItem("myName", myName );
+                setState(commit, {"myName": myName });
 
                 location.reload();
             } catch (e) {

@@ -3,14 +3,15 @@
     <el-avatar :size="150" :src="user.photo"></el-avatar>
     <h2>{{user.first_name}}</h2>
     <h2>{{user.last_name}}</h2>
+    {{itsYou()}}
     Затрачено времени {{tableMinutes(user)}}
     Был добавлен в команду {{user.joined}}
     <div v-if="meAdmin()">
       <div style="text-align: right">
-        <el-button type="primary" @click="callEditUser" style="margin-bottom: 10px">Редактировать пользователя</el-button>
+        <el-button type="primary" @click="callEditUser" style="margin-bottom: 10px">Редактировать</el-button>
       </div>
       <div style="text-align: right">
-        <el-button type="danger" @click="deleteMe" style="margin-bottom: 10px">Удалить пользователя</el-button>
+        <el-button type="danger" @click="deleteMe" style="margin-bottom: 10px">Удалить</el-button>
       </div>
     </div>
     <user-form/>
@@ -52,6 +53,12 @@ export default {
       if (result === "-") return "0м";
       return result;
     },
+    itsYou(){
+      const myName = localStorage.getItem('myName');
+      const thisName = this.user.username;
+      if (myName === thisName) return "(Это вы)";
+      return "";
+    }
   },
    mounted() {
         this.$store.dispatch('user/getUser', this.userId);
