@@ -99,3 +99,15 @@ class TrackTime(BaseModel):
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE, verbose_name='Задача')
     text = models.CharField(max_length=255, verbose_name='Описание работы', blank=True, null=True)
     datetime = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
+
+
+class IssueHistoryRecord(BaseModel):
+    objects = Manager()
+
+    class Meta:
+        verbose_name = 'История задачи'
+        verbose_name_plural = 'Истории задач'
+
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE, verbose_name='Задача')
+    text = models.CharField(max_length=255, verbose_name='Описание')
+    datetime = models.DateTimeField(verbose_name='Дата и время', auto_now_add=True)
