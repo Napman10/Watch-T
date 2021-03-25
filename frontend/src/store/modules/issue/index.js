@@ -119,7 +119,11 @@ export default {
                 await api.deleteComment(payload);
                 dispatch('getIssue', payload.issue_id);
             } catch (e){
-                showErrorNotify(e.message);
+                const err = "You can't delete this comment";
+                const detail = e.response.data.detail;
+                if (detail !== err) {
+                    showErrorNotify(detail);
+                }
             }
         },
         async getTracks({ commit }, issueId) {
@@ -145,7 +149,11 @@ export default {
                 await api.deleteTrack(payload);
                 dispatch('getIssue', payload.issue_id);
             } catch (e){
-                showErrorNotify(e.message);
+                const err = "You can't delete this track";
+                const detail = e.response.data.detail;
+                if (detail !== err) {
+                    showErrorNotify(detail);
+                }
             }
         },
         async getChildren({ commit }, filter) {

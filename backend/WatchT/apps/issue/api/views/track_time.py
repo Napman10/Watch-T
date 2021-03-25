@@ -10,6 +10,7 @@ from ...models import Issue
 from rest_framework.response import Response
 from rest_framework import status
 from ...services import set_got_time, commit_minutes_statistics
+from ....abstract.permissions import CanDeleteTrack
 
 
 class TrackCreateView(APIView):
@@ -47,7 +48,7 @@ class TrackListView(ListAPIView):
 
 
 class TrackDeleteView(DestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, CanDeleteTrack)
     serializer_class = TrackDeleteSerializer
     lookup_field = 'id'
 
