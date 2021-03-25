@@ -18,7 +18,8 @@ export default {
         editCommentModalVisible: false,
         descIssueModalVisible: false,
         descProjectIssueModalVisible: false,
-        isAssignModalVisible: false
+        isAssignModalVisible: false,
+        isStatusModalVisible: false
     },
     getters: {
         issue: (state) => state.issue,
@@ -33,7 +34,8 @@ export default {
         editCommentModalVisible: (state) => state.editCommentModalVisible,
         descIssueModalVisible: (state) => state.descIssueModalVisible,
         descProjectIssueModalVisible: (state) => state.descProjectIssueModalVisible,
-        isAssignModalVisible: (state) => state.isAssignModalVisible
+        isAssignModalVisible: (state) => state.isAssignModalVisible,
+        isStatusModalVisible: (state) => state.isStatusModalVisible
     },
     mutations: {
         SET_STATE
@@ -81,6 +83,16 @@ export default {
                 setState(commit, { loading: false });
             }
         },
+        async editIssue({commit, dispatch}, payload) {
+          try {
+              await api.changeIssue(payload);
+              dispatch('getIssue', payload.issue_id);
+              setState(commit, { isStatusModalVisible: false });
+              location.reload();
+          } catch (e) {
+              showErrorNotify(e.response.data.detail);
+          }
+        },
         async deleteIssue({dispatch }, payload) {
             try {
                 await api.deleteIssue(payload);
@@ -103,14 +115,6 @@ export default {
                 await api.addComment(payload);
                 dispatch('getIssue', payload.issue_id);
             } catch (e) {
-                showErrorNotify(e.message);
-            }
-        },
-        async editComment({dispatch }, payload){
-            try {
-                await api.editComment(payload);
-                dispatch('getIssue', payload.issue_id);
-            } catch (e){
                 showErrorNotify(e.message);
             }
         },
@@ -167,8 +171,8 @@ export default {
         async assignUser({ commit }, payload) {
             try {
                 await api.assignUserIssue(payload);
-                showSuccessNotify(`Задача назначена на сотрудника`);
                 setState(commit, { isAssignModalVisible: false });
+                location.reload();
             } catch (e) {
                 showErrorNotify(e.response.data.detail);
             }

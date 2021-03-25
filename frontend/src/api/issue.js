@@ -13,6 +13,11 @@ export const getIssue = async (id) => {
     return (await axios.get(`api/issue/${id}/`, {headers: headers})).data;
 };
 
+export const changeIssue = async (payload) => {
+    const id = payload.id;
+    return (await axios.put(`api/issue/${id}/`, payload, {headers: headers})).data;
+};
+
 export const addIssue = async (payload) => {
     return (await axios.post('api/issue/new', payload, {headers: headers})).data;
 };
@@ -37,5 +42,6 @@ export default {
     getIssues,
     addIssue,
     getIssue,
-    deleteIssue
+    deleteIssue,
+    changeIssue
 };

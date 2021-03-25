@@ -33,6 +33,9 @@
         <el-button type="primary" @click="assignUser">Назначить сотрудника</el-button>
       </div>
     </div>
+    <div style="text-align: right" v-if="meCreator() || isMyIssue()">
+        <el-button type="primary" @click="changeStatus">Изменить статус</el-button>
+      </div>
     <el-tabs type="card">
       <el-tab-pane label="Комментарии">
         <el-table
@@ -111,6 +114,7 @@
     </el-tabs>
     <desc-issue-form/>
     <assign-user-form/>
+    <change-issue-status-form/>
   </div>
 </template>
 
@@ -120,6 +124,7 @@ import DescIssueForm from "@/components/issue/DescIssueForm";
 import AssignUserForm from "@/components/issue/AssignUserForm";
 import { minutesToText } from "@/utils/transfer";
 import {meCreator, meExecutor, meAdmin} from "@/utils/indentMe";
+import ChangeIssueStatusForm from "@/components/issue/ChangeIssueStatusForm";
 
 export default {
   data() {
@@ -131,14 +136,19 @@ export default {
     },
   computed: {
         ...mapGetters('issue', ['issue', 'comments', 'tracks', 'children',
-          'editCommentModalVisible', 'descIssueModalVisible'])
+          'editCommentModalVisible', 'descIssueModalVisible', 'isStatusModalVisible'])
     },
   components: {
     DescIssueForm,
-    AssignUserForm
+    AssignUserForm,
+    ChangeIssueStatusForm
   },
   methods: {
     meCreator, meExecutor, meAdmin,
+    isMyIssue() {
+      const myName = localStorage.getItem('myName');
+      return this.issue.executor === myName;
+    },
     addComment(){
       if (this.commentForm.text) {
         const obj = {issue_id: this.issue.id};
@@ -206,6 +216,10 @@ export default {
       this.$store.dispatch('user/getUsers',
           {project_id: this.issue.project.id, dev: true});
       this.$store.commit('issue/SET_STATE', { isAssignModalVisible: true });
+    },
+    changeStatus() {
+      this.$store.commit('issue/SET_STATE', { isStatusModalVisible: true });
+      this.$store.dispatch('issue/getIssue', this.issueId);
     }
   },
    mounted() {
