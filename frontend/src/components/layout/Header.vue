@@ -2,7 +2,7 @@
     <header class="header">
         <router-link class="logo" to='/' exact>WatchT</router-link>
         <router-link to='/issues' exact>Задачи</router-link>
-        <router-link :to="meUserPath()" exact>Профиль</router-link>
+        <router-link :to="/user/ + myId()" exact>Профиль</router-link>
         <router-link v-if="meCreator()" to='/projects' exact>Проекты</router-link>
         <router-link v-if="meAdmin()" to='/users' exact>Пользователи</router-link>
         <menu class="userInfo">
@@ -23,8 +23,8 @@ export default {
             this.$store.dispatch('auth/logout');
         },
         meAdmin, meCreator,
-        meUserPath() {
-          return "user/" + localStorage.getItem('myId');
+        myId() {
+          return localStorage.getItem('myId');
         }
     }
 }
