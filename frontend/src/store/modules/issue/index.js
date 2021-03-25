@@ -69,7 +69,14 @@ export default {
                 dispatch('getComments', issueId);
                 dispatch('getTracks', issueId);
             } catch (e) {
-                showErrorNotify(e.message);
+                const assignedStuffOnlyDetail = 'You do not have permission to watch this project';
+                const detail = e.response.data.detail;
+                if (detail === assignedStuffOnlyDetail) {
+                    setState(commit, { unAssignedStuff: true });
+                }
+                else {
+                    showErrorNotify(detail);
+                }
             } finally {
                 setState(commit, { loading: false });
             }
