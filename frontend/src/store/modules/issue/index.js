@@ -145,7 +145,7 @@ export default {
                 await api.addTrack(payload);
                 dispatch('getIssue', payload.issue_id);
             } catch (e) {
-                showErrorNotify(e.message);
+                showErrorNotify(e.response.data.detail);
             }
         },
         async deleteTrack({dispatch }, payload){

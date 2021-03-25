@@ -77,7 +77,7 @@ class Comment(BaseModel):
     author = models.ForeignKey(EmployeeUser, verbose_name='Комментатор', on_delete=models.SET_NULL,
                                null=True)
     text = models.CharField(max_length=255, verbose_name='Текст комментария')
-    datetime = models.DateTimeField(verbose_name='Дата создания')
+    datetime = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE, verbose_name='Задача')
 
     def __str__(self):
@@ -98,3 +98,4 @@ class TrackTime(BaseModel):
                                  null=True)
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE, verbose_name='Задача')
     text = models.CharField(max_length=255, verbose_name='Описание работы', blank=True, null=True)
+    datetime = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)

@@ -14,3 +14,8 @@ class NegativeGotTimeException(APIException):
 class NotConfirmedPass(APIException):
     status_code = 400
     default_detail = 'password != confirm'
+
+
+class OverTimeException(APIException):
+    status_code = 400
+    default_detail = 'overtime for today'

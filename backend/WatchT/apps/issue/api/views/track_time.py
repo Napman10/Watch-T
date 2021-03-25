@@ -11,6 +11,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from ...services import set_got_time, commit_minutes_statistics
 from ....abstract.permissions import IsAdmin
+from datetime import date
+from django.db.models import Sum
+from ....abstract.exceptions import OverTimeException
 
 
 class TrackCreateView(APIView):
@@ -25,6 +28,14 @@ class TrackCreateView(APIView):
 
         if not minutes:
             return Response(data={"detail": "invalid time"}, status=status.HTTP_400_BAD_REQUEST)
+
+        full_day = 60 * 8
+        all_tracks_today = TrackTime.objects.filter(executor=executor, datetime__date=date.today()) \
+            .aggregate(Sum('minutes'))
+        all_tracks_today = all_tracks_today.get('minutes__sum', 0) or 0
+
+        if full_day - all_tracks_today - minutes < 0:
+            raise OverTimeException
 
         issue_id = data.get('issue_id')
         if issue_id:
