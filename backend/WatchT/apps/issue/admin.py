@@ -10,7 +10,7 @@ class IssueAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['author', 'issue', 'text', 'edited', 'datetime']
+    list_display = ['author', 'issue', 'text', 'datetime']
 
 
 @admin.register(TrackTime)

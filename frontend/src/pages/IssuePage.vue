@@ -41,12 +41,9 @@
         >
           <el-table-column prop="author" width="100" />
           <el-table-column prop="datetime"  width="300" />
-          <el-table-column :formatter="isEdited" prop="text" width="400" />
+          <el-table-column prop="text" width="400" />
           <el-table-column align="right">
             <template slot-scope="scope">
-              <el-button
-                  size="mini"
-                  @click="callEditComment(scope.row)">Edit</el-button>
               <el-button
                   size="mini"
                   type="danger"
@@ -112,7 +109,6 @@
       </el-tab-pane>
       <el-tab-pane label="История">Role</el-tab-pane>
     </el-tabs>
-    <comment-edit-form/>
     <desc-issue-form/>
     <assign-user-form/>
   </div>
@@ -120,7 +116,6 @@
 
 <script>
 import {mapGetters} from "vuex";
-import CommentEditForm from "@/components/issue/CommentEditForm";
 import DescIssueForm from "@/components/issue/DescIssueForm";
 import AssignUserForm from "@/components/issue/AssignUserForm";
 import { minutesToText } from "@/utils/transfer";
@@ -139,7 +134,6 @@ export default {
           'editCommentModalVisible', 'descIssueModalVisible'])
     },
   components: {
-    CommentEditForm,
     DescIssueForm,
     AssignUserForm
   },
@@ -169,12 +163,6 @@ export default {
         this.$store.commit('issue/SET_STATE', { issue: {} });
       }
     },
-    isEdited(row){
-      if (row.edited){
-        return row.text + (" (ред).");
-      }
-      return row.text;
-    },
     timeToText(minutes) {
       return minutesToText(minutes);
     },
@@ -200,10 +188,6 @@ export default {
     deleteComment(row){
       this.$store.commit('issue/SET_STATE', { comment: row });
       this.$store.dispatch('issue/deleteComment', {id: row.id, issue_id: this.issue.id});
-    },
-    callEditComment(row){
-      this.$store.commit('issue/SET_STATE', { comment: row });
-      this.$store.commit('issue/SET_STATE', { editCommentModalVisible: true });
     },
     deleteTrack(row){
       this.$store.commit('issue/SET_STATE', {track: row});

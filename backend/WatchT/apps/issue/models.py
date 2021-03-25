@@ -78,7 +78,6 @@ class Comment(BaseModel):
                                null=True)
     text = models.CharField(max_length=255, verbose_name='Текст комментария')
     datetime = models.DateTimeField(verbose_name='Дата создания')
-    edited = models.BooleanField(default=False, verbose_name='Редактировано')
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE, verbose_name='Задача')
 
     def __str__(self):

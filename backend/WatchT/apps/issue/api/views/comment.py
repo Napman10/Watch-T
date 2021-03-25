@@ -1,9 +1,9 @@
 from rest_framework.generics import (ListAPIView,
-                                     RetrieveAPIView, UpdateAPIView, DestroyAPIView)
+                                     RetrieveAPIView, DestroyAPIView)
 
 from ...models import Comment, Issue
 from rest_framework.permissions import IsAuthenticated
-from ..serializers.comment import CommentSerializer, CommentUpdateSerializer, CommentDeleteSerializer
+from ..serializers.comment import CommentSerializer, CommentDeleteSerializer
 from rest_framework.views import APIView
 from ....abstract.functional import sanitize_query_params
 from ....user.models import EmployeeUser
@@ -23,19 +23,6 @@ class CommentListView(ListAPIView):
             return Comment.objects.filter(issue__id=issue_id)
 
         return Comment.objects.none()
-
-
-class CommentUpdateView(UpdateAPIView):
-    permission_classes = (IsAuthenticated,)
-    serializer_class = CommentUpdateSerializer
-    lookup_field = 'id'
-
-    def get_queryset(self):
-        return Comment.objects.all()
-
-    def put(self, request, *args, **kwargs):
-        self.request.data['edited'] = True
-        return super().put(self.request, *args, **kwargs)
 
 
 class CommentCreateView(APIView):

@@ -2,12 +2,11 @@ from django.urls import include, path
 
 from .views.issue import (IssueCreateView, IssueDestroyView, IssueListView,
                           IssueOpenView, IssueChildListView)
-from .views.comment import CommentListView, CommentOpenView, CommentUpdateView, CommentCreateView, CommentDeleteView
+from .views.comment import CommentListView, CommentOpenView, CommentCreateView, CommentDeleteView
 from .views.track_time import TrackCreateView, TrackListView,  TrackDeleteView
 
 single_comment_patterns = [
     path('', CommentOpenView.as_view()),
-    path('update', CommentUpdateView.as_view()),
     path('delete', CommentDeleteView.as_view()),
 ]
 
