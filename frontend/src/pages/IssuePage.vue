@@ -83,7 +83,7 @@
           <el-table-column prop="text" wigth="300"/>
           <el-table-column align="right">
             <template slot-scope="scope">
-              <el-button v-if="meAdmin()"
+              <el-button v-if="meCreator()"
                   size="mini"
                   type="danger"
                   @click="deleteTrack(scope.row)">Delete</el-button>
@@ -97,17 +97,19 @@
             @keyup.native.enter="addTrack"
             label-position="top"
         >
-          <el-form-item label="Добавить время">
-            <el-input v-model="trackForm.minutes" clearable placeholder="Затраченное время"></el-input>
-          </el-form-item>
-          <el-input
-              type="textarea"
-              v-model="trackForm.text"
-              clearable placeholder="Описание">
-          </el-input>
-          <el-form-item>
-            <el-button type="primary" @click="addTrack">Затратить время</el-button>
-          </el-form-item>
+          <div v-if="canTrack(this.issue.executor)">
+              <el-form-item label="Добавить время">
+                <el-input v-model="trackForm.minutes" clearable placeholder="Затраченное время"></el-input>
+              </el-form-item>
+              <el-input
+                  type="textarea"
+                  v-model="trackForm.text"
+                  clearable placeholder="Описание">
+              </el-input>
+              <el-form-item>
+                <el-button type="primary" @click="addTrack">Затратить время</el-button>
+              </el-form-item>
+            </div>
 
         </el-form>
       </el-tab-pane>
@@ -132,7 +134,7 @@ import {mapGetters} from "vuex";
 import DescIssueForm from "@/components/issue/DescIssueForm";
 import AssignUserForm from "@/components/issue/AssignUserForm";
 import { minutesToText } from "@/utils/transfer";
-import {meCreator, meExecutor, meAdmin} from "@/utils/indentMe";
+import {meCreator, meExecutor, meAdmin, meNotGuest, canTrack} from "@/utils/indentMe";
 import ChangeIssueStatusForm from "@/components/issue/ChangeIssueStatusForm";
 
 export default {
@@ -153,7 +155,7 @@ export default {
     ChangeIssueStatusForm
   },
   methods: {
-    meCreator, meExecutor, meAdmin,
+    meCreator, meExecutor, meAdmin, meNotGuest, canTrack,
     isMyIssue() {
       const myName = localStorage.getItem('myName');
       return this.issue.executor === myName;

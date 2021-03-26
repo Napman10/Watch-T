@@ -1,4 +1,4 @@
-import {isAdmin, isCreator, isExecutor} from "@/utils/roler";
+import {isAdmin, isCreator, isExecutor, isNotGuest} from "@/utils/roler";
 
 export function template(func){
     return func({role: Number(localStorage.getItem('myRole'))})
@@ -14,4 +14,12 @@ export function meCreator() {
 
 export function meExecutor() {
     return template(isExecutor);
+}
+
+export function meNotGuest() {
+    return template(isNotGuest)
+}
+
+export function canTrack(executor) {
+    return meCreator() || (meExecutor() && executor === localStorage.getItem('myName'));
 }

@@ -10,14 +10,14 @@ from ...models import Issue
 from rest_framework.response import Response
 from rest_framework import status
 from ...services import commit_minutes_statistics, track_and_record
-from ....abstract.permissions import IsAdmin
+from ....abstract.permissions import IsCreator, NonGuest
 from datetime import date
 from django.db.models import Sum
 from ....abstract.exceptions import OverTimeException
 
 
 class TrackCreateView(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, NonGuest)
 
     def post(self, request):
         data = request.data
@@ -59,7 +59,7 @@ class TrackListView(ListAPIView):
 
 
 class TrackDeleteView(DestroyAPIView):
-    permission_classes = (IsAuthenticated, IsAdmin)
+    permission_classes = (IsAuthenticated, IsCreator)
     serializer_class = TrackDeleteSerializer
     lookup_field = 'id'
 

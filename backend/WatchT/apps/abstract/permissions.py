@@ -52,3 +52,11 @@ class NonAdminChange(permissions.BasePermission):
         c_user = view.get_object()
 
         return user == c_user or c_user.role != EmployeeUser.ADMINISTRATOR
+
+
+class NonGuest(permissions.BasePermission):
+    message = "You are a guest"
+
+    def has_permission(self, request, view):
+        user = get_user(request)
+        return user.role != EmployeeUser.GUEST
