@@ -1,12 +1,14 @@
 <template>
   <div>
-    <el-avatar :size="150" :src="user.photo"></el-avatar>
+    <div @click="callSetAvatar()">
+      <el-avatar :size="150" :src="user.photo"></el-avatar>
+    </div>
     <h2>{{user.first_name}}</h2>
     <h2>{{user.last_name}}</h2>
     {{itsYou()}}
     Затрачено времени {{tableMinutes(user)}}
     Был добавлен в команду {{user.joined}}
-    <div v-if="meAdmin()">
+    <div v-if="meAdmin() || itsMe()">
       <div style="text-align: right">
         <el-button type="primary" @click="callEditUser" style="margin-bottom: 10px">Редактировать</el-button>
       </div>
@@ -19,6 +21,7 @@
     </div>
     <user-form/>
     <change-password-form/>
+    <change-avatar-form/>
   </div>
 </template>
 
@@ -26,6 +29,7 @@
 import {mapGetters} from "vuex";
 import UserForm from "../components/user/UserForm";
 import ChangePasswordForm from "@/components/user/ChangePasswordForm";
+import ChangeAvatarForm from "@/components/issue/ChangeAvatarForm";
 import {meAdmin} from "@/utils/indentMe";
 import {minutesToText} from "@/utils/transfer";
 
@@ -40,9 +44,13 @@ export default {
     },
   components: {
     UserForm,
-    ChangePasswordForm
+    ChangePasswordForm,
+    ChangeAvatarForm
   },
   methods: {
+    callSetAvatar() {
+      this.$store.commit('user/SET_STATE', { isChangeAvatarVisible: true });
+    },
     callEditUser(){
       this.$store.commit('user/SET_STATE', { isEdit: true, isCreateModalVisible: true });
     },
@@ -62,10 +70,13 @@ export default {
       if (result === "-") return "0м";
       return result;
     },
-    itsYou(){
+    itsMe() {
       const myName = localStorage.getItem('myName');
       const thisName = this.user.username;
-      if (myName === thisName) return "(Это вы)";
+      return myName === thisName;
+    },
+    itsYou(){
+      if (this.itsMe()) return "(Это вы)";
       return "";
     }
   },

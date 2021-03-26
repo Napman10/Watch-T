@@ -10,7 +10,8 @@ export default {
         loading: false,
         isCreateModalVisible: false,
         isEdit: false,
-        isChangePasswordVisible: false
+        isChangePasswordVisible: false,
+        isChangeAvatarVisible: false
     },
     getters: {
         user: (state) => state.user,
@@ -18,7 +19,8 @@ export default {
         loading: (state) => state.loading,
         isCreateModalVisible: (state) => state.isCreateModalVisible,
         isEdit: (state) => state.isEdit,
-        isChangePasswordVisible: (state) => state.isChangePasswordVisible
+        isChangePasswordVisible: (state) => state.isChangePasswordVisible,
+        isChangeAvatarVisible: (state) => state.isChangeAvatarVisible
     },
     mutations: {
         SET_STATE
