@@ -11,16 +11,21 @@
         <el-button type="primary" @click="callEditUser" style="margin-bottom: 10px">Редактировать</el-button>
       </div>
       <div style="text-align: right">
+        <el-button type="primary" @click="callChangePassUser" style="margin-bottom: 10px">Сменить пароль</el-button>
+      </div>
+      <div style="text-align: right">
         <el-button type="danger" @click="deleteMe" style="margin-bottom: 10px">Удалить</el-button>
       </div>
     </div>
     <user-form/>
+    <change-password-form/>
   </div>
 </template>
 
 <script>
 import {mapGetters} from "vuex";
 import UserForm from "../components/user/UserForm";
+import ChangePasswordForm from "@/components/user/ChangePasswordForm";
 import {meAdmin} from "@/utils/indentMe";
 import {minutesToText} from "@/utils/transfer";
 
@@ -31,14 +36,18 @@ export default {
         };
     },
   computed: {
-        ...mapGetters('user', ['user', 'isEdit', 'isCreateModalVisible']),
+        ...mapGetters('user', ['user', 'isEdit', 'isCreateModalVisible', 'isChangePasswordVisible']),
     },
   components: {
-    UserForm
+    UserForm,
+    ChangePasswordForm
   },
   methods: {
     callEditUser(){
       this.$store.commit('user/SET_STATE', { isEdit: true, isCreateModalVisible: true });
+    },
+    callChangePassUser() {
+      this.$store.commit('user/SET_STATE', { isChangePasswordVisible: true });
     },
     deleteMe() {
       let run = confirm('Вы уверены, что хотите удалить пользователя?')

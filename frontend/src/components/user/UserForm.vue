@@ -18,11 +18,11 @@
                 <el-input v-model="form.email"></el-input>
             </el-form-item>
 
-            <el-form-item label="Пароль" prop="password">
+            <el-form-item v-if="!this.isEdit" label="Пароль" prop="password">
                 <el-input type="password" v-model="form.password" autocomplete="off"></el-input>
             </el-form-item>
 
-            <el-form-item label="Подтвердите пароль" prop="password2">
+            <el-form-item v-if="!this.isEdit" label="Подтвердите пароль" prop="password2">
                 <el-input type="password" v-model="form.password2" autocomplete="off"></el-input>
             </el-form-item>
 
