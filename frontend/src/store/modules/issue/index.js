@@ -2,7 +2,6 @@ import api from '@/api';
 import { SET_STATE, setState } from '@/store/helpers';
 import { showErrorNotify, showSuccessNotify } from '@/utils';
 import { textToMinutes } from '@/utils/transfer';
-import {getIssueHistory} from "@/api/issue";
 
 export default {
     namespaced: true,
@@ -21,7 +20,8 @@ export default {
         descIssueModalVisible: false,
         descProjectIssueModalVisible: false,
         isAssignModalVisible: false,
-        isStatusModalVisible: false
+        isStatusModalVisible: false,
+        unAssignedStuff: false
     },
     getters: {
         issue: (state) => state.issue,
@@ -38,7 +38,8 @@ export default {
         descIssueModalVisible: (state) => state.descIssueModalVisible,
         descProjectIssueModalVisible: (state) => state.descProjectIssueModalVisible,
         isAssignModalVisible: (state) => state.isAssignModalVisible,
-        isStatusModalVisible: (state) => state.isStatusModalVisible
+        isStatusModalVisible: (state) => state.isStatusModalVisible,
+        unAssignedStuff: (state) => state.unAssignedStuff
     },
     mutations: {
         SET_STATE
@@ -69,7 +70,7 @@ export default {
             try {
                 setState(commit, { loading: true });
                 const result = await api.getIssue(issueId);
-                setState(commit, { issue: result });
+                setState(commit, { issue: result, unAssignedStuff: false });
                 dispatch('getChildren', {'id': issueId});
                 dispatch('getComments', issueId);
                 dispatch('getTracks', issueId);

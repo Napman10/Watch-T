@@ -1,28 +1,27 @@
 <template>
   <div v-if="!unAssignedStuff">
-    <div v-if="meCreator">
       <h2>{{project.short_name}}</h2>
       <h2>{{project.header}}</h2>
       {{project.description}}<br/>
       Затрачено времени {{tableMinutes(project)}}
       Открыт {{project.created_date}}
-      <div style="text-align: right">
-          <el-button type="primary" @click="showIssueProjectDescModal" style="margin-bottom: 10px">Отнаследовать задачу</el-button>
-      </div>
-      <div style="text-align: right">
-        <el-button type="primary" @click="showAssignModal" style="margin-bottom: 10px">Назначить пользователя</el-button>
-      </div>
-      <div style="text-align: right">
-        <el-button type="primary" @click="showUnAssignModal" style="margin-bottom: 10px">Отстранить пользователя</el-button>
-      </div>
-      <div v-if="meAdmin()" style="text-align: right">
-        <el-button type="danger" @click="deleteMe" style="margin-bottom: 10px">Удалить проект</el-button>
+      <div v-if="meCreator()">
+        <div style="text-align: right">
+            <el-button type="primary" @click="showIssueProjectDescModal" style="margin-bottom: 10px">Отнаследовать задачу</el-button>
+        </div>
+        <div style="text-align: right">
+          <el-button type="primary" @click="showAssignModal" style="margin-bottom: 10px">Назначить пользователя</el-button>
+        </div>
+        <div style="text-align: right">
+          <el-button type="primary" @click="showUnAssignModal" style="margin-bottom: 10px">Отстранить пользователя</el-button>
+        </div>
+        <div v-if="meAdmin()" style="text-align: right">
+          <el-button type="danger" @click="deleteMe" style="margin-bottom: 10px">Удалить проект</el-button>
+        </div>
       </div>
     <desc-project-issue-form/>
     <assign-user-form/>
     <un-assign-user-form/>
-    </div>
-    <div v-else>permission denied</div>
   </div>
   <div v-else>
     Вы не назначены на этот проект

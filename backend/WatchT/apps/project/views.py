@@ -11,6 +11,7 @@ from rest_framework.views import APIView
 from ..abstract.functional import sanitize_query_params, get_user
 from ..issue.models import Issue
 from ..abstract.permissions import AssignedStuffOnly, IsAdmin, IsCreator
+from django.db.models.query import Q
 
 
 class ProjectListView(ListAPIView):
@@ -18,7 +19,21 @@ class ProjectListView(ListAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return Project.objects.all()
+        qs = Project.objects.all()
+        data = sanitize_query_params(self.request)
+        somename = data.get('somename')
+        assigned = data.get('assigned') == "true"
+
+        if somename is not None:
+            qs = qs.filter(Q(short_name__contains=somename) | Q(header__contains=somename))
+
+        if assigned:
+            me = get_user(self.request)
+            p2u = Project2User.objects.filter(user=me)
+            p2u_ids = [p.project.id for p in p2u]
+            qs = qs.filter(id__in=p2u_ids)
+
+        return qs
 
 
 class ProjectOpenView(RetrieveUpdateAPIView):
@@ -36,12 +51,9 @@ class ProjectCreateView(CreateAPIView):
     permission_classes = (IsAuthenticated, IsAdmin)
 
     def post(self, request, *args, **kwargs):
-        user = get_user(request)
-
         response = super().post(request, *args, **kwargs)
         returned_id = response.data.get('id')
         project = Project.objects.get(id=returned_id)
-        Project2User.objects.create(project=project, user=user)
         ProjectStatistics.objects.create(project=project)
 
         return response

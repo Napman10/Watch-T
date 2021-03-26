@@ -1,9 +1,8 @@
 from django.db.models.manager import Manager
 from ..user.models import EmployeeUser
-from ..project.models import Project, Project2User
+from ..project.models import Project
 from ..abstract.exceptions import BufferWantTimeException
 from .services import record_history, track_and_record
-from rest_framework.exceptions import APIException
 
 
 class IssueManager(Manager):
@@ -12,15 +11,6 @@ class IssueManager(Manager):
                           description=None, level=1, parent_id=None):
         author = EmployeeUser.objects.filter(user__username=author_username).first()
         project = Project.objects.filter(short_name=project_name).first()
-
-        if not Project2User.objects.filter(user__user__username=author_username).exists():
-            raise APIException
-
-        p2u = Project2User.objects.filter(project__short_name=project_name).first()
-        if not p2u:
-            raise APIException
-        elif executor_username and p2u.user.user.username != executor_username:
-            raise APIException
 
         query = {"short_name": short_name, "header": header, "author": author,
                  "project": project, "got_minutes": 0, "priority": priority, "level": level}

@@ -49,7 +49,7 @@ export default {
                 setState(commit, { loading: true });
                 const result = await api.getProject(projectId);
                 const stat = await api.getProjectStatistics(projectId);
-                setState(commit, { project: {...result, ...stat} });
+                setState(commit, { project: {...result, ...stat}, unAssignedStuff: false });
             } catch (e) {
                 const assignedStuffOnlyDetail = 'You do not have permission to watch this project';
                 const detail = e.response.data.detail;

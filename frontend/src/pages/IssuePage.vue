@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!unAssignedStuff || meAdmin()">
     <h2>{{issue.short_name}}</h2>
     <h2>{{issue.header}}</h2>
     {{issue.description}}
@@ -110,7 +110,6 @@
                 <el-button type="primary" @click="addTrack">Затратить время</el-button>
               </el-form-item>
             </div>
-
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="История">
@@ -126,6 +125,9 @@
     <desc-issue-form/>
     <assign-user-form/>
     <change-issue-status-form/>
+  </div>
+  <div v-else>
+    You do not have permission to watch this issue
   </div>
 </template>
 
@@ -146,7 +148,7 @@ export default {
         };
     },
   computed: {
-        ...mapGetters('issue', ['issue', 'comments', 'tracks', 'children',
+        ...mapGetters('issue', ['issue', 'comments', 'tracks', 'children', 'unAssignedStuff',
           'editCommentModalVisible', 'descIssueModalVisible', 'isStatusModalVisible', 'history'])
     },
   components: {

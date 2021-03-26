@@ -13,6 +13,7 @@ from ...services import set_got_time, record_history
 from ....user.models import EmployeeUser
 from rest_framework.exceptions import APIException
 from ....abstract.permissions import AssignedStuffOnly, IsCreator
+from ....project.models import Project2User
 
 
 class IssueListView(ListAPIView):
@@ -111,6 +112,10 @@ class IssueCreateView(APIView):
         level = data.get('level')
         if not level:
             level = 1
+        if not (Project2User.objects.filter(user__user__username=author_username).exists()
+                or get_user(request).role == EmployeeUser.ADMINISTRATOR):
+
+            raise APIException
 
         Issue.objects.inherit_from_proj(short_name=short_name, header=header, author_username=author_username,
                                         project_name=project_name, want_minutes=want_minutes,
