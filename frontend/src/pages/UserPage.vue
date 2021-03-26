@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div @click="callSetAvatar()">
-      <el-avatar :size="150" :src="user.photo"></el-avatar>
-    </div>
     <h2>{{user.first_name}}</h2>
     <h2>{{user.last_name}}</h2>
     {{itsYou()}}
@@ -21,7 +18,6 @@
     </div>
     <user-form/>
     <change-password-form/>
-    <change-avatar-form/>
   </div>
 </template>
 
@@ -29,7 +25,6 @@
 import {mapGetters} from "vuex";
 import UserForm from "../components/user/UserForm";
 import ChangePasswordForm from "@/components/user/ChangePasswordForm";
-import ChangeAvatarForm from "@/components/issue/ChangeAvatarForm";
 import {meAdmin} from "@/utils/indentMe";
 import {minutesToText} from "@/utils/transfer";
 
@@ -44,13 +39,9 @@ export default {
     },
   components: {
     UserForm,
-    ChangePasswordForm,
-    ChangeAvatarForm
+    ChangePasswordForm
   },
   methods: {
-    callSetAvatar() {
-      this.$store.commit('user/SET_STATE', { isChangeAvatarVisible: true });
-    },
     callEditUser(){
       this.$store.commit('user/SET_STATE', { isEdit: true, isCreateModalVisible: true });
     },
