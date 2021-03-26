@@ -111,7 +111,15 @@
 
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="История">Role</el-tab-pane>
+      <el-tab-pane label="История">
+        <el-table
+            :data="history"
+             style="width: 100%"
+        >
+          <el-table-column prop="datetime"  width="300" />
+          <el-table-column prop="text" width="400" />
+        </el-table>
+      </el-tab-pane>
     </el-tabs>
     <desc-issue-form/>
     <assign-user-form/>
@@ -137,7 +145,7 @@ export default {
     },
   computed: {
         ...mapGetters('issue', ['issue', 'comments', 'tracks', 'children',
-          'editCommentModalVisible', 'descIssueModalVisible', 'isStatusModalVisible'])
+          'editCommentModalVisible', 'descIssueModalVisible', 'isStatusModalVisible', 'history'])
     },
   components: {
     DescIssueForm,

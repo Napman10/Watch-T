@@ -36,6 +36,10 @@ export const assignUserIssue = async (payload) => {
     return (await axios.put(`api/issue/${id}/`, payload, {headers: headers})).data;
 }
 
+export const getIssueHistory = async (params) => {
+    return (await axios.get(`api/issue/history/`, {params, headers: headers})).data;
+}
+
 export default {
     getChildren,
     assignUserIssue,
@@ -43,5 +47,6 @@ export default {
     addIssue,
     getIssue,
     deleteIssue,
-    changeIssue
+    changeIssue,
+    getIssueHistory
 };

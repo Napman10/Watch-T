@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Comment, Issue, TrackTime
+from .models import Comment, Issue, TrackTime, IssueHistoryRecord
 
 
 @admin.register(Issue)
@@ -16,3 +16,8 @@ class CommentAdmin(admin.ModelAdmin):
 @admin.register(TrackTime)
 class TrackTimeAdmin(admin.ModelAdmin):
     list_display = ['issue', 'executor', 'minutes', 'text']
+
+
+@admin.register(IssueHistoryRecord)
+class IssueHistoryRecordAdmin(admin.ModelAdmin):
+    list_display = ['issue', 'datetime']

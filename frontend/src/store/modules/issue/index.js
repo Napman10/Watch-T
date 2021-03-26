@@ -2,12 +2,14 @@ import api from '@/api';
 import { SET_STATE, setState } from '@/store/helpers';
 import { showErrorNotify, showSuccessNotify } from '@/utils';
 import { textToMinutes } from '@/utils/transfer';
+import {getIssueHistory} from "@/api/issue";
 
 export default {
     namespaced: true,
     state: {
         issues: [],
         issue: {},
+        history: [],
         comments: [],
         comment : {},
         tracks: [],
@@ -24,6 +26,7 @@ export default {
     getters: {
         issue: (state) => state.issue,
         issues: (state) => state.issues,
+        history: (state) => state.history,
         comment: (state) => state.comment,
         comments: (state) => state.comments,
         tracks: (state) => state.tracks,
@@ -70,6 +73,7 @@ export default {
                 dispatch('getChildren', {'id': issueId});
                 dispatch('getComments', issueId);
                 dispatch('getTracks', issueId);
+                dispatch('getIssueHistory', {'issue_id': issueId});
             } catch (e) {
                 const assignedStuffOnlyDetail = 'You do not have permission to watch this project';
                 const detail = e.response.data.detail;
@@ -177,5 +181,13 @@ export default {
                 showErrorNotify(e.response.data.detail);
             }
         },
+        async getIssueHistory({commit}, filter) {
+            try {
+                const result = await api.getIssueHistory(filter);
+                setState(commit, { history: result });
+            } catch (e) {
+                showErrorNotify(e.message);
+            }
+        }
     }
 };

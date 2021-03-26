@@ -4,6 +4,7 @@ from .views.issue import (IssueCreateView, IssueDestroyView, IssueListView,
                           IssueOpenView, IssueChildListView)
 from .views.comment import CommentListView, CommentOpenView, CommentCreateView, CommentDeleteView
 from .views.track_time import TrackCreateView, TrackListView,  TrackDeleteView
+from .views.history import IssueHistoryRecordListView
 
 single_comment_patterns = [
     path('', CommentOpenView.as_view()),
@@ -31,6 +32,7 @@ urlpatterns = [
     path('track/', include(track_patterns)),
 
     path('<uuid:id>/', IssueOpenView.as_view()),
+    path('history/', IssueHistoryRecordListView.as_view()),
     path('list', IssueListView.as_view()),
     path('new', IssueCreateView.as_view()),
     path('delete/<uuid:id>', IssueDestroyView.as_view()),
