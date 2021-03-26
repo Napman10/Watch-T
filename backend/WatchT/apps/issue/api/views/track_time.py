@@ -3,13 +3,13 @@ from rest_framework.generics import (DestroyAPIView,
 from ..serializers.track_time import TrackTimeSerializer, TrackDeleteSerializer
 from ...models import TrackTime
 from rest_framework.permissions import IsAuthenticated
-from ....abstract.functional import sanitize_query_params
+from ....abstract.functional import sanitize_query_params, get_user
 from rest_framework.views import APIView
 from ....user.models import EmployeeUser
 from ...models import Issue
 from rest_framework.response import Response
 from rest_framework import status
-from ...services import set_got_time, commit_minutes_statistics
+from ...services import commit_minutes_statistics, track_and_record
 from ....abstract.permissions import IsAdmin
 from datetime import date
 from django.db.models import Sum
@@ -21,7 +21,7 @@ class TrackCreateView(APIView):
 
     def post(self, request):
         data = request.data
-
+        me = get_user(request)
         executor = EmployeeUser.objects.filter(user=request.user).first()
         minutes = data.get('minutes')
         text = data.get('text', '')
@@ -40,7 +40,7 @@ class TrackCreateView(APIView):
         issue_id = data.get('issue_id')
         if issue_id:
             issue = Issue.objects.get(id=issue_id)
-            TrackTime.objects.depend_create(issue=issue, minutes=minutes, executor=executor, text=text)
+            TrackTime.objects.depend_create(me=me, issue=issue, minutes=minutes, executor=executor, text=text)
             commit_minutes_statistics(request, issue, minutes)
             return Response(status=status.HTTP_201_CREATED)
         return Response(data={"detail": "invalid"}, status=status.HTTP_400_BAD_REQUEST)
@@ -67,10 +67,10 @@ class TrackDeleteView(DestroyAPIView):
         return TrackTime.objects.all()
 
     def delete(self, request, *args, **kwargs):
+        me = get_user(request)
         track = self.get_object()
         issue = track.issue
         minutes = -track.minutes
+        track_and_record(me, issue, minutes)
         commit_minutes_statistics(request, issue, minutes)
-        set_got_time(issue, minutes)
-
         return super().delete(request, *args, **kwargs)

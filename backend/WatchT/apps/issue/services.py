@@ -3,6 +3,8 @@ from ..abstract.exceptions import NegativeGotTimeException
 from ..project.models import ProjectStatistics
 from ..user.models import UserStatistics
 from ..abstract.functional import get_user
+from django.apps import apps
+from datetime import datetime
 
 
 def get_period_size(lst):
@@ -27,6 +29,25 @@ def string_to_issue_time(string):
     return None
 
 
+def minutes_to_string(minutes):
+    result = ""
+    weeks = minutes // (60 * 8 * 5)
+    if weeks > 0:
+        minutes -= weeks * (60 * 8 * 5)
+        result += f"{weeks}н "
+    days = minutes // (60 * 8)
+    if days > 0:
+        minutes -= days * (60 * 8)
+        result += f"{days}д "
+    hours = minutes // 60
+    if hours > 0:
+        minutes -= hours * 60
+        result += f"{hours}ч "
+    if minutes > 0:
+        result += f"{minutes}м "
+    return result
+
+
 def set_got_time(issue, minutes):
     issue.got_minutes += minutes
     if issue.got_minutes < 0:
@@ -44,3 +65,15 @@ def commit_minutes_statistics(request, issue, minutes):
     user_stat = UserStatistics.objects.filter(user=user).first()
     user_stat.tracked_minutes += minutes
     user_stat.save()
+
+
+def record_history(issue, text):
+    IssueHistoryRecord = apps.get_model("issue", "IssueHistoryRecord")
+    IssueHistoryRecord.objects.create(issue=issue, text=text, datetime=datetime.now())
+
+
+def track_and_record(me, issue, minutes):
+    got = issue.got_minutes
+    text_history = f"{me}: время {minutes_to_string(got)}->{minutes_to_string(got + minutes)}"
+    set_got_time(issue, minutes)
+    record_history(issue, text_history)

@@ -3,13 +3,13 @@ from rest_framework.generics import (DestroyAPIView,
 from ...models import Issue
 from ..serializers.issue import IssueSerializer
 from django.db.models.query import Q
-from ....abstract.functional import sanitize_query_params, get_user
+from ....abstract.functional import sanitize_query_params, get_user, string_or_empty
 from ...consts import *
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from ...services import set_got_time
+from ...services import set_got_time, record_history
 from ....user.models import EmployeeUser
 from rest_framework.exceptions import APIException
 from ....abstract.permissions import AssignedStuffOnly, IsCreator
@@ -68,16 +68,21 @@ class IssueOpenView(RetrieveUpdateAPIView):
         stat = request.data.get('status')
         good_roles = [EmployeeUser.ADMINISTRATOR, EmployeeUser.LEAD, EmployeeUser.DEVELOPER]
         if executor_username and employee.role in good_roles:
+            old_executor = issue.executor
             issue.executor = employee
             issue.save()
+            record_history(issue=issue, text=f"{me}: исполнитель {string_or_empty(old_executor)} -> {employee}")
             return Response(status=status.HTTP_200_OK)
 
         good_role = me.role in good_roles
         is_my_task = issue.executor == me
         cond = good_role or is_my_task
         if status and cond:
+            old_status = issue.status
             issue.status = stat
             issue.save()
+            s = Issue.STATUS_CHOICES
+            record_history(issue=issue, text=f"{me}: статус {s[old_status][1]} -> {s[stat][1]}")
             return Response(status=status.HTTP_200_OK)
 
         raise APIException

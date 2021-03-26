@@ -2,7 +2,7 @@ from django.db.models.manager import Manager
 from ..user.models import EmployeeUser
 from ..project.models import Project, Project2User
 from ..abstract.exceptions import BufferWantTimeException
-from .services import set_got_time
+from .services import record_history, track_and_record
 from rest_framework.exceptions import APIException
 
 
@@ -46,10 +46,11 @@ class IssueManager(Manager):
         if description:
             query['description'] = description
 
-        self.create(**query)
+        issue = self.create(**query)
+        record_history(issue=issue, text="Задача была создана")
 
 
 class TrackTimeManager(Manager):
-    def depend_create(self, issue, minutes, executor, text):
-        set_got_time(issue, minutes)
+    def depend_create(self, me, issue, minutes, executor, text):
+        track_and_record(me, issue, minutes)
         self.create(issue=issue, minutes=minutes, executor=executor, text=text)
