@@ -51,9 +51,23 @@ export default {
     deleteMe() {
       let run = confirm('Вы уверены, что хотите удалить пользователя?')
       if (run) {
-        this.$store.dispatch('user/deleteUser', {id: this.user.id});
-        this.$router.push({'name': 'users'});
-        this.$store.commit('user/SET_STATE', { user: {} });
+        let run2 = true;
+        let self = this.user.username === localStorage.getItem('myName');
+        if (self) {
+          run2 = confirm('Вы удаляете собственную страницу');
+        }
+        if (run2) {
+          this.$store.dispatch('user/deleteUser', {id: this.user.id});
+          if (self) {
+            localStorage.removeItem('token');
+            location.reload();
+          }
+          else {
+            this.$router.push({'name': 'users'});
+          }
+          this.$store.commit('user/SET_STATE', { user: {} });
+        }
+
       }
     }, meAdmin,
     tableMinutes(row) {
