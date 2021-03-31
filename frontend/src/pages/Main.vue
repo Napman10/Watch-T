@@ -19,7 +19,7 @@ export default {
     box-sizing: border-box;
 }
 .main {
-    margin-left: calc(20% + 10px);
-    margin-right: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 </style>

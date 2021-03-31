@@ -4,7 +4,7 @@
       id="nav"
       class="el-menu-demo"
       mode="horizontal"
-      background-color="#350066"
+      background-color="#001729"
       text-color="#fff"
       :router="true"
       active-text-color="#FFDEAD">
@@ -46,7 +46,7 @@ export default {
 
 <style scoped>
   #nav{
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     border-width: 0;
   }
 </style>
