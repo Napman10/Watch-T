@@ -23,7 +23,7 @@
             @cell-click="openProject"
         >
             <el-table-column prop="short_name" width="100" />
-            <el-table-column prop="header"  width="400" />
+            <el-table-column prop="header"  width="200" />
         </el-table>
     </div>
 </template>

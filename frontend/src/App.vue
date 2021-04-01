@@ -24,9 +24,13 @@ export default {
 </script>
 
 <style>
+:root {
+  --main-bg-color: #00345C;
+}
 body {
     margin: 0;
     padding: 0;
+    background-color: var(--main-bg-color);
 }
 .login {
     margin-left: auto;
@@ -37,4 +41,11 @@ body {
     width: 350px;
     border-radius: 5%;
 }
+.el-table__body tr, th{
+  background-color: var(--main-bg-color);
+}
+/*.el_table__header table, thead, tr, th, .row, col, colgroup{*/
+/*  background-color: var(--main-bg-color);*/
+/*}*/
+
 </style>
