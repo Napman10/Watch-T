@@ -25,13 +25,14 @@ export default {
 
 <style>
 :root {
-  --main-bg-color: #00345C;
+  --main-bg-color: #00345c;
 }
 body {
     margin: 0;
     padding: 0;
     background-color: var(--main-bg-color);
 }
+
 .login {
     margin-left: auto;
     margin-right: auto;
@@ -43,6 +44,15 @@ body {
 }
 .el-table__body tr, th{
   background-color: var(--main-bg-color);
+}
+.el-dialog__header {
+  background-color: #001729;
+}
+.el-dialog__body, .el-dialog__footer {
+  background-color: #133E6B;
+}
+.el-form-item__label, .el-dialog__title {
+  color: white;
 }
 /*.el_table__header table, thead, tr, th, .row, col, colgroup{*/
 /*  background-color: var(--main-bg-color);*/
