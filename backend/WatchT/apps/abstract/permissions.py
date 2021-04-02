@@ -33,12 +33,22 @@ class IsAdmin(permissions.BasePermission):
         return user.role == EmployeeUser.ADMINISTRATOR
 
 
+class AdminEditProject(permissions.BasePermission):
+    message = "You must be an admin"
+
+    def has_permission(self, request, view):
+        if request.method == 'GET':
+            return True
+        user = get_user(request)
+        return user.role == EmployeeUser.ADMINISTRATOR
+
+
 class IsCreator(permissions.BasePermission):
     message = "You do not have permission for this action"
 
     def has_permission(self, request, view):
         user = get_user(request)
-        return user.role in [EmployeeUser.ADMINISTRATOR, EmployeeUser.ANALYST, EmployeeUser.LEAD]
+        return user.role in [EmployeeUser.ADMINISTRATOR, EmployeeUser.MANAGER, EmployeeUser.LEAD]
 
 
 class NonAdminChange(permissions.BasePermission):

@@ -1,6 +1,6 @@
 const guest = 0;
 const dev = 1;
-const analyst = 2;
+const manager = 2;
 const lead = 3;
 const admin = 4;
 
@@ -10,7 +10,7 @@ export function isAdmin(user){
 
 export function isCreator(user){
     const role = user.role
-    return role === admin || role === analyst || role === lead;
+    return role === admin || role === manager || role === lead;
 }
 
 export function isExecutor(user){

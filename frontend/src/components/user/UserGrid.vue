@@ -12,7 +12,7 @@
                 <el-select v-model="form.role" @change="filterUsers" clearable placeholder="Роль">
                     <el-option :value="0" label="Гость" />
                     <el-option :value="1" label="Разработчик" />
-                    <el-option :value="2" label="Аналитик" />
+                    <el-option :value="2" label="Проектный менеджер" />
                     <el-option :value="3" label="Тимлид" />
                     <el-option :value="4" label="Администратор" />
                 </el-select>
@@ -53,7 +53,7 @@ export default {
         this.$store.dispatch('user/getUsers', this.form)
       },
       printRole(row){
-        const roles = ['Гость', 'Разработчик', 'Аналитик', 'Тимлид', 'Администратор']
+        const roles = ['Гость', 'Разработчик', 'Проектный менеджер', 'Тимлид', 'Администратор']
         return roles[row.role]
       },
       openUser(cell){

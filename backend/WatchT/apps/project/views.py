@@ -10,7 +10,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from ..abstract.functional import sanitize_query_params, get_user
 from ..issue.models import Issue
-from ..abstract.permissions import AssignedStuffOnly, IsAdmin, IsCreator, NonAdminChange
+from ..abstract.permissions import AssignedStuffOnly, IsAdmin, IsCreator, AdminEditProject
 from django.db.models.query import Q
 
 
@@ -38,7 +38,7 @@ class ProjectListView(ListAPIView):
 
 class ProjectOpenView(RetrieveUpdateAPIView):
     serializer_class = ProjectSerializer
-    permission_classes = (IsAuthenticated, AssignedStuffOnly, IsAdmin)
+    permission_classes = (IsAuthenticated, AssignedStuffOnly, AdminEditProject)
     lookup_field = 'id'
 
     def get_queryset(self):

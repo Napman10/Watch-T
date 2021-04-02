@@ -12,14 +12,14 @@ def user_photo_upload_to(instance, filename):
 class EmployeeUser(BaseModel):
     GUEST = 0
     DEVELOPER = 1
-    ANALYST = 2
+    MANAGER = 2
     LEAD = 3
     ADMINISTRATOR = 4
 
     ROLE_CHOICES = (
         (GUEST, 'Гость'),
         (DEVELOPER, 'Разработчик'),
-        (ANALYST, 'Аналитик'),
+        (MANAGER, 'Проектный менеджер'),
         (LEAD, 'Тимлид'),
         (ADMINISTRATOR, 'Администратор сайта'),
     )
