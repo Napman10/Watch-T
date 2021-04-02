@@ -6,7 +6,7 @@
         <el-select v-model="form.user"
                    clearable placeholder="Назначьте пользователя">
           <el-option
-              v-for="item in users"
+              v-for="item in [{username: 'Не назначено'}].concat(users)"
               :key="item.username"
               :value="item.username">
           </el-option>

@@ -65,14 +65,19 @@ class IssueOpenView(RetrieveUpdateAPIView):
         issue = self.get_object()
         me = get_user(request)
         executor_username = request.data.get('user')
-        employee = EmployeeUser.objects.filter(user__username=executor_username).first()
+        unassign = "Не назначено"
+        if executor_username == unassign:
+            employee = None
+        else:
+            employee = EmployeeUser.objects.filter(user__username=executor_username).first()
         stat = request.data.get('status')
         good_roles = [EmployeeUser.ADMINISTRATOR, EmployeeUser.LEAD, EmployeeUser.DEVELOPER]
-        if executor_username and employee.role in good_roles:
+        if executor_username and ((employee and employee.role in good_roles) or not employee):
             old_executor = issue.executor
             issue.executor = employee
             issue.save()
-            record_history(issue=issue, text=f"{me}: исполнитель {string_or_empty(old_executor)} -> {employee}")
+            record_history(issue=issue,
+                           text=f"{me}: исполнитель {string_or_empty(old_executor)} -> {string_or_empty(employee)}")
             return Response(status=status.HTTP_200_OK)
 
         good_role = me.role in good_roles
@@ -114,7 +119,6 @@ class IssueCreateView(APIView):
             level = 1
         if not (Project2User.objects.filter(user__user__username=author_username).exists()
                 or get_user(request).role == EmployeeUser.ADMINISTRATOR):
-
             raise APIException
 
         Issue.objects.inherit_from_proj(short_name=short_name, header=header, author_username=author_username,
