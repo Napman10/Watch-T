@@ -10,7 +10,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from ..abstract.functional import sanitize_query_params, get_user
 from ..issue.models import Issue
-from ..abstract.permissions import AssignedStuffOnly, IsAdmin, IsCreator
+from ..abstract.permissions import AssignedStuffOnly, IsAdmin, IsCreator, NonAdminChange
 from django.db.models.query import Q
 
 
@@ -38,11 +38,28 @@ class ProjectListView(ListAPIView):
 
 class ProjectOpenView(RetrieveUpdateAPIView):
     serializer_class = ProjectSerializer
-    permission_classes = (IsAuthenticated, AssignedStuffOnly)
+    permission_classes = (IsAuthenticated, AssignedStuffOnly, IsAdmin)
     lookup_field = 'id'
 
     def get_queryset(self):
         return Project.objects.all()
+
+    def put(self, request, *args, **kwargs):
+        project = self.get_object()
+        data = request.data
+
+        short_name = data.get('short_name')
+        header = data.get('header')
+        description = data.get('description')
+
+        if short_name:
+            project.short_name = short_name
+        if header:
+            project.header = header
+        if description:
+            project.description = description
+        project.save()
+        return Response(status=status.HTTP_200_OK)
 
 
 class ProjectCreateView(CreateAPIView):

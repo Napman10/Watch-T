@@ -11,7 +11,8 @@ export default {
         unAssignedStuff: false,
         isCreateModalVisible: false,
         isAssignModalVisible: false,
-        isUnAssignModalVisible: false
+        isUnAssignModalVisible: false,
+        isEditModalVisible: false
     },
     getters: {
         projects: (state) => state.projects,
@@ -20,7 +21,8 @@ export default {
         loading: (state) => state.loading,
         isCreateModalVisible: (state) => state.isCreateModalVisible,
         isAssignModalVisible: (state) => state.isAssignModalVisible,
-        isUnAssignModalVisible: (state) => state.isUnAssignModalVisible
+        isUnAssignModalVisible: (state) => state.isUnAssignModalVisible,
+        isEditModalVisible: (state) => state.isEditModalVisible
     },
     mutations: {
         SET_STATE
@@ -62,6 +64,16 @@ export default {
 
             } finally {
                 setState(commit, { loading: false });
+            }
+        },
+        async editProject({commit, dispatch}, payload) {
+            try {
+                await api.editProject(payload);
+                dispatch('getProject', payload.id);
+                setState(commit, { isEditModalVisible: false });
+                location.reload();
+            } catch (e) {
+                showErrorNotify(e.response.data.detail);
             }
         },
         async deleteProject({dispatch }, payload) {

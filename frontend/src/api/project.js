@@ -13,6 +13,12 @@ export const getProject = async (id) => {
     return (await axios.get(`api/project/${id}`, {headers: headers})).data;
 };
 
+export const editProject = async (payload) => {
+    const id = payload.id;
+    console.log(payload)
+    return (await axios.put(`api/project/${id}`, payload, {headers: headers})).data;
+};
+
 export const addProject = async (payload) => {
     return (await axios.post('api/project/new', payload, {headers: headers})).data;
 };
@@ -42,5 +48,6 @@ export default {
     getProject,
     unAssignUser,
     deleteProject,
-    getProjectStatistics
+    getProjectStatistics,
+    editProject
 };
