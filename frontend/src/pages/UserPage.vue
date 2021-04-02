@@ -6,15 +6,16 @@
     Затрачено времени {{tableMinutes(user)}}
     Был добавлен в команду {{user.joined}}
     <div v-if="meAdmin() || itsMe()">
-      <div style="text-align: right">
-        <el-button type="primary" @click="callEditUser" style="margin-bottom: 10px">Редактировать</el-button>
-      </div>
-      <div style="text-align: right">
-        <el-button type="primary" @click="callChangePassUser" style="margin-bottom: 10px">Сменить пароль</el-button>
-      </div>
-      <div style="text-align: right">
-        <el-button type="danger" @click="deleteMe" style="margin-bottom: 10px">Удалить</el-button>
-      </div>
+      <el-dropdown trigger="click">
+      <span class="el-dropdown-link">
+        Действия<i class="el-icon-arrow-down el-icon--right"></i>
+      </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item @click.native="callEditUser()" icon="el-icon-edit">Редактировать</el-dropdown-item>
+          <el-dropdown-item @click.native="callChangePassUser()" icon="el-icon-lock">Сменить пароль</el-dropdown-item>
+          <el-dropdown-item @click.native="deleteMe()" icon="el-icon-error">Удалить</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
     <user-form/>
     <change-password-form/>
