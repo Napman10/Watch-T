@@ -15,7 +15,8 @@
       <h5>Подзадачи: </h5>
       <el-table
         :data="children"
-        style="width: 100%"
+        max-height="200px"
+        style="width: 400px"
         @cell-click="openIssue"
       >
         <el-table-column prop="short_name" width="100" />
@@ -23,37 +24,36 @@
       </el-table>
     </div>
     <div v-if="meCreator()">
-      <div style="text-align: right">
-        <el-button type="primary" @click="showIssueDescModal" style="margin-bottom: 10px">Отнаследовать задачу</el-button>
-      </div>
-      <div style="text-align: right">
-        <el-button type="danger" @click="deleteMe" style="margin-bottom: 10px">Удалить задачу</el-button>
-      </div>
-      <div style="text-align: right">
-        <el-button type="primary" @click="assignUser">Назначить сотрудника</el-button>
-      </div>
+      <el-dropdown trigger="click">
+        <span class="el-dropdown-link">
+          Действия<i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="showIssueDescModal()" icon="el-icon-document-copy">Отнаследовать задачу</el-dropdown-item>
+            <el-dropdown-item @click.native="assignUser()" icon="el-icon-user">Назначить сотрудника</el-dropdown-item>
+            <el-dropdown-item  v-if="isMyIssue()|| meCreator()" @click.native="changeStatus()" icon="el-icon-user-solid">Изменить статус</el-dropdown-item>
+            <el-dropdown-item @click.native="deleteMe()" icon="el-icon-error">Удалить задачу</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
     </div>
-    <div style="text-align: right" v-if="meCreator() || isMyIssue()">
-        <el-button type="primary" @click="changeStatus">Изменить статус</el-button>
-      </div>
     <el-tabs type="card">
       <el-tab-pane label="Комментарии">
-        <el-table
-            :data="comments"
-            style="width: 100%"
-        >
-          <el-table-column prop="author" width="100" />
-          <el-table-column prop="datetime"  width="300" />
-          <el-table-column prop="text" width="400" />
-          <el-table-column align="right">
-            <template slot-scope="scope">
-              <el-button v-if="meAdmin()"
-                  size="mini"
-                  type="danger"
-                  @click="deleteComment(scope.row)">Delete</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+        <div v-if="comments.length !== 0">
+          <el-table
+              :data="comments"
+              style="width: 900px"
+              :show-header="false"
+          >
+            <el-table-column prop="author" width="100" />
+            <el-table-column prop="datetime"  width="300" />
+            <el-table-column prop="text" width="400" />
+            <el-table-column align="right">
+              <template slot-scope="scope">
+                <i v-if="meAdmin()" class="el-icon-close" @click="deleteComment(scope.row)"></i>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
         <el-form
             v-model="commentForm"
             :inline="true"
@@ -73,23 +73,23 @@
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="Трекинг времени">
-        <el-table
-          :data="tracks"
-          style="width: 100%"
-        >
-          <el-table-column prop="executor" width="150"/>
-          <el-table-column prop="datetime"  width="300" />
-          <el-table-column prop="minutes" :formatter="tableMinutes" width="150"/>
-          <el-table-column prop="text" wigth="300"/>
-          <el-table-column align="right">
-            <template slot-scope="scope">
-              <el-button v-if="meCreator()"
-                  size="mini"
-                  type="danger"
-                  @click="deleteTrack(scope.row)">Delete</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+        <div v-if="tracks.length !== 0">
+          <el-table
+            :data="tracks"
+            style="width: 1000px"
+            :show-header="false"
+          >
+            <el-table-column prop="executor" width="150"/>
+            <el-table-column prop="datetime"  width="300" />
+            <el-table-column prop="minutes" :formatter="tableMinutes" width="150"/>
+            <el-table-column prop="text" wigth="300"/>
+            <el-table-column align="right">
+              <template slot-scope="scope">
+                <i v-if="meCreator()" class="el-icon-close" @click="deleteTrack(scope.row)"></i>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
         <el-form v-if="meExecutor()"
             v-model="trackForm"
             :inline="true"
@@ -115,7 +115,8 @@
       <el-tab-pane label="История">
         <el-table
             :data="history"
-             style="width: 100%"
+            style="width: 700px"
+            :show-header="false"
         >
           <el-table-column prop="datetime"  width="300" />
           <el-table-column prop="text" width="400" />

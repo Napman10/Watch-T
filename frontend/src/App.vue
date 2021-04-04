@@ -42,6 +42,12 @@ body {
     width: 350px;
     border-radius: 5%;
 }
+.el-table {
+  width: 2px;
+}
+.el-table__body tr:hover{
+  color:black;
+}
 .el-table__body tr, th{
   background-color: var(--main-bg-color);
 }
@@ -51,11 +57,14 @@ body {
 .el-dialog__body, .el-dialog__footer {
   background-color: #133E6B;
 }
+.el-table th, tr{
+  background-color: var(--main-bg-color);
+}
+.el-table--fit {
+  color: white;
+}
 .el-form-item__label, .el-dialog__title {
   color: white;
 }
-/*.el_table__header table, thead, tr, th, .row, col, colgroup{*/
-/*  background-color: var(--main-bg-color);*/
-/*}*/
 
 </style>

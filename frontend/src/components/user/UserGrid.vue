@@ -28,7 +28,7 @@
         </el-form>
         <el-table
             :data="users"
-            style="width: 100%"
+            style="width: 600px"
             @cell-click="openUser"
         >
             <el-table-column prop="username" width="100" />

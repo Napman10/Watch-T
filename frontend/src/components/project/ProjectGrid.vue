@@ -19,7 +19,7 @@
       </el-form>
         <el-table
             :data="projects"
-            style="width: 100%"
+            style="width: 300px"
             @cell-click="openProject"
         >
             <el-table-column prop="short_name" width="100" />

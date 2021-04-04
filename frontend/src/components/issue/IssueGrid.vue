@@ -47,15 +47,15 @@
         </el-form>
         <el-table
             :data="issues"
-            style="width: 100%"
+            style="width: 1000px"
             @cell-click="openIssue"
         >
-            <el-table-column prop="short_name" label="Задание" width="100" />
+            <el-table-column prop="short_name" label="Задание" width="150" />
             <el-table-column prop="header"  width="300" />
             <el-table-column prop="project.name"  label="Проект" width="100" />
             <el-table-column prop="author"  label="Составил" width="150" />
             <el-table-column prop="executor" label="Выполняет" width="150" />
-            <el-table-column prop="priority" label="Приоритет" min-width="150" />
+            <el-table-column prop="priority" label="Приоритет" width="150" />
         </el-table>
     </div>
 </template>
