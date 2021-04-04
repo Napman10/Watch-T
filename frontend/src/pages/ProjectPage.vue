@@ -6,21 +6,20 @@
       Затрачено времени {{tableMinutes(project)}}
       Открыт {{project.created_date}}
       <div v-if="meCreator()">
-        <div style="text-align: right">
-            <el-button type="primary" @click="showIssueProjectDescModal" style="margin-bottom: 10px">Отнаследовать задачу</el-button>
-        </div>
-        <div style="text-align: right">
-          <el-button type="primary" @click="showAssignModal" style="margin-bottom: 10px">Назначить пользователя</el-button>
-        </div>
-        <div style="text-align: right">
-          <el-button type="primary" @click="showUnAssignModal" style="margin-bottom: 10px">Отстранить пользователя</el-button>
-        </div>
-        <div v-if="meAdmin()" style="text-align: right">
-          <el-button type="primary" @click="editMe" style="margin-bottom: 10px">Редактировать проект</el-button>
-        </div>
-        <div v-if="meAdmin()" style="text-align: right">
-          <el-button type="danger" @click="deleteMe" style="margin-bottom: 10px">Удалить проект</el-button>
-        </div>
+        <el-dropdown trigger="click">
+        <span class="el-dropdown-link">
+          Действия<i class="el-icon-arrow-down el-icon--right"></i>
+        </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="showIssueProjectDescModal()" icon="el-icon-document-copy">Отнаследовать задачу</el-dropdown-item>
+            <el-dropdown-item @click.native="showAssignModal()" icon="el-icon-user">Назначить пользователя</el-dropdown-item>
+            <el-dropdown-item @click.native="showUnAssignModal()" icon="el-icon-user-solid">Отстранить пользователя</el-dropdown-item>
+            <div v-if="meAdmin()">
+              <el-dropdown-item @click.native="editMe()" icon="el-icon-edit">Редактировать проект</el-dropdown-item>
+              <el-dropdown-item @click.native="deleteMe()" icon="el-icon-error">Удалить проект</el-dropdown-item>
+            </div>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
     <desc-project-issue-form/>
     <assign-user-form/>
