@@ -16,7 +16,7 @@
       <el-col :span="8">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>О задаче {{issue.header}}</span>
+            <span>О задаче {{issue.short_name}}</span>
           </div>
           <div class="text item">
             Проект: {{issue.project.name}}
