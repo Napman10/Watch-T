@@ -81,7 +81,6 @@
           </div>
           <el-form
               v-model="commentForm"
-              :inline="true"
               @submit.native.prevent="addComment"
               @keyup.native.enter="addComment"
               label-position="top">
@@ -117,14 +116,13 @@
           </div>
           <el-form v-if="meExecutor()"
                    v-model="trackForm"
-                   :inline="true"
                    @submit.native.prevent="addTrack"
                    @keyup.native.enter="addTrack"
                    label-position="top"
           >
             <div v-if="canTrack(this.issue.executor)">
               <el-form-item label="Добавить время">
-                <el-input v-model="trackForm.minutes" clearable placeholder="Затраченное время"></el-input>
+                <el-input style="width: 100px" v-model="trackForm.minutes" clearable placeholder="Время"></el-input>
               </el-form-item>
               <el-input
                   type="textarea"
@@ -132,7 +130,7 @@
                   clearable placeholder="Описание">
               </el-input>
               <el-form-item>
-                <el-button type="primary" @click="addTrack">Затратить время</el-button>
+                <el-button style="margin-top: 20px" type="primary" @click="addTrack">Затратить время</el-button>
               </el-form-item>
             </div>
           </el-form>
