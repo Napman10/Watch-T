@@ -1,39 +1,53 @@
 <template>
   <div v-if="!unAssignedStuff || meAdmin()">
-    <div id="description">
-      {{issue.short_name}}
-      <h2>{{issue.header}}</h2>
-      {{issue.description}}
-    </div>
-    <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <span>Card name</span>
-      </div>
-      <div class="text item">
-        Проект: {{issue.project.name}}
-      </div>
-      <div class="text item">
-        Автор: {{issue.author}}
-      </div>
-      <div class="text item">
-        Исполнитель: {{executorOrNull(issue)}}
-      </div>
-      <div class="text item">
-        Статус: {{issue.status}}
-      </div>
-      <div class="text item">
-        Приоритет: {{issue.priority}}
-      </div>
-      <div class="text item">
-        Оценка: {{timeToText(issue.want_minutes)}}
-      </div>
-      <div class="text item">
-        Затрачено: {{timeToText(issue.got_minutes)}}
-      </div>
-      <div class="text item">
-        Родительская задача: {{parentOrNull(issue)}}
-      </div>
-    </el-card>
+    <el-row :gutter="20">
+      <el-col :span="16">{{issue.short_name}}
+        <h2>{{issue.header}}</h2>
+        {{issue.description}}
+        <div v-if="children.length !== 0">
+          <h5>Подзадачи: </h5>
+          <ul>
+            <li v-for="task in children">
+              {{task.short_name}} - {{task.header}}
+            </li>
+          </ul>
+        </div>
+      </el-col>
+      <el-col :span="8">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>О задаче</span>
+          </div>
+          <div class="text item">
+            Проект: {{issue.project.name}}
+          </div>
+          <div class="text item">
+            Автор: {{issue.author}}
+          </div>
+          <div class="text item">
+            Исполнитель: {{executorOrNull(issue)}}
+          </div>
+          <div class="text item">
+            Статус: {{issue.status}}
+          </div>
+          <div class="text item">
+            Приоритет: {{issue.priority}}
+          </div>
+          <div class="text item">
+            Оценка: {{timeToText(issue.want_minutes)}}
+          </div>
+          <div class="text item">
+            Затрачено: {{timeToText(issue.got_minutes)}}
+          </div>
+          <div class="text item">
+            Родительская задача: {{parentOrNull(issue)}}
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+    <el-row :gutter="20">
+
+    </el-row>
     <div id="drops" v-if="meCreator()">
       <el-dropdown trigger="click">
         <span class="el-dropdown-link">
@@ -48,18 +62,6 @@
       </el-dropdown>
     </div>
     <div id="under">
-      <div v-if="children.length !== 0">
-        <h5>Подзадачи: </h5>
-        <el-table
-            :data="children"
-            max-height="200px"
-            style="width: 400px"
-            @cell-click="openIssue"
-        >
-          <el-table-column prop="short_name" width="100" />
-          <el-table-column prop="header"  width="300" />
-        </el-table>
-      </div>
       <el-tabs type="card">
         <el-tab-pane label="Комментарии">
           <div v-if="comments.length !== 0">
@@ -270,13 +272,5 @@ export default {
 <style scoped>
 .box-card{
   float: right;
-}
-#description{
-  float:left;
-  height: 150px;
-}
-#under{
-  float: left;
-  margin-top: 200px;
 }
 </style>
