@@ -65,7 +65,7 @@ body {
 .el-form-item__label, .el-dialog__title, .el-table--fit, .el-tabs__item {
   color: white;
 }
-#app {
+#main {
   margin-left: 100px;
   margin-right: 100px;
 }
