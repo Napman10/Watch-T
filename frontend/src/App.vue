@@ -59,10 +59,10 @@ body {
 .el-table th, tr{
   background-color: var(--main-bg-color);
 }
-.el-table--fit {
-  color: white;
+.el-tabs__item.is-active {
+  color: #FFDEAD;
 }
-.el-form-item__label, .el-dialog__title {
+.el-form-item__label, .el-dialog__title, .el-table--fit, .el-tabs__item {
   color: white;
 }
 #app {

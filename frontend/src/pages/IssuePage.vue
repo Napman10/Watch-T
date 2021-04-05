@@ -1,9 +1,9 @@
 <template>
   <div v-if="!unAssignedStuff || meAdmin()">
-    <el-row :gutter="20">
+    <el-row :gutter="20" style="color: white">
       <el-col :span="16">{{issue.short_name}}
         <h2>{{issue.header}}</h2>
-        {{issue.description}}
+        <div id="description">{{issue.description}}</div>
         <div v-if="children.length !== 0">
           <h5>Подзадачи: </h5>
           <ul>
@@ -16,7 +16,7 @@
       <el-col :span="8">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>О задаче</span>
+            <span>О задаче {{issue.header}}</span>
           </div>
           <div class="text item">
             Проект: {{issue.project.name}}
@@ -42,26 +42,25 @@
           <div class="text item">
             Родительская задача: {{parentOrNull(issue)}}
           </div>
+          <div class="text item">
+            <div id="drops" v-if="meCreator()">
+              <el-dropdown trigger="click">
+                <span class="el-dropdown-link">
+                  Действия<i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item @click.native="showIssueDescModal()" icon="el-icon-document-copy">Отнаследовать задачу</el-dropdown-item>
+                  <el-dropdown-item @click.native="assignUser()" icon="el-icon-user">Назначить сотрудника</el-dropdown-item>
+                  <el-dropdown-item  v-if="isMyIssue()|| meCreator()" @click.native="changeStatus()" icon="el-icon-edit">Изменить статус</el-dropdown-item>
+                  <el-dropdown-item @click.native="deleteMe()" icon="el-icon-error">Удалить задачу</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
+          </div>
         </el-card>
       </el-col>
     </el-row>
-    <el-row :gutter="20">
-
-    </el-row>
-    <div id="drops" v-if="meCreator()">
-      <el-dropdown trigger="click">
-        <span class="el-dropdown-link">
-          Действия<i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item @click.native="showIssueDescModal()" icon="el-icon-document-copy">Отнаследовать задачу</el-dropdown-item>
-          <el-dropdown-item @click.native="assignUser()" icon="el-icon-user">Назначить сотрудника</el-dropdown-item>
-          <el-dropdown-item  v-if="isMyIssue()|| meCreator()" @click.native="changeStatus()" icon="el-icon-user-solid">Изменить статус</el-dropdown-item>
-          <el-dropdown-item @click.native="deleteMe()" icon="el-icon-error">Удалить задачу</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </div>
-    <div id="under">
+    <el-row :gutter="20" style="margin-top: 100px">
       <el-tabs type="card">
         <el-tab-pane label="Комментарии">
           <div v-if="comments.length !== 0">
@@ -149,10 +148,10 @@
           </el-table>
         </el-tab-pane>
       </el-tabs>
+    </el-row>
       <desc-issue-form/>
       <assign-user-form/>
       <change-issue-status-form/>
-    </div>
   </div>
   <div v-else>
     You do not have permission to watch this issue
@@ -272,5 +271,9 @@ export default {
 <style scoped>
 .box-card{
   float: right;
+}
+#description{
+  width: 600px;
+  word-wrap: break-word;
 }
 </style>

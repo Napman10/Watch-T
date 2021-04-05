@@ -9,6 +9,10 @@
                 <el-input v-model="form.header"></el-input>
             </el-form-item>
 
+            <el-form-item label="Описание" prop="description">
+              <el-input v-model="form.description"></el-input>
+            </el-form-item>
+
             <el-form-item label="Выполнит" prop="executor_username">
                 <el-select v-model="form.executor_username"
                   clearable placeholder="Выберите исполнителя">
@@ -87,7 +91,13 @@ export default {
                         required: true,
                         message: 'Поле обязательно для заполнения'
                     }
-                ]
+                ],
+                description: [
+                    {
+                      max: 255,
+                      message: 'Не больше 65 символов'
+                    }
+              ]
             }
         };
     },
