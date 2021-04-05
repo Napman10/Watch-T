@@ -10,7 +10,7 @@
             </el-form-item>
 
             <el-form-item label="Описание" prop="description">
-              <el-input v-model="form.description"></el-input>
+              <el-input type="textarea" v-model="form.description"></el-input>
             </el-form-item>
 
             <el-form-item label="Выполнит" prop="executor_username">
