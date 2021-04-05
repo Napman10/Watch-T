@@ -38,13 +38,12 @@ body {
     margin-right: auto;
     margin-top: 12%;
     padding: 16px;
-    border: 2px solid #4f2aa3;
+    border: 2px solid #FFDEAD;
     width: 350px;
+    color: white;
     border-radius: 5%;
 }
-.el-table {
-  width: 2px;
-}
+
 .el-table__body tr:hover{
   color:black;
 }
@@ -65,6 +64,10 @@ body {
 }
 .el-form-item__label, .el-dialog__title {
   color: white;
+}
+#app {
+  margin-left: 100px;
+  margin-right: 100px;
 }
 
 </style>

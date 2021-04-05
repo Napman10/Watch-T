@@ -1,103 +1,127 @@
 <template>
   <div v-if="!unAssignedStuff || meAdmin()">
-    <h2>{{issue.short_name}}</h2>
-    <h2>{{issue.header}}</h2>
-    {{issue.description}}
-    <h5>Проект: {{issue.project.name}}</h5>
-    <h5>Автор: {{issue.author}}</h5>
-    <h5>Исполнитель: {{executorOrNull(issue)}} </h5>
-    <h5>Статус: {{issue.status}} </h5>
-    <h5>Приоритет: {{issue.priority}} </h5>
-    <h5>Оценка: {{timeToText(issue.want_minutes)}} </h5>
-    <h5>Затрачено: {{timeToText(issue.got_minutes)}} </h5>
-    <h5>Родительская задача: {{parentOrNull(issue)}}</h5>
-    <div v-if="children.length !== 0">
-      <h5>Подзадачи: </h5>
-      <el-table
-        :data="children"
-        max-height="200px"
-        style="width: 400px"
-        @cell-click="openIssue"
-      >
-        <el-table-column prop="short_name" width="100" />
-        <el-table-column prop="header"  width="300" />
-      </el-table>
+    <div id="description">
+      {{issue.short_name}}
+      <h2>{{issue.header}}</h2>
+      {{issue.description}}
     </div>
-    <div v-if="meCreator()">
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>Card name</span>
+      </div>
+      <div class="text item">
+        Проект: {{issue.project.name}}
+      </div>
+      <div class="text item">
+        Автор: {{issue.author}}
+      </div>
+      <div class="text item">
+        Исполнитель: {{executorOrNull(issue)}}
+      </div>
+      <div class="text item">
+        Статус: {{issue.status}}
+      </div>
+      <div class="text item">
+        Приоритет: {{issue.priority}}
+      </div>
+      <div class="text item">
+        Оценка: {{timeToText(issue.want_minutes)}}
+      </div>
+      <div class="text item">
+        Затрачено: {{timeToText(issue.got_minutes)}}
+      </div>
+      <div class="text item">
+        Родительская задача: {{parentOrNull(issue)}}
+      </div>
+    </el-card>
+    <div id="drops" v-if="meCreator()">
       <el-dropdown trigger="click">
         <span class="el-dropdown-link">
           Действия<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="showIssueDescModal()" icon="el-icon-document-copy">Отнаследовать задачу</el-dropdown-item>
-            <el-dropdown-item @click.native="assignUser()" icon="el-icon-user">Назначить сотрудника</el-dropdown-item>
-            <el-dropdown-item  v-if="isMyIssue()|| meCreator()" @click.native="changeStatus()" icon="el-icon-user-solid">Изменить статус</el-dropdown-item>
-            <el-dropdown-item @click.native="deleteMe()" icon="el-icon-error">Удалить задачу</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item @click.native="showIssueDescModal()" icon="el-icon-document-copy">Отнаследовать задачу</el-dropdown-item>
+          <el-dropdown-item @click.native="assignUser()" icon="el-icon-user">Назначить сотрудника</el-dropdown-item>
+          <el-dropdown-item  v-if="isMyIssue()|| meCreator()" @click.native="changeStatus()" icon="el-icon-user-solid">Изменить статус</el-dropdown-item>
+          <el-dropdown-item @click.native="deleteMe()" icon="el-icon-error">Удалить задачу</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
-    <el-tabs type="card">
-      <el-tab-pane label="Комментарии">
-        <div v-if="comments.length !== 0">
-          <el-table
-              :data="comments"
-              style="width: 900px"
-              :show-header="false"
-          >
-            <el-table-column prop="author" width="100" />
-            <el-table-column prop="datetime"  width="300" />
-            <el-table-column prop="text" width="400" />
-            <el-table-column align="right">
-              <template slot-scope="scope">
-                <i v-if="meAdmin()" class="el-icon-close" @click="deleteComment(scope.row)"></i>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-        <el-form
-            v-model="commentForm"
-            :inline="true"
-            @submit.native.prevent="addComment"
-            @keyup.native.enter="addComment"
-            label-position="top">
-          <el-form-item label="Комментарий">
-            <el-input
-                type="textarea"
-                v-model="commentForm.text"
-                clearable placeholder="Комментарий">
-            </el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="addComment">Отправить</el-button>
-          </el-form-item>
-        </el-form>
-      </el-tab-pane>
-      <el-tab-pane label="Трекинг времени">
-        <div v-if="tracks.length !== 0">
-          <el-table
-            :data="tracks"
-            style="width: 1000px"
-            :show-header="false"
-          >
-            <el-table-column prop="executor" width="150"/>
-            <el-table-column prop="datetime"  width="300" />
-            <el-table-column prop="minutes" :formatter="tableMinutes" width="150"/>
-            <el-table-column prop="text" wigth="300"/>
-            <el-table-column align="right">
-              <template slot-scope="scope">
-                <i v-if="meCreator()" class="el-icon-close" @click="deleteTrack(scope.row)"></i>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-        <el-form v-if="meExecutor()"
-            v-model="trackForm"
-            :inline="true"
-            @submit.native.prevent="addTrack"
-            @keyup.native.enter="addTrack"
-            label-position="top"
+    <div id="under">
+      <div v-if="children.length !== 0">
+        <h5>Подзадачи: </h5>
+        <el-table
+            :data="children"
+            max-height="200px"
+            style="width: 400px"
+            @cell-click="openIssue"
         >
-          <div v-if="canTrack(this.issue.executor)">
+          <el-table-column prop="short_name" width="100" />
+          <el-table-column prop="header"  width="300" />
+        </el-table>
+      </div>
+      <el-tabs type="card">
+        <el-tab-pane label="Комментарии">
+          <div v-if="comments.length !== 0">
+            <el-table
+                :data="comments"
+                style="width: 900px"
+                :show-header="false"
+            >
+              <el-table-column prop="author" width="100" />
+              <el-table-column prop="datetime"  width="300" />
+              <el-table-column prop="text" width="400" />
+              <el-table-column align="right">
+                <template slot-scope="scope">
+                  <i v-if="meAdmin()" class="el-icon-close" @click="deleteComment(scope.row)"></i>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+          <el-form
+              v-model="commentForm"
+              :inline="true"
+              @submit.native.prevent="addComment"
+              @keyup.native.enter="addComment"
+              label-position="top">
+            <el-form-item label="Комментарий">
+              <el-input
+                  type="textarea"
+                  v-model="commentForm.text"
+                  clearable placeholder="Комментарий">
+              </el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="addComment">Отправить</el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="Трекинг времени">
+          <div v-if="tracks.length !== 0">
+            <el-table
+                :data="tracks"
+                style="width: 1000px"
+                :show-header="false"
+            >
+              <el-table-column prop="executor" width="150"/>
+              <el-table-column prop="datetime"  width="300" />
+              <el-table-column prop="minutes" :formatter="tableMinutes" width="150"/>
+              <el-table-column prop="text" wigth="300"/>
+              <el-table-column align="right">
+                <template slot-scope="scope">
+                  <i v-if="meCreator()" class="el-icon-close" @click="deleteTrack(scope.row)"></i>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+          <el-form v-if="meExecutor()"
+                   v-model="trackForm"
+                   :inline="true"
+                   @submit.native.prevent="addTrack"
+                   @keyup.native.enter="addTrack"
+                   label-position="top"
+          >
+            <div v-if="canTrack(this.issue.executor)">
               <el-form-item label="Добавить время">
                 <el-input v-model="trackForm.minutes" clearable placeholder="Затраченное время"></el-input>
               </el-form-item>
@@ -110,22 +134,23 @@
                 <el-button type="primary" @click="addTrack">Затратить время</el-button>
               </el-form-item>
             </div>
-        </el-form>
-      </el-tab-pane>
-      <el-tab-pane label="История">
-        <el-table
-            :data="history"
-            style="width: 700px"
-            :show-header="false"
-        >
-          <el-table-column prop="datetime"  width="300" />
-          <el-table-column prop="text" width="400" />
-        </el-table>
-      </el-tab-pane>
-    </el-tabs>
-    <desc-issue-form/>
-    <assign-user-form/>
-    <change-issue-status-form/>
+          </el-form>
+        </el-tab-pane>
+        <el-tab-pane label="История">
+          <el-table
+              :data="history"
+              style="width: 700px"
+              :show-header="false"
+          >
+            <el-table-column prop="datetime"  width="300" />
+            <el-table-column prop="text" width="400" />
+          </el-table>
+        </el-tab-pane>
+      </el-tabs>
+      <desc-issue-form/>
+      <assign-user-form/>
+      <change-issue-status-form/>
+    </div>
   </div>
   <div v-else>
     You do not have permission to watch this issue
@@ -243,5 +268,15 @@ export default {
 </script>
 
 <style scoped>
-
+.box-card{
+  float: right;
+}
+#description{
+  float:left;
+  height: 150px;
+}
+#under{
+  float: left;
+  margin-top: 200px;
+}
 </style>
