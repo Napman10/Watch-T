@@ -10,7 +10,13 @@
             {{user.first_name}} {{user.last_name}} {{itsYou()}}
           </div>
           <div class="text item">
-            Затратил времени {{tableMinutes(user)}}
+            Роль: {{['Гость', 'Разработчик', 'Проектный менеджер', 'Тимлид', 'Администратор'][user.role]}}
+          </div>
+          <div class="text item">
+            Email: {{user.email}}
+          </div>
+          <div class="text item">
+            Затратил времени: {{tableMinutes(user)}}
           </div>
           <div class="text item">
             Был добавлен в команду {{user.joined}}
