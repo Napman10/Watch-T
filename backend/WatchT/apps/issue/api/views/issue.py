@@ -38,6 +38,7 @@ class IssueListView(ListAPIView):
         else:
             qs = Issue.objects.filter(**params)
 
+        qs = qs.order_by('-priority', '-created')
         username = self.request.user.username
 
         if author_own is not None:
