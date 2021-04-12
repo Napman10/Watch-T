@@ -1,26 +1,44 @@
 <template>
   <div v-if="!unAssignedStuff">
-      <h2>{{project.short_name}}</h2>
-      <h2>{{project.header}}</h2>
-      {{project.description}}<br/>
-      Затрачено времени {{tableMinutes(project)}}
-      Открыт {{project.created_date}}
-      <div v-if="meCreator()">
-        <el-dropdown trigger="click">
-        <span class="el-dropdown-link">
-          Действия<i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="showIssueProjectDescModal()" icon="el-icon-document-copy">Отнаследовать задачу</el-dropdown-item>
-            <el-dropdown-item @click.native="showAssignModal()" icon="el-icon-user">Назначить пользователя</el-dropdown-item>
-            <el-dropdown-item @click.native="showUnAssignModal()" icon="el-icon-user-solid">Отстранить пользователя</el-dropdown-item>
-            <div v-if="meAdmin()">
-              <el-dropdown-item @click.native="editMe()" icon="el-icon-edit">Редактировать проект</el-dropdown-item>
-              <el-dropdown-item @click.native="deleteMe()" icon="el-icon-error">Удалить проект</el-dropdown-item>
+    <el-row :gutter="20">
+      <el-col :span="8">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>О проекте {{project.short_name}}</span>
+          </div>
+          <div class="text item">
+            Проект: {{project.header}}
+          </div>
+          <div class="text item">
+            Открыт {{project.created_date}}
+          </div>
+          <div class="text item">
+            Затрачено времени {{tableMinutes(project)}}
+          </div>
+          <div class="text item">
+            <div v-if="meCreator()">
+              <el-dropdown trigger="click">
+                <span class="el-dropdown-link">
+                  Действия<i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item @click.native="showIssueProjectDescModal()" icon="el-icon-document-copy">Отнаследовать задачу</el-dropdown-item>
+                  <el-dropdown-item @click.native="showAssignModal()" icon="el-icon-user">Назначить пользователя</el-dropdown-item>
+                  <el-dropdown-item @click.native="showUnAssignModal()" icon="el-icon-user-solid">Отстранить пользователя</el-dropdown-item>
+                  <div v-if="meAdmin()">
+                    <el-dropdown-item @click.native="editMe()" icon="el-icon-edit">Редактировать проект</el-dropdown-item>
+                    <el-dropdown-item @click.native="deleteMe()" icon="el-icon-error">Удалить проект</el-dropdown-item>
+                  </div>
+                </el-dropdown-menu>
+              </el-dropdown>
             </div>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col id="description" :span="8">
+        {{project.description}}
+      </el-col>
+    </el-row>
     <desc-project-issue-form/>
     <assign-user-form/>
     <un-assign-user-form/>
@@ -97,5 +115,10 @@ export default {
 </script>
 
 <style scoped>
-
+#description{
+  width: 600px;
+  word-wrap: break-word;
+  margin-top: 10px;
+  color: white;
+}
 </style>
