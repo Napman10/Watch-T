@@ -11,7 +11,7 @@
           <el-input v-model="form.somename" clearable placeholder="Поиск..." />
         </el-form-item>
         <el-form-item>
-            <el-checkbox v-model="form.assigned">Доступные мне</el-checkbox>
+            <el-checkbox style="color: white" v-model="form.assigned">Доступные мне</el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-button icon="el-icon-search" style="margin-left: 10px" type="success" @click="filterProjects">Поиск</el-button>
