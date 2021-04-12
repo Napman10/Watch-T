@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from ...models import Issue
-from ....abstract.functional import string_or_empty
+from ....abstract.functional import string_or_empty, convert_last_seen
 
 
 class IssueSerializer(serializers.ModelSerializer):
@@ -15,6 +15,10 @@ class IssueSerializer(serializers.ModelSerializer):
     priority = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
     parent = serializers.SerializerMethodField()
+    created = serializers.SerializerMethodField()
+
+    def get_created(self, obj: Issue) -> str:
+        return convert_last_seen(obj.created)
 
     def get_parent(self, obj: Issue) -> str:
         return string_or_empty(obj.parent)
