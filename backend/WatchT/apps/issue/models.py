@@ -62,6 +62,7 @@ class Issue(BaseModel):
     level = models.IntegerField(verbose_name='Уровень вложенности',
                                 validators=[is_int_validate, positive_int_validate],
                                 default=1)
+    created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
 
     def __str__(self):
         return self.short_name
