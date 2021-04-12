@@ -1,7 +1,7 @@
 <template>
   <div v-if="!unAssignedStuff || meAdmin()">
     <el-row :gutter="20" style="color: white">
-      <el-col :span="16">{{issue.short_name}}
+      <el-col :span="16">{{issue.short_name}}, создано {{issue.author}} {{issue.created}}
         <h2>{{issue.header}}</h2>
         <div id="description">{{issue.description}}</div>
         <div v-if="children.length !== 0">
