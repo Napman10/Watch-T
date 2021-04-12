@@ -1,22 +1,37 @@
 <template>
   <div>
-    <h2>{{user.first_name}}</h2>
-    <h2>{{user.last_name}}</h2>
-    {{itsYou()}}
-    Затрачено времени {{tableMinutes(user)}}
-    Был добавлен в команду {{user.joined}}
-    <div v-if="meAdmin() || itsMe()">
-      <el-dropdown trigger="click">
-      <span class="el-dropdown-link">
-        Действия<i class="el-icon-arrow-down el-icon--right"></i>
-      </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item @click.native="callEditUser()" icon="el-icon-edit">Редактировать</el-dropdown-item>
-          <el-dropdown-item @click.native="callChangePassUser()" icon="el-icon-lock">Сменить пароль</el-dropdown-item>
-          <el-dropdown-item @click.native="deleteMe()" icon="el-icon-error">Удалить</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </div>
+    <el-row :gutter="20">
+      <el-col :span="8">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>О пользователе {{user.username}}</span>
+          </div>
+          <div class="text item">
+            {{user.first_name}} {{user.last_name}} {{itsYou()}}
+          </div>
+          <div class="text item">
+            Затратил времени {{tableMinutes(user)}}
+          </div>
+          <div class="text item">
+            Был добавлен в команду {{user.joined}}
+          </div>
+          <div class="text item">
+            <div v-if="meAdmin() || itsMe()">
+              <el-dropdown trigger="click">
+                <span class="el-dropdown-link">
+                  Действия<i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item @click.native="callEditUser()" icon="el-icon-edit">Редактировать</el-dropdown-item>
+                  <el-dropdown-item @click.native="callChangePassUser()" icon="el-icon-lock">Сменить пароль</el-dropdown-item>
+                  <el-dropdown-item @click.native="deleteMe()" icon="el-icon-error">Удалить</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
     <user-form/>
     <change-password-form/>
   </div>
