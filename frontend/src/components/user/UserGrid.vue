@@ -23,9 +23,14 @@
             </el-form-item>
 
             <el-form-item>
-                <el-button style="margin-left: 10px" type="success" @click="filterUsers">Поиск</el-button>
+                <el-button icon="el-icon-search" style="margin-left: 10px" type="success" @click="filterUsers">Поиск</el-button>
+            </el-form-item>
+
+            <el-form-item v-if="meAdmin()" style="float: right">
+              <el-button icon="el-icon-user" type="primary" @click="showUserModal" style="margin-bottom: 10px">Создать пользователя</el-button>
             </el-form-item>
         </el-form>
+
         <el-table
             :data="users"
             style="width: 600px"
@@ -41,6 +46,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import {meAdmin} from "@/utils/indentMe";
+
 export default {
     data() {
         return { form: {} };
@@ -60,7 +67,11 @@ export default {
         const id = cell.id
         this.$store.dispatch('user/getUser', id);
         this.$router.push({'name': 'user', params: {userId: id}})
-      }
+      },
+      showUserModal() {
+        this.$store.commit('user/SET_STATE', { isCreateModalVisible: true, isEdit: false });
+      },
+      meAdmin
     },
     mounted() {
         this.$store.dispatch('user/getUsers');

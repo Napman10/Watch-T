@@ -1,8 +1,5 @@
 <template>
   <div v-if="meAdmin()">
-    <div style="text-align: right">
-      <el-button type="primary" @click="showUserModal" style="margin-bottom: 10px">Создать пользователя</el-button>
-    </div>
     <user-form />
     <user-grid />
   </div>
@@ -22,10 +19,7 @@ export default {
     UserForm
   },
   methods: {
-        showUserModal() {
-            this.$store.commit('user/SET_STATE', { isCreateModalVisible: true, isEdit: false });
-        },
-    meAdmin
+        meAdmin
     },
 }
 </script>

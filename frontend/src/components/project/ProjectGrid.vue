@@ -14,7 +14,10 @@
             <el-checkbox v-model="form.assigned">Доступные мне</el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-button style="margin-left: 10px" type="success" @click="filterProjects">Поиск</el-button>
+          <el-button icon="el-icon-search" style="margin-left: 10px" type="success" @click="filterProjects">Поиск</el-button>
+        </el-form-item>
+        <el-form-item v-if="meAdmin()" style="float: right">
+          <el-button icon="el-icon-document-add" type="primary" @click="showProjectModal" style="margin-bottom: 10px">Создать проект</el-button>
         </el-form-item>
       </el-form>
         <el-table
@@ -30,12 +33,13 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import {meCreator, meAdmin} from "@/utils/indentMe";
 export default {
     data() {
         return { form: {}};
     },
     computed: {
-        ...mapGetters('project', ['projects']),
+        ...mapGetters('project', ['projects', 'isCreateModalVisible']),
     },
     methods: {
       openProject(cell){
@@ -45,6 +49,9 @@ export default {
       },
       filterProjects(){
         this.$store.dispatch('project/getProjects', this.form);
+      }, meCreator, meAdmin,
+      showProjectModal(){
+        this.$store.commit('project/SET_STATE', {isCreateModalVisible: true})
       }
     },
     mounted() {

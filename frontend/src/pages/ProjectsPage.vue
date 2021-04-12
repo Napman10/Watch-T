@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div v-if="meAdmin()" style="text-align: right">
-      <el-button type="primary" @click="showProjectModal" style="margin-bottom: 10px">Создать проект</el-button>
-    </div>
     <project-form />
     <project-grid />
   </div>

@@ -42,7 +42,7 @@
             </el-form-item>
 
             <el-form-item>
-                <el-button style="margin-left: 10px" type="success" @click="filterIssues">Поиск</el-button>
+                <el-button icon="el-icon-search" style="margin-left: 10px" type="success" @click="filterIssues">Поиск</el-button>
             </el-form-item>
         </el-form>
         <el-table
