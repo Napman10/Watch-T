@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from ...services import set_got_time, record_history
+from ...services import set_got_time, record_history, over_three_check_stat, over_three_check_employee
 from ....user.models import EmployeeUser
 from rest_framework.exceptions import APIException
 from ....abstract.permissions import AssignedStuffOnly, IsCreator
@@ -71,6 +71,7 @@ class IssueOpenView(RetrieveUpdateAPIView):
             employee = None
         else:
             employee = EmployeeUser.objects.filter(user__username=executor_username).first()
+            over_three_check_employee(issue, employee)
         stat = request.data.get('status')
         good_roles = [EmployeeUser.ADMINISTRATOR, EmployeeUser.LEAD, EmployeeUser.DEVELOPER]
         if executor_username and ((employee and employee.role in good_roles) or not employee):
@@ -84,7 +85,8 @@ class IssueOpenView(RetrieveUpdateAPIView):
         good_role = me.role in good_roles
         is_my_task = issue.executor == me
         cond = good_role or is_my_task
-        if status and cond:
+        if stat and cond:
+            over_three_check_stat(issue, stat)
             old_status = issue.status
             issue.status = stat
             issue.save()

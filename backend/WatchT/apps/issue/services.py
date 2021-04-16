@@ -1,10 +1,44 @@
 import re
-from ..abstract.exceptions import NegativeGotTimeException
+from ..abstract.exceptions import NegativeGotTimeException, OverThreeInProgressException
 from ..project.models import ProjectStatistics
 from ..user.models import UserStatistics
 from ..abstract.functional import get_user
 from django.apps import apps
 from datetime import datetime
+
+
+def tasks_in_progress(employee):
+    Issue = apps.get_model('issue', 'Issue')
+    return Issue.objects \
+        .filter(executor=employee,
+                status__in=[Issue.IN_PROGRESS, Issue.CHECK]) \
+        .count()
+
+
+def over_three_check(employee):
+    MAX_IN_PROGRESS = 3
+    if tasks_in_progress(employee) == MAX_IN_PROGRESS:
+        raise OverThreeInProgressException
+
+
+def over_three_check_stat(issue, new_status):
+    Issue = apps.get_model('issue', 'Issue')
+    employee = issue.executor
+    old_status = issue.status
+
+    is_progress_check_proc = new_status == Issue.IN_PROGRESS \
+                             and old_status == Issue.CHECK \
+                             or old_status == Issue.IN_PROGRESS \
+                             and new_status == Issue.CHECK
+
+    if not is_progress_check_proc and new_status in [Issue.IN_PROGRESS, Issue.CHECK]:
+        over_three_check(employee)
+
+
+def over_three_check_employee(issue, new_employee):
+    Issue = apps.get_model('issue', 'Issue')
+    if issue.status in [Issue.IN_PROGRESS, Issue.CHECK]:
+        over_three_check(new_employee)
 
 
 def get_period_size(lst):

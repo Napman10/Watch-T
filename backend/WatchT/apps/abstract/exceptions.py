@@ -11,6 +11,11 @@ class NegativeGotTimeException(APIException):
     default_detail = 'got_time < 0'
 
 
+class OverThreeInProgressException(APIException):
+    status_code = 400
+    default_detail = 'over 3 in progress'
+
+
 class NotConfirmedPass(APIException):
     status_code = 400
     default_detail = 'password != confirm'
