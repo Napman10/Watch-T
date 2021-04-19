@@ -10,10 +10,10 @@ export function textToMinutes(stringTime) {
         let days = stringTime.match(/\d*д/);
         let weeks = stringTime.match(/\d*н/);
 
-        minutes = minutes ? Number(minutes.input.replace('м', '')) : 0;
-        hours = hours ? Number(hours.input.replace('ч', '')) : 0;
-        days = days ? Number(days.input.replace('д', '')) : 0;
-        weeks = weeks ? Number(weeks.input.replace('н', '')) : 0;
+        minutes = minutes ? Number(minutes[0].replace('м', '')) : 0;
+        hours = hours ? Number(hours[0].replace('ч', '')) : 0;
+        days = days ? Number(days[0].replace('д', '')) : 0;
+        weeks = weeks ? Number(weeks[0].replace('н', '')) : 0;
 
         return minutes + 60 * hours + 8 * 60 * days + 5 * 8 * 60 * weeks;
     }
