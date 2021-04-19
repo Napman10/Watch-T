@@ -110,7 +110,7 @@
               <el-table-column prop="text" wigth="300"/>
               <el-table-column align="right">
                 <template slot-scope="scope">
-                  <i v-if="meCreator()" class="el-icon-close" @click="deleteTrack(scope.row)"></i>
+                  <i v-if="meCreator() && !isDone()" class="el-icon-close" @click="deleteTrack(scope.row)"></i>
                 </template>
               </el-table-column>
             </el-table>
