@@ -259,7 +259,7 @@ export default {
       this.$store.dispatch('issue/deleteTrack', {id: row.id, issue_id: this.issue.id});
     },
     showIssueDescModal(){
-      this.$store.dispatch('user/getUsers', {project_id: this.issue.project.id});
+      this.$store.dispatch('user/getUsers', {project_id: this.issue.project.id, dev: true});
       this.$store.commit('issue/SET_STATE', {descIssueModalVisible: true});
     },
     openIssue(cell){

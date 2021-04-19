@@ -76,7 +76,7 @@ export default {
     },
   methods: {
     showIssueProjectDescModal() {
-      this.$store.dispatch('user/getUsers', {project_id: this.project.id});
+      this.$store.dispatch('user/getUsers', {project_id: this.project.id, dev: true});
       this.$store.commit('issue/SET_STATE', {descProjectIssueModalVisible: true});
     },
     showAssignModal() {
