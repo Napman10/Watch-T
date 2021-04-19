@@ -152,8 +152,8 @@
       <assign-user-form/>
       <change-issue-status-form/>
   </div>
-  <div v-else>
-    You do not have permission to watch this issue
+  <div v-else id="permissionDenied">
+    Задача недоступна для просмотра, поскольку Вы не назначены на проект.
   </div>
 </template>
 
@@ -290,5 +290,8 @@ export default {
 #description{
   width: 600px;
   word-wrap: break-word;
+}
+#permissionDenied {
+  color: white;
 }
 </style>
