@@ -3,24 +3,24 @@ from rest_framework.exceptions import APIException
 
 class BufferWantTimeException(APIException):
     status_code = 400
-    default_detail = 'Child want_time is bigger than parent buffer_want_time'
+    default_detail = 'Сумма оценок выполнения подзадач выше родительской задачи!'
 
 
 class NegativeGotTimeException(APIException):
     status_code = 400
-    default_detail = 'got_time < 0'
+    default_detail = 'Отрицательные трудозатраты'
 
 
 class OverThreeInProgressException(APIException):
     status_code = 400
-    default_detail = 'over 3 in progress'
+    default_detail = 'Нельзя назначить больше трех задач в статус проверка/в работе на одного сотрудника'
 
 
 class NotConfirmedPass(APIException):
     status_code = 400
-    default_detail = 'password != confirm'
+    default_detail = 'Пароли не совпадают!'
 
 
 class OverTimeException(APIException):
     status_code = 400
-    default_detail = 'overtime for today'
+    default_detail = 'Переработка!'
