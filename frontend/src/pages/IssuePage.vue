@@ -1,7 +1,7 @@
 <template>
   <div v-if="!unAssignedStuff || meAdmin()">
     <el-row :gutter="20" style="color: white">
-      <el-col :span="16">{{issue.short_name}}, создано {{issue.author}} {{issue.created}}
+      <el-col :span="16">{{issue.short_name}}, создано {{issue.author}} {{issue.created}}{{isDoneLabel()}}
         <h2>{{issue.header}}</h2>
         <div id="description">{{issue.description}}</div>
         <div v-if="children.length !== 0">
@@ -36,7 +36,7 @@
           <div class="text item">
             Оценка: {{timeToText(issue.want_minutes)}}
           </div>
-          <div class="text item">
+          <div class="text item" :style="wasLate">
             Затрачено: {{timeToText(issue.got_minutes)}}
           </div>
           <div class="text item">
@@ -49,9 +49,9 @@
                   Действия<i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item v-if="meCreator()" @click.native="showIssueDescModal()" icon="el-icon-document-copy">Отнаследовать задачу</el-dropdown-item>
-                  <el-dropdown-item v-if="meCreator()" @click.native="assignUser()" icon="el-icon-user">Назначить сотрудника</el-dropdown-item>
-                  <el-dropdown-item  v-if="isMyIssue()|| meCreator()" @click.native="changeStatus()" icon="el-icon-edit">Изменить статус</el-dropdown-item>
+                  <el-dropdown-item v-if="meCreator() && !isDone()" @click.native="showIssueDescModal()" icon="el-icon-document-copy">Отнаследовать задачу</el-dropdown-item>
+                  <el-dropdown-item v-if="meCreator() && !isDone()" @click.native="assignUser()" icon="el-icon-user">Назначить сотрудника</el-dropdown-item>
+                  <el-dropdown-item  v-if="(isMyIssue()|| meCreator()) && !isDone() " @click.native="changeStatus()" icon="el-icon-edit">Изменить статус</el-dropdown-item>
                   <el-dropdown-item v-if="meCreator()" @click.native="deleteMe()" icon="el-icon-error">Удалить задачу</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -80,6 +80,7 @@
             </el-table>
           </div>
           <el-form
+              v-if="!isDone()"
               v-model="commentForm"
               @submit.native.prevent="addComment"
               @keyup.native.enter="addComment"
@@ -114,7 +115,7 @@
               </el-table-column>
             </el-table>
           </div>
-          <el-form v-if="meExecutor()"
+          <el-form v-if="meExecutor() && !isDone()"
                    v-model="trackForm"
                    @submit.native.prevent="addTrack"
                    @keyup.native.enter="addTrack"
@@ -174,7 +175,15 @@ export default {
     },
   computed: {
         ...mapGetters('issue', ['issue', 'comments', 'tracks', 'children', 'unAssignedStuff',
-          'editCommentModalVisible', 'descIssueModalVisible', 'isStatusModalVisible', 'history'])
+          'editCommentModalVisible', 'descIssueModalVisible', 'isStatusModalVisible', 'history']),
+        wasLate: function () {
+            const dif = Number(this.issue.want_minutes) - Number(this.issue.got_minutes) < 0;
+            let c;
+            if (dif) c = `red`;
+            else if (this.isDone()) c = `#00FF00`;
+            else c = `black`;
+            return {color: c};
+        }
     },
   components: {
     DescIssueForm,
@@ -183,6 +192,14 @@ export default {
   },
   methods: {
     meCreator, meExecutor, meAdmin, meNotGuest, canTrack,
+    isDone() {
+      return this.issue.status === 'Готово';
+    },
+
+    isDoneLabel(){
+      if (this.isDone()) return `. Задача выполнена`;
+      else return '';
+    },
     isMyIssue() {
       const myName = localStorage.getItem('myName');
       return this.issue.executor === myName;
