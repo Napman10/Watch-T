@@ -44,7 +44,7 @@
     <un-assign-user-form/>
     <project-edit-form/>
   </div>
-  <div v-else>
+  <div v-else id="permissionDenied">
     Вы не назначены на этот проект
   </div>
 </template>
@@ -119,6 +119,9 @@ export default {
   width: 600px;
   word-wrap: break-word;
   margin-top: 10px;
+  color: white;
+}
+#permissionDenied {
   color: white;
 }
 </style>
