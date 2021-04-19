@@ -49,6 +49,7 @@
             :data="issues"
             style="width: 1000px"
             @cell-click="openIssue"
+            :row-class-name="tableRow"
         >
             <el-table-column prop="short_name" label="Задание" width="150" />
             <el-table-column prop="header"  width="300" />
@@ -77,6 +78,10 @@ export default {
         const id = cell.id;
         this.$store.dispatch('issue/getIssue', id);
         this.$router.push({'name': 'issue', params: {issueId: id}});
+      },
+      tableRow({row}) {
+        if (row.status === 'Готово') return 'done';
+        else return '';
       }
     },
     mounted() {
@@ -86,4 +91,8 @@ export default {
 </script>
 
 <style>
+.el-table .done {
+  text-decoration: line-through;
+  color: gray;
+}
 </style>
