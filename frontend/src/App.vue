@@ -44,6 +44,10 @@ body {
     border-radius: 5%;
 }
 
+table {
+  background: var(--main-bg-color);
+}
+
 .el-table__body tr:hover{
   color:black;
 }
