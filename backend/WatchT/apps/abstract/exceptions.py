@@ -1,6 +1,11 @@
 from rest_framework.exceptions import APIException
 
 
+class NotAllChildDoneException(APIException):
+    status_code = 400
+    default_detail = 'Не все подзадачи завершены'
+
+
 class BufferWantTimeException(APIException):
     status_code = 400
     default_detail = 'Сумма оценок выполнения подзадач выше родительской задачи!'

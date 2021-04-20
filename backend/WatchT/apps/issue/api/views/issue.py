@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from ...services import set_got_time, record_history, over_three_check_stat, over_three_check_employee
+from ...services import set_got_time, record_history, over_three_check_stat, over_three_check_employee, all_child_done_check
 from ....user.models import EmployeeUser
 from rest_framework.exceptions import APIException
 from ....abstract.permissions import AssignedStuffOnly, IsCreator
@@ -87,6 +87,7 @@ class IssueOpenView(RetrieveUpdateAPIView):
         cond = good_role or is_my_task
         if stat and cond:
             over_three_check_stat(issue, stat)
+            all_child_done_check(issue, stat)
             old_status = issue.status
             issue.status = stat
             issue.save()

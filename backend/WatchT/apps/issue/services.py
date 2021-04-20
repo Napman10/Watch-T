@@ -1,10 +1,11 @@
 import re
-from ..abstract.exceptions import NegativeGotTimeException, OverThreeInProgressException
+from ..abstract.exceptions import NegativeGotTimeException, OverThreeInProgressException, NotAllChildDoneException
 from ..project.models import ProjectStatistics
 from ..user.models import UserStatistics
 from ..abstract.functional import get_user
 from django.apps import apps
 from datetime import datetime
+from django.db.models import Q
 
 
 def tasks_in_progress(employee):
@@ -39,6 +40,15 @@ def over_three_check_employee(issue, new_employee):
     Issue = apps.get_model('issue', 'Issue')
     if issue.status in [Issue.IN_PROGRESS, Issue.CHECK]:
         over_three_check(new_employee)
+
+
+def all_child_done_check(issue, stat):
+    Issue = apps.get_model('issue', 'Issue')
+    next_stat_done = stat == Issue.DONE
+    if next_stat_done:
+        got_not_completed_child = Issue.objects.filter(Q(parent=issue) & ~Q(status=Issue.DONE)).exists()
+        if got_not_completed_child:
+            raise NotAllChildDoneException
 
 
 def get_period_size(lst):
