@@ -3,14 +3,14 @@ export function div(val, by){
 }
 
 export function textToMinutes(stringTime) {
-    let correctFormat = stringTime.match(/^\d*н?\s*\d*д?\s*\d*ч?\s*\d*м?\s*/)
+    let correctFormat = stringTime.match(/^\d*н?\s*\d*д?\s*\d*ч?\s*\d*мин?\s*/)
     if (correctFormat) {
-        let minutes = stringTime.match(/\d*м/);
+        let minutes = stringTime.match(/\d*мин/);
         let hours = stringTime.match(/\d*ч/);
         let days = stringTime.match(/\d*д/);
         let weeks = stringTime.match(/\d*н/);
 
-        minutes = minutes ? Number(minutes[0].replace('м', '')) : 0;
+        minutes = minutes ? Number(minutes[0].replace('мин', '')) : 0;
         hours = hours ? Number(hours[0].replace('ч', '')) : 0;
         days = days ? Number(days[0].replace('д', '')) : 0;
         weeks = weeks ? Number(weeks[0].replace('н', '')) : 0;
@@ -45,7 +45,7 @@ export function minutesToText(minutes){
         result += hours + 'ч ';
     }
     if (minutes !== 0) {
-        result += minutes + 'м ';
+        result += minutes + 'мин ';
     }
     if (result === ""){
         return "-";
