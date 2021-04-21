@@ -1,11 +1,17 @@
 import re
 from ..abstract.exceptions import NegativeGotTimeException, OverThreeInProgressException, NotAllChildDoneException
 from ..project.models import ProjectStatistics
-from ..user.models import UserStatistics
+from ..user.models import UserStatistics, Skill
 from ..abstract.functional import get_user
 from django.apps import apps
 from datetime import datetime
 from django.db.models import Q
+from ..abstract.exceptions import DoesNotHaveQualificationException
+
+
+def can_do_by_qualify(typo, employee):
+    if not Skill.objects.filter(skill__typo=typo, employee=employee).exists():
+        raise DoesNotHaveQualificationException
 
 
 def tasks_in_progress(employee):

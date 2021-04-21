@@ -1,7 +1,13 @@
 from rest_framework import serializers
 
-from ...models import Issue
+from ...models import Issue, IssueType
 from ....abstract.functional import string_or_empty, convert_last_seen
+
+
+class IssueTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IssueType
+        fields = ('typo',)
 
 
 class IssueSerializer(serializers.ModelSerializer):
@@ -16,6 +22,10 @@ class IssueSerializer(serializers.ModelSerializer):
     status = serializers.SerializerMethodField()
     parent = serializers.SerializerMethodField()
     created = serializers.SerializerMethodField()
+    typo = serializers.SerializerMethodField()
+
+    def get_typo(self, obj: Issue) -> str:
+        return str(obj.typo.typo)
 
     def get_created(self, obj: Issue) -> str:
         return convert_last_seen(obj.created)

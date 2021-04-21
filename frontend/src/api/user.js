@@ -31,6 +31,15 @@ export const deleteUser = async (payload) => {
     return (await axios.delete(`api/user/${id}`, { payload, headers: headers})).data;
 }
 
+export const missingSkills = async (params) => {
+    return (
+        await axios.get('api/user/missing_skills/', {
+            params, headers: headers
+        })
+    ).data;
+}
+
+
 export const getMe = async (token) => {
     return (await axios.get(`api/user/me`, { headers: {
         'Content-Type': 'application/json',
@@ -46,5 +55,6 @@ export default {
     getUser,
     editUser,
     deleteUser,
-    getUserStatistics
+    getUserStatistics,
+    missingSkills
 };

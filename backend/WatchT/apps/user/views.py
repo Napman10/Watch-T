@@ -2,15 +2,17 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from .services import create_user
 from .serializers import EmployeeUserSerializer, UserStatisticsSerializer
-from .models import EmployeeUser, UserStatistics
+from .models import EmployeeUser, UserStatistics, Skill
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView
 from ..abstract.functional import sanitize_query_params, get_user, get_user_dict
-from ..abstract.exceptions import NotConfirmedPass
+from ..abstract.exceptions import NotConfirmedPass, NonDevGiveSkillException
 from django.db.models.query import Q
 from rest_framework.response import Response
 from rest_framework import status
 from ..project.models import Project2User
 from ..abstract.permissions import IsAdmin, NonAdminChange
+from ..issue.models import IssueType
+from ..issue.api.serializers.issue import IssueTypeSerializer
 
 
 class UserCreateAPIView(APIView):
@@ -59,6 +61,15 @@ class UserOpenView(RetrieveUpdateDestroyAPIView):
             user.role = role
             user.save()
 
+        skill = data.get('skill')
+        if skill:
+            skill = ['Frontend', 'Backend', 'DevOps', 'Mobile', 'DB', 'SysAdmin'].index(skill)
+            if user.role != EmployeeUser.DEVELOPER:
+                raise NonDevGiveSkillException
+            issue_type = IssueType.objects.get(typo=skill)
+            skill = Skill.objects.create(employee=user, skill=issue_type)
+            skill.save()
+
         password = data.get('password')
         confirm = data.get('password2')
 
@@ -75,6 +86,18 @@ class UserOpenView(RetrieveUpdateDestroyAPIView):
         pure_user = user.user
         pure_user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class MissingSkillsListView(ListAPIView):
+    permission_classes = (IsAuthenticated, IsAdmin)
+    serializer_class = IssueTypeSerializer
+
+    def get_queryset(self):
+        params = sanitize_query_params(self.request)
+        user_id = params.get('id')
+        skills = Skill.objects.filter(employee__id=user_id)
+        skills = [skill.skill.typo for skill in skills]
+        return IssueType.objects.exclude(typo__in=skills)
 
 
 class UserAPIListView(ListAPIView):

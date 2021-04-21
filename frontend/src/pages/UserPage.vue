@@ -29,6 +29,7 @@
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item @click.native="callEditUser()" icon="el-icon-edit">Редактировать</el-dropdown-item>
+                  <el-dropdown-item v-if="itsDev(this.user)" @click.native="addSkill()" icon="el-icon-edit">Добавить квалификацию</el-dropdown-item>
                   <el-dropdown-item @click.native="callChangePassUser()" icon="el-icon-lock">Сменить пароль</el-dropdown-item>
                   <el-dropdown-item @click.native="deleteMe()" icon="el-icon-error">Удалить</el-dropdown-item>
                 </el-dropdown-menu>
@@ -40,6 +41,7 @@
     </el-row>
     <user-form/>
     <change-password-form/>
+    <add-skill-form/>
   </div>
 </template>
 
@@ -47,8 +49,9 @@
 import {mapGetters} from "vuex";
 import UserForm from "../components/user/UserForm";
 import ChangePasswordForm from "@/components/user/ChangePasswordForm";
-import {meAdmin} from "@/utils/indentMe";
+import {meAdmin, itsDev} from "@/utils/indentMe";
 import {minutesToText} from "@/utils/transfer";
+import AddSkillForm from "../components/user/AddSkillForm";
 
 export default {
   data() {
@@ -57,11 +60,13 @@ export default {
         };
     },
   computed: {
-        ...mapGetters('user', ['user', 'isEdit', 'isCreateModalVisible', 'isChangePasswordVisible']),
+        ...mapGetters('user', ['user', 'isEdit', 'isCreateModalVisible',
+          'isChangePasswordVisible', 'isAddSkillvisible']),
     },
   components: {
     UserForm,
-    ChangePasswordForm
+    ChangePasswordForm,
+    AddSkillForm
   },
   methods: {
     callEditUser(){
@@ -69,6 +74,10 @@ export default {
     },
     callChangePassUser() {
       this.$store.commit('user/SET_STATE', { isChangePasswordVisible: true });
+    },
+    addSkill() {
+      this.$store.dispatch('user/getSkills', {id: this.user.id})
+      this.$store.commit('user/SET_STATE', {isAddSkillvisible: true})
     },
     deleteMe() {
       let run = confirm('Вы уверены, что хотите удалить пользователя?')
@@ -89,9 +98,8 @@ export default {
           }
           this.$store.commit('user/SET_STATE', { user: {} });
         }
-
       }
-    }, meAdmin,
+    }, meAdmin, itsDev,
     tableMinutes(row) {
       const result = minutesToText(row.tracked_minutes);
       if (result === "-") return "0м";

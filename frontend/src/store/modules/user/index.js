@@ -11,7 +11,8 @@ export default {
         isCreateModalVisible: false,
         isEdit: false,
         isChangePasswordVisible: false,
-        isChangeAvatarVisible: false
+        isAddSkillvisible: false,
+        skills: []
     },
     getters: {
         user: (state) => state.user,
@@ -20,7 +21,8 @@ export default {
         isCreateModalVisible: (state) => state.isCreateModalVisible,
         isEdit: (state) => state.isEdit,
         isChangePasswordVisible: (state) => state.isChangePasswordVisible,
-        isChangeAvatarVisible: (state) => state.isChangeAvatarVisible
+        isAddSkillvisible: (state) => state.isAddSkillvisible,
+        skills: (state) => state.skills
     },
     mutations: {
         SET_STATE
@@ -51,7 +53,8 @@ export default {
                 setState(commit, { loading: true });
                 const result = await api.getUser(userId);
                 const stat = await api.getUserStatistics(userId);
-                setState(commit, { user: {...result, ...stat} });
+                setState(commit, {user: {...result, ...stat} });
+
             } catch (e) {
                 showErrorNotify(e.message);
             } finally {
@@ -67,6 +70,14 @@ export default {
             } catch (e) {
                 showErrorNotify(e.response.data.detail);
             }
+        },
+        async getSkills({commit}, payload) {
+          try {
+              const missedSkills = await api.missingSkills(payload)
+              setState(commit, {skills: missedSkills})
+          }  catch (e) {
+              showErrorNotify(e);
+          }
         },
         async deleteUser({dispatch}, payload){
             try {

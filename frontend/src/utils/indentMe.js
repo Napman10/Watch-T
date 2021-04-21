@@ -1,4 +1,4 @@
-import {isAdmin, isCreator, isExecutor, isNotGuest} from "@/utils/roler";
+import {isAdmin, isCreator, isExecutor, isNotGuest, isDev} from "@/utils/roler";
 
 export function template(func){
     return func({role: Number(localStorage.getItem('myRole'))})
@@ -6,6 +6,10 @@ export function template(func){
 
 export function meAdmin(){
     return template(isAdmin);
+}
+
+export function itsDev(user){
+    return isDev(user)
 }
 
 export function meCreator() {

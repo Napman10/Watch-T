@@ -8,6 +8,10 @@ export function isAdmin(user){
     return user.role === admin;
 }
 
+export function isDev(user) {
+    return user.role === dev;
+}
+
 export function isCreator(user){
     const role = user.role
     return role === admin || role === manager || role === lead;

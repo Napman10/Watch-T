@@ -6,6 +6,16 @@ class NotAllChildDoneException(APIException):
     default_detail = 'Не все подзадачи завершены'
 
 
+class NonDevGiveSkillException(APIException):
+    status_code = 400
+    default_detail = 'Нельзя дать навык не разработчику'
+
+
+class DoesNotHaveQualificationException(APIException):
+    status_code = 400
+    default_detail = 'Задача не подходит по квалификации'
+
+
 class BufferWantTimeException(APIException):
     status_code = 400
     default_detail = 'Сумма оценок выполнения подзадач выше родительской задачи!'

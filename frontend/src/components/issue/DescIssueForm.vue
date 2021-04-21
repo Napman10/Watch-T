@@ -13,6 +13,17 @@
               <el-input type="textarea" v-model="form.description"></el-input>
             </el-form-item>
 
+            <el-form-item label="Тип" prop="typo">
+              <el-select v-model="form.typo" clearable placeholder="Тип">
+                <el-option :value="0" label="Frontend" />
+                <el-option :value="1" label="Backend" />
+                <el-option :value="2" label="DevOps" />
+                <el-option :value="3" label="Mobile" />
+                <el-option :value="4" label="DB" />
+                <el-option :value="5" label="SysAdmin" />
+              </el-select>
+            </el-form-item>
+
             <el-form-item label="Выполнит" prop="executor_username">
                 <el-select v-model="form.executor_username"
                   clearable placeholder="Выберите исполнителя">
@@ -78,7 +89,12 @@ export default {
                         message: 'Не больше 65 символов'
                     }
                 ],
-
+                typo: [
+                  {
+                    required: true,
+                    message: 'Поле обязательно для заполнения'
+                  }
+                ],
                 want_time: [
                     {
                         required: true,

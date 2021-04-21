@@ -9,7 +9,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from ...services import set_got_time, record_history, over_three_check_stat, over_three_check_employee, all_child_done_check
+from ...services import set_got_time, record_history, over_three_check_stat, over_three_check_employee, \
+    all_child_done_check, can_do_by_qualify
 from ....user.models import EmployeeUser
 from rest_framework.exceptions import APIException
 from ....abstract.permissions import AssignedStuffOnly, IsCreator
@@ -75,6 +76,7 @@ class IssueOpenView(RetrieveUpdateAPIView):
         stat = request.data.get('status')
         good_roles = [EmployeeUser.ADMINISTRATOR, EmployeeUser.LEAD, EmployeeUser.DEVELOPER]
         if executor_username and ((employee and employee.role in good_roles) or not employee):
+            can_do_by_qualify(issue.typo.typo, employee)
             old_executor = issue.executor
             issue.executor = employee
             issue.save()
@@ -109,6 +111,7 @@ class IssueCreateView(APIView):
         author_username = request.user.username
         project_name = data.get('project_name')
         executor_username = data.get('executor_username')
+        typo = data.get('typo')
 
         want_minutes = data.get('want_time')
 
@@ -121,6 +124,7 @@ class IssueCreateView(APIView):
         level = data.get('level')
         if not level:
             level = 1
+
         if not (Project2User.objects.filter(user__user__username=author_username).exists()
                 or get_user(request).role == EmployeeUser.ADMINISTRATOR):
             raise APIException
@@ -129,7 +133,7 @@ class IssueCreateView(APIView):
                                         project_name=project_name, want_minutes=want_minutes,
                                         priority=priority, executor_username=executor_username,
                                         description=description, level=level,
-                                        parent_id=parent_id)
+                                        parent_id=parent_id, typo=typo)
         return Response(status=status.HTTP_201_CREATED)
 
 

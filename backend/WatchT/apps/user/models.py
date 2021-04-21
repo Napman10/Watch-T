@@ -37,6 +37,16 @@ class EmployeeUser(BaseModel):
         return self.user.username
 
 
+class Skill(BaseModel):
+    employee = models.ForeignKey(EmployeeUser, on_delete=models.CASCADE, verbose_name='Сотрудник')
+    skill = models.ForeignKey('issue.IssueType', on_delete=models.CASCADE, verbose_name='Навык')
+
+    class Meta:
+        verbose_name = "Навык сотрудника"
+        verbose_name_plural = "Навыки сотрудников"
+        unique_together = ('employee', 'skill')
+
+
 class UserStatistics(BaseModel):
     objects = Manager()
 

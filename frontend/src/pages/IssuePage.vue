@@ -28,6 +28,9 @@
             Исполнитель: {{executorOrNull(issue)}}
           </div>
           <div class="text item">
+            Тип: {{mapTaskType(issue)}}
+          </div>
+          <div class="text item">
             Статус: {{issue.status}}
           </div>
           <div class="text item">
@@ -275,6 +278,10 @@ export default {
     changeStatus() {
       this.$store.commit('issue/SET_STATE', { isStatusModalVisible: true });
       this.$store.dispatch('issue/getIssue', this.issueId);
+    },
+    mapTaskType(issue) {
+      const t = ['Frontend', 'Backend', 'DevOps', 'Mobile', 'DB', 'SysAdmin'][issue.typo]
+      return this.children.length === 0 ? t : 'Группа задач'
     }
   },
    mounted() {

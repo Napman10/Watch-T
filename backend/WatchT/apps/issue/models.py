@@ -8,6 +8,32 @@ from ..user.models import EmployeeUser
 from .managers import IssueManager, TrackTimeManager
 
 
+class IssueType(BaseModel):
+    FRONTEND = 0
+    BACKEND = 1
+    DEVOPS = 2
+    MOBILE = 3
+    DB = 4
+    SA = 5
+
+    SKILL_CHOICES = (
+        (FRONTEND, 'Фронтенд'),
+        (BACKEND, 'Бэкенд'),
+        (DEVOPS, 'Девопс'),
+        (MOBILE, 'Мобайл'),
+        (DB, 'БД'),
+        (SA, 'Сисадмин')
+    )
+    typo = models.IntegerField(choices=SKILL_CHOICES, verbose_name='Тип', unique=True)
+
+    class Meta:
+        verbose_name = "Тип задачи"
+        verbose_name_plural = "Типы задач"
+
+    def __str__(self):
+        return self.SKILL_CHOICES[self.typo][1]
+
+
 class Issue(BaseModel):
     LOW = 0
     NORMAL = 1
@@ -63,6 +89,7 @@ class Issue(BaseModel):
                                 validators=[is_int_validate, positive_int_validate],
                                 default=1)
     created = models.DateTimeField(verbose_name='Создано', auto_now_add=True)
+    typo = models.ForeignKey(IssueType, verbose_name='Тип задачи', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.short_name

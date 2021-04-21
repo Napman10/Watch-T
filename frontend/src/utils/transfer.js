@@ -3,7 +3,7 @@ export function div(val, by){
 }
 
 export function textToMinutes(stringTime) {
-    let correctFormat = stringTime.match(/^\d*н?\s*\d*д?\s*\d*ч?\s*\d*мин?\s*/)
+    let correctFormat = stringTime.match(/^\d*н?\s*\d*д?\s*\d*ч?\s*\d*[мин]?\s*/)
     if (correctFormat) {
         let minutes = stringTime.match(/\d*мин/);
         let hours = stringTime.match(/\d*ч/);
