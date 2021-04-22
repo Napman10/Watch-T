@@ -1,7 +1,7 @@
 from django.apps import apps
 from django.db.models.manager import Manager
 
-from .services import record_history, track_and_record, can_do_by_qualify, can_do_by_level
+from .services import record_history, track_and_record, can_do_by_qualify, can_do_by_level, check_parent_priority
 from ..abstract.exceptions import BufferWantTimeException
 from ..project.models import Project
 from ..user.models import EmployeeUser
@@ -12,6 +12,9 @@ class IssueManager(Manager):
                           want_minutes, priority, typo, executor_username=None,
                           description=None, level=1, parent_id=None):
         IssueType = apps.get_model('issue', 'IssueType')
+
+        if parent_id:
+            check_parent_priority(priority, parent_id)
 
         author = EmployeeUser.objects.filter(user__username=author_username).first()
         project = Project.objects.filter(short_name=project_name).first()

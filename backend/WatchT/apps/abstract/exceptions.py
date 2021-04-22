@@ -54,3 +54,8 @@ class NotConfirmedPass(APIException):
 class OverTimeException(APIException):
     status_code = 400
     default_detail = 'Переработка!'
+
+
+class ImportantThanParentException(APIException):
+    status_code = 400
+    default_detail = 'Наследуемая задача не может иметь приоритет выше чем у родительской!'

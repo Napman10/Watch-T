@@ -6,7 +6,7 @@ from ..abstract.functional import get_user
 from django.apps import apps
 from datetime import datetime
 from django.db.models import Q
-from ..abstract.exceptions import DoesNotHaveQualificationException, VeryYoungException
+from ..abstract.exceptions import DoesNotHaveQualificationException, VeryYoungException, ImportantThanParentException
 
 
 def is_high_role(employee):
@@ -137,3 +137,10 @@ def track_and_record(me, issue, minutes):
     text_history = f"{me}: время {minutes_to_string(got)}->{minutes_to_string(got + minutes)}"
     set_got_time(issue, minutes)
     record_history(issue, text_history)
+
+
+def check_parent_priority(priority, parent_id):
+    Issue = apps.get_model("issue", "Issue")
+    parent = Issue.objects.get(id=parent_id)
+    if priority > parent.priority:
+        raise ImportantThanParentException
