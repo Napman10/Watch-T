@@ -24,12 +24,25 @@ class EmployeeUser(BaseModel):
         (ADMINISTRATOR, 'Администратор сайта'),
     )
 
+    INTERN = 0
+    JUNIOR = 1
+    MIDDLE = 2
+    SENIOR = 3
+
+    LEVEL_CHOICES = (
+        (INTERN, 'Стажер'),
+        (JUNIOR, 'Джуниор'),
+        (MIDDLE, 'Миддл'),
+        (SENIOR, 'Сеньор')
+    )
+
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     role = models.IntegerField(choices=ROLE_CHOICES, verbose_name='Роль', default=GUEST)
+    level = models.IntegerField(choices=LEVEL_CHOICES, verbose_name='Позиция', default=INTERN)
 
     objects = Manager()
 

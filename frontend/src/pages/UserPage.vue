@@ -12,6 +12,9 @@
           <div class="text item">
             Роль: {{['Гость', 'Разработчик', 'Проектный менеджер', 'Тимлид', 'Администратор'][user.role]}}
           </div>
+          <div v-if="itsDev(user)" class="text item">
+            Уровень: {{['Стажер', 'Джуниор', 'Миддл', 'Сеньор'][user.level]}}
+          </div>
           <div class="text item">
             Email: {{user.email}}
           </div>
@@ -30,6 +33,7 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item @click.native="callEditUser()" icon="el-icon-edit">Редактировать</el-dropdown-item>
                   <el-dropdown-item v-if="itsDev(this.user)" @click.native="addSkill()" icon="el-icon-edit">Добавить квалификацию</el-dropdown-item>
+                  <el-dropdown-item v-if="itsDev(user) && !isSenior(this.user)" icon="el-icon-star-on" @click.native="addLevel()">Увеличить уровень</el-dropdown-item>
                   <el-dropdown-item @click.native="callChangePassUser()" icon="el-icon-lock">Сменить пароль</el-dropdown-item>
                   <el-dropdown-item @click.native="deleteMe()" icon="el-icon-error">Удалить</el-dropdown-item>
                 </el-dropdown-menu>
@@ -76,11 +80,14 @@ export default {
       this.$store.commit('user/SET_STATE', { isChangePasswordVisible: true });
     },
     addSkill() {
-      this.$store.dispatch('user/getSkills', {id: this.user.id})
-      this.$store.commit('user/SET_STATE', {isAddSkillvisible: true})
+      this.$store.dispatch('user/getSkills', {id: this.user.id});
+      this.$store.commit('user/SET_STATE', {isAddSkillvisible: true});
+    },
+    addLevel() {
+      this.$store.dispatch('user/editUser', {level: this.user.level + 1, id: this.user.id});
     },
     deleteMe() {
-      let run = confirm('Вы уверены, что хотите удалить пользователя?')
+      let run = confirm('Вы уверены, что хотите удалить пользователя?');
       if (run) {
         let run2 = true;
         let self = this.user.username === localStorage.getItem('myName');
@@ -100,6 +107,9 @@ export default {
         }
       }
     }, meAdmin, itsDev,
+    isSenior(user) {
+      return user.level === 3;
+    },
     tableMinutes(row) {
       const result = minutesToText(row.tracked_minutes);
       if (result === "-") return "0м";

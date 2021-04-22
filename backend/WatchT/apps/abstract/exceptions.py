@@ -1,6 +1,21 @@
 from rest_framework.exceptions import APIException
 
 
+class VeryYoungException(APIException):
+    status_code = 400
+    default_detail = "Недостаточно опыта для выполнения задачи с таким приоритетом!"
+
+
+class OnlyDevUpLevel(APIException):
+    status_code = 400
+    default_detail = "Поднять уровень можно только разработчику!"
+
+
+class IsSeniorNowException(APIException):
+    status_code = 400
+    default_detail = "Уже сеньор"
+
+
 class NotAllChildDoneException(APIException):
     status_code = 400
     default_detail = 'Не все подзадачи завершены'

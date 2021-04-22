@@ -6,7 +6,7 @@ from ..abstract.functional import convert_last_seen
 class EmployeeUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmployeeUser
-        fields = ('id', 'role', 'first_name', 'last_name', 'email', 'username',)
+        fields = ('id', 'role', 'first_name', 'last_name', 'email', 'username', 'level')
 
     first_name = serializers.SerializerMethodField()
     last_name = serializers.SerializerMethodField()

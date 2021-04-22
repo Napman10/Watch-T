@@ -1,9 +1,10 @@
-from django.db.models.manager import Manager
-from ..user.models import EmployeeUser
-from ..project.models import Project
-from ..abstract.exceptions import BufferWantTimeException, DoesNotHaveQualificationException
-from .services import record_history, track_and_record, can_do_by_qualify
 from django.apps import apps
+from django.db.models.manager import Manager
+
+from .services import record_history, track_and_record, can_do_by_qualify, can_do_by_level
+from ..abstract.exceptions import BufferWantTimeException
+from ..project.models import Project
+from ..user.models import EmployeeUser
 
 
 class IssueManager(Manager):
@@ -23,8 +24,8 @@ class IssueManager(Manager):
         if executor_username:
             executor = EmployeeUser.objects.filter(user__username=executor_username).first()
             if executor:
-                print(typo)
                 can_do_by_qualify(typo.typo, executor)
+                can_do_by_level(priority, executor)
                 query["executor"] = executor
 
         if want_minutes:

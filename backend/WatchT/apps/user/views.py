@@ -5,7 +5,7 @@ from .serializers import EmployeeUserSerializer, UserStatisticsSerializer
 from .models import EmployeeUser, UserStatistics, Skill
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView
 from ..abstract.functional import sanitize_query_params, get_user, get_user_dict
-from ..abstract.exceptions import NotConfirmedPass, NonDevGiveSkillException
+from ..abstract.exceptions import NotConfirmedPass, NonDevGiveSkillException, OnlyDevUpLevel, IsSeniorNowException
 from django.db.models.query import Q
 from rest_framework.response import Response
 from rest_framework import status
@@ -59,6 +59,15 @@ class UserOpenView(RetrieveUpdateDestroyAPIView):
         role = data.get('role')
         if role:
             user.role = role
+            user.save()
+
+        level = data.get('level')
+        if level:
+            if user.role != EmployeeUser.DEVELOPER:
+                raise OnlyDevUpLevel
+            if user.level == EmployeeUser.SENIOR:
+                raise IsSeniorNowException
+            user.level = level
             user.save()
 
         skill = data.get('skill')

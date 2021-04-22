@@ -38,7 +38,14 @@ def create_user(user_data: dict) -> Response:
 
     role = user_data.get('role')
     if role:
+        if role in [EmployeeUser.ADMINISTRATOR, EmployeeUser.LEAD]:
+            level = EmployeeUser.SENIOR
+        else:
+            level = EmployeeUser.INTERN
+
         del user_data['role']
+    else:
+        level = EmployeeUser.INTERN
 
     try:
         username = user_data.get('username')
@@ -50,13 +57,14 @@ def create_user(user_data: dict) -> Response:
             return Response({"detail": "invalid"}, status=status.HTTP_400_BAD_REQUEST)
 
         original_user = User.objects.create_user(**user_data)
+        employee_dict = {"user": original_user}
         if role:
-            user = EmployeeUser.objects.create(user=original_user, role=role)
-            UserStatistics.objects.create(user=user)
+            employee_dict["role"] = role
+        if level:
+            employee_dict["level"] = level
+        user = EmployeeUser.objects.create(**employee_dict)
 
-        else:
-            user = EmployeeUser.objects.create(user=original_user)
-            UserStatistics.objects.create(user=user)
+        UserStatistics.objects.create(user=user)
 
     except BaseException as e:
         return Response({"detail": e}, status=status.HTTP_400_BAD_REQUEST)

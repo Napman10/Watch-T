@@ -6,12 +6,22 @@ from ..abstract.functional import get_user
 from django.apps import apps
 from datetime import datetime
 from django.db.models import Q
-from ..abstract.exceptions import DoesNotHaveQualificationException
+from ..abstract.exceptions import DoesNotHaveQualificationException, VeryYoungException
+
+
+def is_high_role(employee):
+    EmployeeUser = apps.get_model('user', 'EmployeeUser')
+    return employee.role in [EmployeeUser.LEAD, EmployeeUser.ADMINISTRATOR]
 
 
 def can_do_by_qualify(typo, employee):
-    if not Skill.objects.filter(skill__typo=typo, employee=employee).exists():
+    if not Skill.objects.filter(skill__typo=typo, employee=employee).exists() and not is_high_role(employee):
         raise DoesNotHaveQualificationException
+
+
+def can_do_by_level(priority, employee):
+    if priority > employee.level and not is_high_role(employee):
+        raise VeryYoungException
 
 
 def tasks_in_progress(employee):
