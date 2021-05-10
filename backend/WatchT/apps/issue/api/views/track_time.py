@@ -14,6 +14,7 @@ from ....abstract.permissions import IsCreator, NonGuest
 from datetime import date
 from django.db.models import Sum
 from ....abstract.exceptions import OverTimeException
+from rest_framework.exceptions import APIException
 
 
 class TrackCreateView(APIView):
@@ -43,7 +44,7 @@ class TrackCreateView(APIView):
             TrackTime.objects.depend_create(me=me, issue=issue, minutes=minutes, executor=executor, text=text)
             commit_minutes_statistics(request, issue, minutes)
             return Response(status=status.HTTP_201_CREATED)
-        return Response(data={"detail": "invalid"}, status=status.HTTP_400_BAD_REQUEST)
+        raise APIException
 
 
 class TrackListView(ListAPIView):

@@ -3,7 +3,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from ..abstract.functional import string_or_empty, email_is_valid
 from ..user.models import EmployeeUser, UserStatistics
-from ..project.models import Project, Project2User
+from ..abstract.exceptions import PasswordsDismatchException
+from rest_framework.exceptions import APIException
 
 
 def user_dict_is_valid(user_data: dict) -> bool:
@@ -32,7 +33,7 @@ def create_user(user_data: dict) -> Response:
     password_confirm = user_data.get('password2')
 
     if bool(password) and password != password_confirm:
-        return Response({"detail": "password dismatch"}, status=status.HTTP_400_BAD_REQUEST)
+        raise PasswordsDismatchException
 
     del user_data['password2']
 
@@ -67,7 +68,7 @@ def create_user(user_data: dict) -> Response:
         UserStatistics.objects.create(user=user)
 
     except BaseException as e:
-        return Response({"detail": e}, status=status.HTTP_400_BAD_REQUEST)
+        raise APIException
 
     return Response({"username": original_user.username, "detail": "registration successful"},
                     status=status.HTTP_200_OK)

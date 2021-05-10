@@ -59,3 +59,8 @@ class OverTimeException(APIException):
 class ImportantThanParentException(APIException):
     status_code = 400
     default_detail = 'Наследуемая задача не может иметь приоритет выше чем у родительской!'
+
+
+class PasswordsDismatchException(APIException):
+    status_code = 400
+    default_detail = "Пароли не совпадают!"
