@@ -2,10 +2,14 @@
   <div id="app" v-if="token">
     <router-view></router-view>
   </div>
-    <div class="login" v-else>
+  <div v-else>
+    <h1>Добро пожаловать в Watch-T!</h1>
+    <h3>Дипломная работа, выполненная студентом группы МО-416 Кашаповым Ильёй.</h3>
+    <div class="login">
         <h3 style="text-align: center">Вход в систему</h3>
         <login-form></login-form>
     </div>
+  </div>
 </template>
 
 <script>
@@ -26,7 +30,14 @@ export default {
 <style>
 :root {
   --main-bg-color: #00345c;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 }
+
+h1, h3 {
+  text-align:center;
+  color: white;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -36,7 +47,7 @@ body {
 .login {
     margin-left: auto;
     margin-right: auto;
-    margin-top: 12%;
+    margin-top: 5%;
     padding: 16px;
     border: 2px solid #FFDEAD;
     width: 350px;
