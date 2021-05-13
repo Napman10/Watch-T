@@ -17,11 +17,6 @@ from ..abstract.exceptions import OverTimeException
 from datetime import date
 
 
-Issue = apps.get_model('issue', 'Issue')
-TrackTime = apps.get_model('issue', 'TrackTime')
-IssueHistoryRecord = apps.get_model("issue", "IssueHistoryRecord")
-
-
 def call_recursive_delete(issue):
     parent = issue.parent
     if parent:
@@ -33,6 +28,8 @@ def call_recursive_delete(issue):
 
 
 def create_issue(request):
+    Issue = apps.get_model('issue', 'Issue')
+
     data = request.data
 
     short_name = data.get('short_name')
@@ -66,6 +63,8 @@ def create_issue(request):
 
 
 def filter_issue_list(request):
+    Issue = apps.get_model('issue', 'Issue')
+
     params = sanitize_query_params(request)
 
     somename = params.get('somename')
@@ -100,6 +99,8 @@ def filter_issue_list(request):
 
 
 def edit_issue(issue, request):
+    Issue = apps.get_model('issue', 'Issue')
+
     me = get_user(request)
     executor_username = request.data.get('user')
     unassign = "Не назначено"
@@ -151,6 +152,8 @@ def can_do_by_level(priority, employee):
 
 
 def tasks_in_progress(employee):
+    Issue = apps.get_model('issue', 'Issue')
+
     return Issue.objects \
         .filter(executor=employee,
                 status__in=[Issue.IN_PROGRESS, Issue.CHECK]) \
@@ -164,6 +167,8 @@ def over_three_check(employee):
 
 
 def over_three_check_stat(issue, new_status):
+    Issue = apps.get_model('issue', 'Issue')
+
     employee = issue.executor
     old_status = issue.status
 
@@ -177,11 +182,15 @@ def over_three_check_stat(issue, new_status):
 
 
 def over_three_check_employee(issue, new_employee):
+    Issue = apps.get_model('issue', 'Issue')
+
     if issue.status in [Issue.IN_PROGRESS, Issue.CHECK]:
         over_three_check(new_employee)
 
 
 def all_child_done_check(issue, stat):
+    Issue = apps.get_model('issue', 'Issue')
+
     next_stat_done = stat == Issue.DONE
     if next_stat_done:
         got_not_completed_child = Issue.objects.filter(Q(parent=issue) & ~Q(status=Issue.DONE)).exists()
@@ -250,6 +259,7 @@ def commit_minutes_statistics(request, issue, minutes):
 
 
 def record_history(issue, text):
+    IssueHistoryRecord = apps.get_model("issue", "IssueHistoryRecord")
     IssueHistoryRecord.objects.create(issue=issue, text=text, datetime=datetime.now())
 
 
@@ -261,12 +271,16 @@ def track_and_record(me, issue, minutes):
 
 
 def check_parent_priority(priority, parent_id):
+    Issue = apps.get_model('issue', 'Issue')
     parent = Issue.objects.get(id=parent_id)
     if priority > parent.priority:
         raise ImportantThanParentException
 
 
 def create_track(request):
+    Issue = apps.get_model('issue', 'Issue')
+    TrackTime = apps.get_model('issue', 'TrackTime')
+
     data = request.data
     me = get_user(request)
     executor = EmployeeUser.objects.filter(user=request.user).first()
