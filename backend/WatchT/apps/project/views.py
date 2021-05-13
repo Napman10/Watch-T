@@ -8,10 +8,10 @@ from ..user.models import EmployeeUser
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from ..abstract.functional import sanitize_query_params, get_user
+from ..abstract.functional import sanitize_query_params
 from ..issue.models import Issue
 from ..abstract.permissions import AssignedStuffOnly, IsAdmin, IsCreator, AdminEditProject
-from django.db.models.query import Q
+from .services import filter_projects, edit_project, initialize_user_project_pair, delete_p2u
 
 
 class ProjectListView(ListAPIView):
@@ -19,21 +19,7 @@ class ProjectListView(ListAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        qs = Project.objects.all()
-        data = sanitize_query_params(self.request)
-        somename = data.get('somename')
-        assigned = data.get('assigned') == "true"
-
-        if somename is not None:
-            qs = qs.filter(Q(short_name__contains=somename) | Q(header__contains=somename))
-
-        if assigned:
-            me = get_user(self.request)
-            p2u = Project2User.objects.filter(user=me)
-            p2u_ids = [p.project.id for p in p2u]
-            qs = qs.filter(id__in=p2u_ids)
-
-        return qs
+        return filter_projects(self.request)
 
 
 class ProjectOpenView(RetrieveUpdateAPIView):
@@ -45,20 +31,7 @@ class ProjectOpenView(RetrieveUpdateAPIView):
         return Project.objects.all()
 
     def put(self, request, *args, **kwargs):
-        project = self.get_object()
-        data = request.data
-
-        short_name = data.get('short_name')
-        header = data.get('header')
-        description = data.get('description')
-
-        if short_name:
-            project.short_name = short_name
-        if header:
-            project.header = header
-        if description:
-            project.description = description
-        project.save()
+        edit_project(self.get_object())
         return Response(status=status.HTTP_200_OK)
 
 
@@ -86,35 +59,13 @@ class ProjectDestroyView(DestroyAPIView):
 class Project2UserView(APIView):
     permission_classes = (IsAuthenticated, IsCreator)
 
-    def initialize(self, request):
-        data = request.data
-        if not data:
-            data = sanitize_query_params(request)
-        username = data.get('user')
-        if not username:
-            raise APIException
-        project_id = data.get('project_id')
-        if not project_id:
-            raise APIException
-        user = EmployeeUser.objects.filter(user__username=username).first()
-        project = Project.objects.get(id=project_id)
-        return user, project
-
     def post(self, request):
-        user, project = self.initialize(request)
+        user, project = initialize_user_project_pair(request)
         Project2User.objects.create(user=user, project=project)
         return Response(status=status.HTTP_201_CREATED)
 
     def delete(self, request):
-        user, project = self.initialize(request)
-        p = Project2User.objects.filter(user=user, project=project).first()
-        if p:
-            project = p.project
-            issues = Issue.objects.filter(project=project)
-            for issue in issues:
-                issue.executor = None
-                issue.save()
-            p.delete()
+        delete_p2u(request)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

@@ -5,46 +5,15 @@ from ...models import TrackTime
 from rest_framework.permissions import IsAuthenticated
 from ....abstract.functional import sanitize_query_params, get_user
 from rest_framework.views import APIView
-from ....user.models import EmployeeUser
-from ...models import Issue
-from rest_framework.response import Response
-from rest_framework import status
-from ...services import commit_minutes_statistics, track_and_record
+from ...services import commit_minutes_statistics, track_and_record, create_track, delete_track
 from ....abstract.permissions import IsCreator, NonGuest
-from datetime import date
-from django.db.models import Sum
-from ....abstract.exceptions import OverTimeException
-from rest_framework.exceptions import APIException
 
 
 class TrackCreateView(APIView):
     permission_classes = (IsAuthenticated, NonGuest)
 
     def post(self, request):
-        data = request.data
-        me = get_user(request)
-        executor = EmployeeUser.objects.filter(user=request.user).first()
-        minutes = data.get('minutes')
-        text = data.get('text', '')
-
-        if not minutes:
-            return Response(data={"detail": "invalid time"}, status=status.HTTP_400_BAD_REQUEST)
-
-        full_day = 60 * 8
-        all_tracks_today = TrackTime.objects.filter(executor=executor, datetime__date=date.today()) \
-            .aggregate(Sum('minutes'))
-        all_tracks_today = all_tracks_today.get('minutes__sum', 0) or 0
-
-        if full_day - all_tracks_today - minutes < 0:
-            raise OverTimeException
-
-        issue_id = data.get('issue_id')
-        if issue_id:
-            issue = Issue.objects.get(id=issue_id)
-            TrackTime.objects.depend_create(me=me, issue=issue, minutes=minutes, executor=executor, text=text)
-            commit_minutes_statistics(request, issue, minutes)
-            return Response(status=status.HTTP_201_CREATED)
-        raise APIException
+        create_track(request)
 
 
 class TrackListView(ListAPIView):
@@ -68,10 +37,5 @@ class TrackDeleteView(DestroyAPIView):
         return TrackTime.objects.all()
 
     def delete(self, request, *args, **kwargs):
-        me = get_user(request)
-        track = self.get_object()
-        issue = track.issue
-        minutes = -track.minutes
-        track_and_record(me, issue, minutes)
-        commit_minutes_statistics(request, issue, minutes)
+        delete_track(self.get_object(), request)
         return super().delete(request, *args, **kwargs)

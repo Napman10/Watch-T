@@ -1,11 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from .services import create_user
+from .services import create_user, edit_user, filter_users
 from .serializers import EmployeeUserSerializer, UserStatisticsSerializer
 from .models import EmployeeUser, UserStatistics, Skill
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView
 from ..abstract.functional import sanitize_query_params, get_user, get_user_dict
-from ..abstract.exceptions import NotConfirmedPass, NonDevGiveSkillException, OnlyDevUpLevel, IsSeniorNowException
 from django.db.models.query import Q
 from rest_framework.response import Response
 from rest_framework import status
@@ -32,62 +31,7 @@ class UserOpenView(RetrieveUpdateDestroyAPIView):
         return EmployeeUser.objects.all()
 
     def put(self, request, *args, **kwargs):
-        data = request.data
-        user = self.get_object()
-        real_user = user.user
-
-        username = data.get('username')
-        if username:
-            real_user.username = username
-            real_user.save()
-
-        first_name = data.get('first_name')
-        if first_name:
-            real_user.first_name = first_name
-            real_user.save()
-
-        last_name = data.get('last_name')
-        if last_name:
-            real_user.last_name = last_name
-            real_user.save()
-
-        email = data.get('email')
-        if email:
-            real_user.email = email
-            real_user.save()
-
-        role = data.get('role')
-        if role:
-            user.role = role
-            user.save()
-
-        level = data.get('level')
-        if level:
-            if user.role != EmployeeUser.DEVELOPER:
-                raise OnlyDevUpLevel
-            if user.level == EmployeeUser.SENIOR:
-                raise IsSeniorNowException
-            user.level = level
-            user.save()
-
-        skill = data.get('skill')
-        if skill:
-            skill = ['Frontend', 'Backend', 'DevOps', 'Mobile', 'DB', 'SysAdmin'].index(skill)
-            if user.role != EmployeeUser.DEVELOPER:
-                raise NonDevGiveSkillException
-            issue_type = IssueType.objects.get(typo=skill)
-            skill = Skill.objects.create(employee=user, skill=issue_type)
-            skill.save()
-
-        password = data.get('password')
-        confirm = data.get('password2')
-
-        if password != confirm and password:
-            raise NotConfirmedPass
-        if password:
-            real_user.set_password(password)
-            real_user.save()
-
+        edit_user(request, self.get_object())
         return Response(status=status.HTTP_200_OK)
 
     def delete(self, request, *args, **kwargs):
@@ -114,34 +58,7 @@ class UserAPIListView(ListAPIView):
     serializer_class = EmployeeUserSerializer
 
     def get_queryset(self):
-        params = sanitize_query_params(self.request)
-        project_id = params.get('project_id')
-        dev = params.get('dev')
-        if project_id is not None:
-            exclude = params.get('exclude')
-            p2u = Project2User.objects.filter(project__id=project_id)
-            user_ids = [p.user.id for p in p2u]
-            if exclude is not None:
-                return EmployeeUser.objects.exclude(id__in=user_ids)
-            if dev is not None:
-                return EmployeeUser.objects.filter(id__in=user_ids,
-                                                   role__in=[EmployeeUser.DEVELOPER,
-                                                             EmployeeUser.ADMINISTRATOR,
-                                                             EmployeeUser.LEAD])
-            return EmployeeUser.objects.filter(id__in=user_ids)
-
-        somename = params.get('somename')
-
-        if somename is not None:
-            del params['somename']
-            q1 = {**params, "user__username__contains": somename}
-            q2 = {**params, "user__first_name__contains": somename}
-            q3 = {**params, "user__last_name__contains": somename}
-            return EmployeeUser.objects.filter(Q(**q1) | Q(**q2) | Q(**q3))
-        elif bool(params):
-            return EmployeeUser.objects.filter(**params)
-        else:
-            return EmployeeUser.objects.all()
+        filter_users(self.request)
 
 
 class OpenMe(APIView):
