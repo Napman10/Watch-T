@@ -58,7 +58,7 @@ class UserAPIListView(ListAPIView):
     serializer_class = EmployeeUserSerializer
 
     def get_queryset(self):
-        filter_users(self.request)
+        return filter_users(self.request)
 
 
 class OpenMe(APIView):
