@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('user', '0009_skill'),
     ]
@@ -14,6 +13,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='skill',
             name='skill',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='issue.IssueType', verbose_name='Навык'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='issue.IssueType',
+                                    verbose_name='Навык'),
         ),
     ]

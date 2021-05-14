@@ -4,7 +4,7 @@ from django.db import migrations, models
 import django.db.models.deletion
 import uuid
 
-
+# залить с миграции навыки
 class Migration(migrations.Migration):
 
     dependencies = [

@@ -56,6 +56,7 @@
                   <el-dropdown-item v-if="meCreator() && !isDone()" @click.native="assignUser()" icon="el-icon-user">Назначить сотрудника</el-dropdown-item>
                   <el-dropdown-item  v-if="(isMyIssue()|| meCreator()) && !isDone() " @click.native="changeStatus()" icon="el-icon-edit">Изменить статус</el-dropdown-item>
                   <el-dropdown-item v-if="meCreator()" @click.native="deleteMe()" icon="el-icon-error">Удалить задачу</el-dropdown-item>
+                  <el-dropdown-item v-if="!meCreator() && !isMyIssue()" icon="el-icon-error">Действия недоступны</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </div>

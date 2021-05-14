@@ -9,14 +9,16 @@ export default {
         token: localStorage.getItem("token"),
         me: localStorage.getItem("me"),
         myId: localStorage.getItem("myId"),
-        myName: localStorage.getItem("myName")
+        myName: localStorage.getItem("myName"),
+        myRole: localStorage.getItem("myRole")
     },
 
     getters: {
         token: (state) => state.token,
         me: (state) => state.me,
         myId: (state) => state.myId,
-        myName: (state) => state.myName
+        myName: (state) => state.myName,
+        myRole: (state) => state.myRole
     },
 
     mutations: {
