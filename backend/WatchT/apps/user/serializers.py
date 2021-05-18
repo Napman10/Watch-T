@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from .models import EmployeeUser, UserStatistics
+
 from ..abstract.functional import convert_last_seen
+from .models import EmployeeUser, UserStatistics
 
 
 class EmployeeUserSerializer(serializers.ModelSerializer):

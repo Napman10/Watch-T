@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
 
-from .models import EmployeeUser, UserStatistics, Skill
+from .models import EmployeeUser, Skill, UserStatistics
 
 
 @admin.register(UserStatistics)

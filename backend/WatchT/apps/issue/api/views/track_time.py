@@ -1,12 +1,13 @@
-from rest_framework.generics import (DestroyAPIView,
-                                     ListAPIView)
-from ..serializers.track_time import TrackTimeSerializer, TrackDeleteSerializer
-from ...models import TrackTime
+from rest_framework.generics import DestroyAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
-from ....abstract.functional import sanitize_query_params, get_user
 from rest_framework.views import APIView
-from ...services import commit_minutes_statistics, track_and_record, create_track, delete_track
+
+from ....abstract.functional import get_user, sanitize_query_params
 from ....abstract.permissions import IsCreator, NonGuest
+from ...models import TrackTime
+from ...services import (commit_minutes_statistics, create_track, delete_track,
+                         track_and_record)
+from ..serializers.track_time import TrackDeleteSerializer, TrackTimeSerializer
 
 
 class TrackCreateView(APIView):

@@ -1,14 +1,17 @@
 from django.contrib.auth.models import User
 from django.db.models import Q
 from rest_framework import status
+from rest_framework.exceptions import APIException
 from rest_framework.response import Response
-from ..abstract.functional import string_or_empty, email_is_valid, sanitize_query_params
+
+from ..abstract.exceptions import (IsSeniorNowException,
+                                   NonDevGiveSkillException, NotConfirmedPass,
+                                   OnlyDevUpLevel, PasswordsDismatchException)
+from ..abstract.functional import (email_is_valid, sanitize_query_params,
+                                   string_or_empty)
 from ..issue.models import IssueType
 from ..project.models import Project2User
-from ..user.models import EmployeeUser, UserStatistics, Skill
-from ..abstract.exceptions import PasswordsDismatchException, OnlyDevUpLevel, IsSeniorNowException, \
-    NonDevGiveSkillException, NotConfirmedPass
-from rest_framework.exceptions import APIException
+from ..user.models import EmployeeUser, Skill, UserStatistics
 
 
 def user_dict_is_valid(user_data: dict) -> bool:

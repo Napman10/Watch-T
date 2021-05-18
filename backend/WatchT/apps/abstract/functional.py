@@ -1,6 +1,7 @@
 import re
-from ..user.models import EmployeeUser
 from datetime import datetime, timedelta
+
+from ..user.models import EmployeeUser
 
 
 def sanitize_query_params(request):

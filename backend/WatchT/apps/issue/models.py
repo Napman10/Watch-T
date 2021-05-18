@@ -2,7 +2,8 @@ from django.db import models
 from django.db.models import Manager
 
 from ..abstract.models import BaseModel
-from ..abstract.validators import is_int_validate, non_negative_int_validate, positive_int_validate
+from ..abstract.validators import (is_int_validate, non_negative_int_validate,
+                                   positive_int_validate)
 from ..project.models import Project
 from ..user.models import EmployeeUser
 from .managers import IssueManager, TrackTimeManager

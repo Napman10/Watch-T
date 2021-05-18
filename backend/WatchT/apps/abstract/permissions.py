@@ -1,8 +1,9 @@
 from rest_framework import permissions
-from ..project.models import Project2User, Project
-from ..issue.models import Issue
-from ..user.models import EmployeeUser
+
 from ..abstract.functional import get_user
+from ..issue.models import Issue
+from ..project.models import Project, Project2User
+from ..user.models import EmployeeUser
 
 
 class AssignedStuffOnly(permissions.BasePermission):

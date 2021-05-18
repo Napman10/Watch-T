@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
+from ....abstract.functional import convert_last_seen, string_or_empty
 from ...models import Issue, IssueType
-from ....abstract.functional import string_or_empty, convert_last_seen
 
 
 class IssueTypeSerializer(serializers.ModelSerializer):

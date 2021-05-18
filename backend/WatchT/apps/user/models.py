@@ -1,6 +1,7 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.manager import Manager
-from django.contrib.auth.models import User
+
 from ..abstract.models import BaseModel
 from ..abstract.validators import is_int_validate, non_negative_int_validate
 

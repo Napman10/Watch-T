@@ -1,17 +1,21 @@
+from rest_framework import status
+from rest_framework.exceptions import APIException
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
-                                     ListAPIView, RetrieveUpdateAPIView, RetrieveAPIView)
+                                     ListAPIView, RetrieveAPIView,
+                                     RetrieveUpdateAPIView)
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from ..abstract.functional import sanitize_query_params
+from ..abstract.permissions import (AdminEditProject, AssignedStuffOnly,
+                                    IsAdmin, IsCreator)
+from ..issue.models import Issue
+from ..user.models import EmployeeUser
 from .models import Project, Project2User, ProjectStatistics
 from .serializers import ProjectSerializer, ProjectStatisticsSerializer
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import APIException
-from ..user.models import EmployeeUser
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.views import APIView
-from ..abstract.functional import sanitize_query_params
-from ..issue.models import Issue
-from ..abstract.permissions import AssignedStuffOnly, IsAdmin, IsCreator, AdminEditProject
-from .services import filter_projects, edit_project, initialize_user_project_pair, delete_p2u
+from .services import (delete_p2u, edit_project, filter_projects,
+                       initialize_user_project_pair)
 
 
 class ProjectListView(ListAPIView):

@@ -2,8 +2,8 @@ from django.db import models
 from django.db.models import Manager
 
 from ..abstract.models import BaseModel
-from ..user.models import EmployeeUser
 from ..abstract.validators import is_int_validate, non_negative_int_validate
+from ..user.models import EmployeeUser
 
 
 class Project(BaseModel):

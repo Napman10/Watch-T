@@ -1,16 +1,17 @@
-from rest_framework.generics import (ListAPIView,
-                                     RetrieveAPIView, DestroyAPIView)
-
-from ...models import Comment, Issue
-from rest_framework.permissions import IsAuthenticated
-from ..serializers.comment import CommentSerializer, CommentDeleteSerializer
-from rest_framework.views import APIView
-from ....abstract.functional import sanitize_query_params
-from ....user.models import EmployeeUser
 from datetime import datetime
-from rest_framework.response import Response
+
 from rest_framework import status
+from rest_framework.generics import (DestroyAPIView, ListAPIView,
+                                     RetrieveAPIView)
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from ....abstract.functional import sanitize_query_params
 from ....abstract.permissions import IsAdmin
+from ....user.models import EmployeeUser
+from ...models import Comment, Issue
+from ..serializers.comment import CommentDeleteSerializer, CommentSerializer
 
 
 class CommentListView(ListAPIView):

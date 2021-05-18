@@ -1,8 +1,9 @@
-from ....abstract.functional import sanitize_query_params
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import ListAPIView
-from ..serializers.history import IssueHistoryRecordSerializer
+from rest_framework.permissions import IsAuthenticated
+
+from ....abstract.functional import sanitize_query_params
 from ...models import IssueHistoryRecord
+from ..serializers.history import IssueHistoryRecordSerializer
 
 
 class IssueHistoryRecordListView(ListAPIView):

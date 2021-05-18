@@ -1,14 +1,16 @@
-from rest_framework.generics import (DestroyAPIView,
-                                     ListAPIView, RetrieveUpdateAPIView)
-from ...models import Issue
-from ..serializers.issue import IssueSerializer
-from ....abstract.functional import sanitize_query_params
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import status
-from ...services import create_issue, edit_issue, filter_issue_list, call_recursive_delete
+from rest_framework.generics import (DestroyAPIView, ListAPIView,
+                                     RetrieveUpdateAPIView)
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from ....abstract.functional import sanitize_query_params
 from ....abstract.permissions import AssignedStuffOnly, IsCreator
+from ...models import Issue
+from ...services import (call_recursive_delete, create_issue, edit_issue,
+                         filter_issue_list)
+from ..serializers.issue import IssueSerializer
 
 
 class IssueListView(ListAPIView):

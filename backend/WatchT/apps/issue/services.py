@@ -1,20 +1,23 @@
 import re
-from ..abstract.exceptions import NegativeGotTimeException, OverThreeInProgressException, NotAllChildDoneException
-from ..project.models import ProjectStatistics, Project2User
-from ..user.models import UserStatistics, Skill, EmployeeUser
-from ..abstract.functional import get_user, string_or_empty, sanitize_query_params
+from datetime import date, datetime
+
 from django.apps import apps
-from datetime import datetime
-from django.db.models import Q
-from ..abstract.exceptions import DoesNotHaveQualificationException, VeryYoungException, ImportantThanParentException
+from django.db.models import Q, Sum
+from rest_framework import status
 from rest_framework.exceptions import APIException
 from rest_framework.response import Response
-from rest_framework import status
-from .consts import *
 
-from django.db.models import Sum
-from ..abstract.exceptions import OverTimeException
-from datetime import date
+from ..abstract.exceptions import (DoesNotHaveQualificationException,
+                                   ImportantThanParentException,
+                                   NegativeGotTimeException,
+                                   NotAllChildDoneException,
+                                   OverThreeInProgressException,
+                                   OverTimeException, VeryYoungException)
+from ..abstract.functional import (get_user, sanitize_query_params,
+                                   string_or_empty)
+from ..project.models import Project2User, ProjectStatistics
+from ..user.models import EmployeeUser, Skill, UserStatistics
+from .consts import *
 
 
 def call_recursive_delete(issue):
@@ -288,7 +291,7 @@ def create_track(request):
     text = data.get('text', '')
 
     if not minutes:
-        return Response(data={"detail": "invalid time"}, status=status.HTTP_400_BAD_REQUEST)
+        raise APIException
 
     full_day = 60 * 8
     all_tracks_today = TrackTime.objects.filter(executor=executor, datetime__date=date.today()) \

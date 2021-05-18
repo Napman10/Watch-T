@@ -1,8 +1,7 @@
 from rest_framework import serializers
 
-from ...models import TrackTime
-
 from ....abstract.functional import convert_last_seen
+from ...models import TrackTime
 
 
 class TrackTimeSerializer(serializers.ModelSerializer):

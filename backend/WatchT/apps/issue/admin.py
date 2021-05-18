@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Comment, Issue, TrackTime, IssueHistoryRecord, IssueType
+from .models import Comment, Issue, IssueHistoryRecord, IssueType, TrackTime
 
 
 @admin.register(Issue)

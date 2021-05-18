@@ -1,10 +1,11 @@
 from django.apps import apps
 from django.db.models.manager import Manager
 
-from .services import record_history, track_and_record, can_do_by_qualify, can_do_by_level, check_parent_priority
 from ..abstract.exceptions import BufferWantTimeException
 from ..project.models import Project
 from ..user.models import EmployeeUser
+from .services import (can_do_by_level, can_do_by_qualify,
+                       check_parent_priority, record_history, track_and_record)
 
 
 class IssueManager(Manager):

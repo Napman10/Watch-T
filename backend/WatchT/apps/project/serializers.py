@@ -1,8 +1,7 @@
 from rest_framework import serializers
 
-from .models import Project, ProjectStatistics
-
 from ..abstract.functional import convert_last_seen
+from .models import Project, ProjectStatistics
 
 
 class ProjectSerializer(serializers.ModelSerializer):

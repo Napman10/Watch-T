@@ -1,10 +1,10 @@
-from .models import Project, Project2User
-
-from ..abstract.functional import sanitize_query_params, get_user
 from django.db.models.query import Q
 from rest_framework.exceptions import APIException
-from ..user.models import EmployeeUser
+
+from ..abstract.functional import get_user, sanitize_query_params
 from ..issue.models import Issue
+from ..user.models import EmployeeUser
+from .models import Project, Project2User
 
 
 def filter_projects(request):

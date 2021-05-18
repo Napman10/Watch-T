@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from ...models import IssueHistoryRecord
 from ....abstract.functional import convert_last_seen
+from ...models import IssueHistoryRecord
 
 
 class IssueHistoryRecordSerializer(serializers.ModelSerializer):

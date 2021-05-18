@@ -1,17 +1,20 @@
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
-from .services import create_user, edit_user, filter_users
-from .serializers import EmployeeUserSerializer, UserStatisticsSerializer
-from .models import EmployeeUser, UserStatistics, Skill
-from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView
-from ..abstract.functional import sanitize_query_params, get_user, get_user_dict
 from django.db.models.query import Q
-from rest_framework.response import Response
 from rest_framework import status
-from ..project.models import Project2User
+from rest_framework.generics import (ListAPIView, RetrieveAPIView,
+                                     RetrieveUpdateDestroyAPIView)
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from ..abstract.functional import (get_user, get_user_dict,
+                                   sanitize_query_params)
 from ..abstract.permissions import IsAdmin, NonAdminChange
-from ..issue.models import IssueType
 from ..issue.api.serializers.issue import IssueTypeSerializer
+from ..issue.models import IssueType
+from ..project.models import Project2User
+from .models import EmployeeUser, Skill, UserStatistics
+from .serializers import EmployeeUserSerializer, UserStatisticsSerializer
+from .services import create_user, edit_user, filter_users
 
 
 class UserCreateAPIView(APIView):
