@@ -35,6 +35,7 @@
                 </el-select>
             </el-form-item>
 
+            <a @click="pert()">PERT</a>
             <el-form-item label="Оценка" prop="want_time">
                 <el-input
                 placeholder=""
@@ -64,6 +65,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import {parsePert} from "../../utils/transfer";
 export default {
     data() {
         return {
@@ -133,6 +135,10 @@ export default {
                     this.form = {};
                 }
             });
+        },
+        pert() {
+          let val = prompt('Введите оптимистическое, пессимистическое и вероятное времена (oo-pp-mm)');
+          alert(parsePert(val))
         },
         closeModal() {
             this.$store.commit('issue/SET_STATE', { descProjectIssueModalVisible: false });

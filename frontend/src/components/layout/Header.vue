@@ -11,7 +11,7 @@
     <el-menu-item style="margin-left: 10px" index="/issues" :route="{ name: 'issues'}">Задачи</el-menu-item>
     <el-menu-item index="/projects" :route="{ name: 'projects'}">Проекты</el-menu-item>
     <el-menu-item v-if="meAdmin()" index="/users" :route="{ name: 'users'}">Пользователи</el-menu-item>
-    <el-submenu style="position: absolute; right: .5em;" index="2">
+    <el-submenu style="position: absolute; right: .5em;" index="1">
       <template slot="title">Профиль</template>
       <el-menu-item index="/user" :route="{ path: 'user/'+myId()}">Мой профиль</el-menu-item>
       <el-menu-item index="/logout" @click="logout">Выйти</el-menu-item>

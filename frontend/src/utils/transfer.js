@@ -15,7 +15,7 @@ export function textToMinutes(stringTime) {
         days = days ? Number(days[0].replace('д', '')) : 0;
         weeks = weeks ? Number(weeks[0].replace('н', '')) : 0;
 
-        return minutes + 60 * hours + 8 * 60 * days + 5 * 8 * 60 * weeks;
+        return Math.ceil(minutes + 60 * hours + 8 * 60 * days + 5 * 8 * 60 * weeks);
     }
     return 0;
 }
@@ -53,4 +53,10 @@ export function minutesToText(minutes){
     else {
         return result;
     }
+}
+
+export function parsePert(str) {
+    let splits = str.split("-");
+    const result = (textToMinutes(splits[0]) + textToMinutes(splits[1]) + 4 * textToMinutes(splits[2])) / 6
+    return minutesToText(result);
 }
