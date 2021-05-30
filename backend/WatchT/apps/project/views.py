@@ -35,7 +35,7 @@ class ProjectOpenView(RetrieveUpdateAPIView):
         return Project.objects.all()
 
     def put(self, request, *args, **kwargs):
-        edit_project(self.get_object())
+        edit_project(request, self.get_object())
         return Response(status=status.HTTP_200_OK)
 
 
