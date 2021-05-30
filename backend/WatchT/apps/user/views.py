@@ -1,4 +1,3 @@
-from django.db.models.query import Q
 from rest_framework import status
 from rest_framework.generics import (ListAPIView, RetrieveAPIView,
                                      RetrieveUpdateDestroyAPIView)
@@ -11,10 +10,9 @@ from ..abstract.functional import (get_user, get_user_dict,
 from ..abstract.permissions import IsAdmin, NonAdminChange
 from ..issue.api.serializers.issue import IssueTypeSerializer
 from ..issue.models import IssueType
-from ..project.models import Project2User
 from .models import EmployeeUser, Skill, UserStatistics
 from .serializers import EmployeeUserSerializer, UserStatisticsSerializer
-from .services import create_user, edit_user, filter_users
+from .services import create_user, edit_user, filter_users, assignment_problem
 
 
 class UserCreateAPIView(APIView):
@@ -42,6 +40,14 @@ class UserOpenView(RetrieveUpdateDestroyAPIView):
         pure_user = user.user
         pure_user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class AssignmentProblem(RetrieveAPIView):
+    serializer_class = EmployeeUserSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self):
+        return assignment_problem(self.request)
 
 
 class MissingSkillsListView(ListAPIView):

@@ -273,6 +273,11 @@ export default {
     assignUser() {
       this.$store.dispatch('user/getUsers',
           {project_id: this.issue.project.id, dev: true});
+      const priority = ['Незначительный', 'Обычный', 'Высокий', 'Критический'].indexOf(this.issue.priority);
+
+      const p = {project_id: this.issue.project.id, skill: this.issue.typo, priority: priority}
+      this.$store.dispatch('issue/assignmentProblem', p);
+
       this.$store.commit('issue/SET_STATE', { isAssignModalVisible: true });
     },
     changeStatus() {
@@ -282,7 +287,7 @@ export default {
     mapTaskType(issue) {
       const t = ['Frontend', 'Backend', 'DevOps', 'Mobile', 'DB', 'SysAdmin'][issue.typo]
       return this.children.length === 0 ? t : 'Группа задач'
-    }
+    },
   },
    mounted() {
         this.$store.dispatch('issue/getIssue', this.issueId);

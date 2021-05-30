@@ -21,7 +21,8 @@ export default {
         descProjectIssueModalVisible: false,
         isAssignModalVisible: false,
         isStatusModalVisible: false,
-        unAssignedStuff: false
+        unAssignedStuff: false,
+        assignment: {}
     },
     getters: {
         issue: (state) => state.issue,
@@ -39,7 +40,8 @@ export default {
         descProjectIssueModalVisible: (state) => state.descProjectIssueModalVisible,
         isAssignModalVisible: (state) => state.isAssignModalVisible,
         isStatusModalVisible: (state) => state.isStatusModalVisible,
-        unAssignedStuff: (state) => state.unAssignedStuff
+        unAssignedStuff: (state) => state.unAssignedStuff,
+        assignment: (state) => state.assignment,
     },
     mutations: {
         SET_STATE
@@ -181,6 +183,14 @@ export default {
             } catch (e) {
                 showErrorNotify(e.response.data.detail);
             }
+        },
+        async assignmentProblem({ commit }, payload) {
+          try {
+              const result = await api.assignmentProblem(payload);
+              setState(commit, {assignment: result});
+          } catch (e) {
+              showErrorNotify(e.response.data.detail);
+          }
         },
         async getIssueHistory({commit}, filter) {
             try {

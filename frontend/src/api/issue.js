@@ -40,8 +40,17 @@ export const getIssueHistory = async (params) => {
     return (await axios.get(`api/issue/history/`, {params, headers: headers})).data;
 }
 
+export const assignmentProblem = async (params) => {
+    return (
+        await axios.get('api/user/assignment_problem/', {
+            params, headers: headers
+        })
+    ).data;
+};
+
 export default {
     getChildren,
+    assignmentProblem,
     assignUserIssue,
     getIssues,
     addIssue,

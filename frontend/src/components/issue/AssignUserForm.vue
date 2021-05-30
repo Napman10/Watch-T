@@ -12,7 +12,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-
+      <a @click="getRecommended">Получить рекомендуемого</a>
     </el-form>
 
     <div slot="footer">
@@ -38,7 +38,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('issue', ['isAssignModalVisible', 'issue']),
+    ...mapGetters('issue', ['isAssignModalVisible', 'issue', 'assignment']),
     ...mapGetters('user', ['users'])
   },
   methods: {
@@ -51,6 +51,9 @@ export default {
           this.form = {};
         }
       });
+    },
+    getRecommended() {
+      alert(this.assignment.username);
     },
     closeModal() {
       this.form = {};

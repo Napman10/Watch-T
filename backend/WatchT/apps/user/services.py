@@ -168,3 +168,26 @@ def filter_users(request):
         return EmployeeUser.objects.filter(**params)
     else:
         return EmployeeUser.objects.all()
+
+
+def assignment_problem(request):
+    params = sanitize_query_params(request)
+
+    skill = params['skill']
+    priority = params['priority']
+    project_id = params['project_id']
+
+    p2u = Project2User.objects.filter(project__id=project_id)
+    user_ids_by_projects = [p.user.id for p in p2u]
+
+    skills_ones = Skill.objects.filter(skill__typo=skill)
+    skilled_users = [so.employee for so in skills_ones]
+
+    users = EmployeeUser.objects.\
+        filter(id__in=user_ids_by_projects, role=EmployeeUser.DEVELOPER, level__gte=priority).order_by('-level')
+    for user in users:
+        if user in skilled_users:
+            return user
+
+    user = EmployeeUser.objects.filter(id__in=user_ids_by_projects, role=EmployeeUser.LEAD).first()
+    return user
