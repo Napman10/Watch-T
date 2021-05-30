@@ -14,7 +14,7 @@ class TrackCreateView(APIView):
     permission_classes = (IsAuthenticated, NonGuest)
 
     def post(self, request):
-        create_track(request)
+        return create_track(request)
 
 
 class TrackListView(ListAPIView):
