@@ -31,7 +31,7 @@ class IssueOpenView(RetrieveUpdateAPIView):
 
     def put(self, request, *args, **kwargs):
         issue = self.get_object()
-        edit_issue(issue, request)
+        return edit_issue(issue, request)
 
 
 class IssueCreateView(APIView):

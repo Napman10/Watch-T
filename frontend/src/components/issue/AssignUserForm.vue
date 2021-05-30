@@ -53,7 +53,12 @@ export default {
       });
     },
     getRecommended() {
-      alert(this.assignment.username);
+      const done = this.assignment.username === this.issue.executor;
+      if (done) {
+        alert('Рекомендуемый исполнитель уже назначен');
+      } else {
+        alert('Рекомендуется назначить ' + this.assignment.username);
+      }
     },
     closeModal() {
       this.form = {};
