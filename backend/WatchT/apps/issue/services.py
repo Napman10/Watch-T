@@ -115,8 +115,9 @@ def edit_issue(issue, request):
     stat = request.data.get('status')
     good_roles = [EmployeeUser.ADMINISTRATOR, EmployeeUser.LEAD, EmployeeUser.DEVELOPER]
     if executor_username and ((employee and employee.role in good_roles) or not employee):
-        can_do_by_qualify(issue.typo.typo, employee)
-        can_do_by_level(issue.priority, employee)
+        if employee:
+            can_do_by_qualify(issue.typo.typo, employee)
+            can_do_by_level(issue.priority, employee)
         old_executor = issue.executor
         issue.executor = employee
         issue.save()
