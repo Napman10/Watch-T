@@ -5,6 +5,7 @@
   <div v-else>
     <h1>Добро пожаловать в Watch-T!</h1>
     <h3>Дипломная работа, выполненная студентом группы МО-416 Кашаповым Ильёй.</h3>
+    <h5>При отсутствии учётной записи обратитесь к администратору по email: ilya.kashapov99@gmail.com</h5>
     <div class="login">
         <h3 style="text-align: center">Вход в систему</h3>
         <login-form></login-form>
@@ -33,7 +34,7 @@ export default {
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 }
 
-h1, h3 {
+h1, h3, h5 {
   text-align:center;
   color: white;
 }
