@@ -45,7 +45,7 @@ def create_user(user_data: dict) -> Response:
     del user_data['password2']
 
     role = user_data.get('role')
-    if role:
+    if role is not None:
         if role in [EmployeeUser.ADMINISTRATOR, EmployeeUser.LEAD]:
             level = EmployeeUser.SENIOR
         else:
@@ -70,11 +70,12 @@ def create_user(user_data: dict) -> Response:
             employee_dict["role"] = role
         if level:
             employee_dict["level"] = level
+
         user = EmployeeUser.objects.create(**employee_dict)
 
         UserStatistics.objects.create(user=user)
 
-    except BaseException:
+    except BaseException as e:
         raise APIException
 
     return Response({"username": original_user.username, "detail": "registration successful"},
