@@ -5,7 +5,7 @@
         <h2>{{issue.header}}</h2>
         <div id="description">{{issue.description}}</div>
         <div v-if="children.length !== 0">
-          <h5>Подзадачи: </h5>
+          <h4>Подзадачи: </h4>
           <ul>
             <li v-for="task in children">
               {{task.short_name}} - {{task.header}}
