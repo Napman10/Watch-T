@@ -32,6 +32,9 @@ class IssueManager(Manager):
                 can_do_by_level(priority, executor)
                 query["executor"] = executor
 
+                Issue = apps.get_model('issue', 'Issue')
+                query["status"] = Issue.ASSIGNED
+
         if want_minutes:
             if parent_id:
                 parent = self.get(id=parent_id)

@@ -120,6 +120,8 @@ def edit_issue(issue, request):
             can_do_by_level(issue.priority, employee)
         old_executor = issue.executor
         issue.executor = employee
+        if issue.status == Issue.NEW:
+            issue.status = Issue.ASSIGNED
         issue.save()
         record_history(issue=issue,
                        text=f"{me}: исполнитель {string_or_empty(old_executor)} -> {string_or_empty(employee)}")
