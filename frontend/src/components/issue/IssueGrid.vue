@@ -47,13 +47,13 @@
         </el-form>
         <el-table
             :data="issues"
-            style="width: 1000px"
+            style="width: 1200px"
             @cell-click="openIssue"
             :row-class-name="tableRow"
         >
             <el-table-column prop="short_name" label="Задание" width="150" />
-            <el-table-column prop="header"  width="300" />
-            <el-table-column prop="project.name"  label="Проект" width="100" />
+            <el-table-column prop="header"  width="400" />
+            <el-table-column prop="project.name"  label="Проект" width="200" />
             <el-table-column prop="author"  label="Составил" width="150" />
             <el-table-column prop="executor" label="Выполняет" width="150" />
             <el-table-column prop="priority" label="Приоритет" width="150" />

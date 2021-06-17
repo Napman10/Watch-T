@@ -137,7 +137,7 @@ export default {
             });
         },
         pert() {
-          let val = prompt('Введите оптимистическое, пессимистическое и вероятное времена (oo-pp-mm)');
+          let val = prompt('Введите оптимистическое и пессимистическое времена (oo-pp)');
           alert(parsePert(val))
         },
         closeModal() {

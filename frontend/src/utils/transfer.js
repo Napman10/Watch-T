@@ -57,6 +57,6 @@ export function minutesToText(minutes){
 
 export function parsePert(str) {
     let splits = str.split("-");
-    const result = (textToMinutes(splits[0]) + textToMinutes(splits[1]) + 4 * textToMinutes(splits[2])) / 6
+    const result = (3 * textToMinutes(splits[0]) + 2 * textToMinutes(splits[1])) / 5
     return minutesToText(result);
 }
